@@ -1,4 +1,6 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
+using Nudelsieb.Cli.Models;
+using Nudelsieb.Cli.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,9 +17,22 @@ namespace Nudelsieb.Cli
         [Option]
         public string[] Groups { get; set; }
 
+        private readonly IBraindumpService braindumpService;
+
+        public AddCommand(IBraindumpService braindumpService)
+        {
+            this.braindumpService = braindumpService;
+        }
+
         protected override int OnExecute(CommandLineApplication app)
         {
-            Console.WriteLine($"Adding {Message} with {Groups.Length} groups: '{string.Join(", ", Groups)}'");
+            var neuron = new Neuron
+            {
+                Id = Guid.NewGuid(),
+                Information = Message
+            };
+
+            this.braindumpService.Add(neuron);
 
             return base.OnExecute(app);
         }

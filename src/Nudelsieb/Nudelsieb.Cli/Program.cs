@@ -1,4 +1,6 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
+using Microsoft.Extensions.DependencyInjection;
+using Nudelsieb.Cli.Services;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -23,8 +25,26 @@ namespace Nudelsieb.Cli
         typeof(AddCommand))]
     class Program : CommandBase
     {
-        public static void Main(string[] args) => CommandLineApplication.Execute<Program>(args);
+        public static int Main(string[] args)
+        {
+            // composite root
+            var services = new ServiceCollection()
+                .AddSingleton<IConsole>(PhysicalConsole.Singleton)
+                .AddSingleton<IBraindumpService, BraindumService>()
+                .BuildServiceProvider();
 
+            var app = new CommandLineApplication<Program>();
+
+            app.Conventions
+                .UseDefaultConventions()
+                .UseConstructorInjection(services);
+            
+            return app.Execute(args);
+        }
+
+        /// <summary>
+        /// This method is only executed if no subcommand can be matched to the provided args.
+        /// </summary>
         protected override int OnExecute(CommandLineApplication app)
         {
             // this shows help even if the --help option isn't specified
@@ -33,6 +53,9 @@ namespace Nudelsieb.Cli
         }
 
         private static string GetVersion()
-            => typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+            => typeof(Program)
+                .Assembly
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                .InformationalVersion;
     }
 }
