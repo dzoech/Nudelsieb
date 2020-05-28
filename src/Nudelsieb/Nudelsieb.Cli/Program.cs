@@ -1,9 +1,15 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Configuration;
 using Nudelsieb.Cli.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Nudelsieb.Cli
 {
@@ -14,7 +20,6 @@ namespace Nudelsieb.Cli
         protected virtual int OnExecute(CommandLineApplication app)
         {
             //Console.WriteLine("Result = nudelsieb " + ArgumentEscaper.EscapeAndConcatenate(args));
-            app.ShowHelp();
             return 0;
         }
     }
@@ -25,21 +30,27 @@ namespace Nudelsieb.Cli
         typeof(AddCommand))]
     class Program : CommandBase
     {
-        public static int Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
-            // composite root
-            var services = new ServiceCollection()
-                .AddSingleton<IConsole>(PhysicalConsole.Singleton)
-                .AddSingleton<IBraindumpService, BraindumService>()
-                .BuildServiceProvider();
+            var hostBuilder = Host.CreateDefaultBuilder()
+                .ConfigureAppConfiguration(configBuilder =>
+                {
+                    configBuilder.SetBasePath(Directory.GetCurrentDirectory());
+                    configBuilder.AddJsonFile("appsettings.json");
+                })
+                .ConfigureLogging((context, loggingBuilder) =>
+                {
+                    loggingBuilder.AddConfiguration(context.Configuration.GetSection("Logging"));
+                    loggingBuilder.AddConsole(c => c.TimestampFormat = "HH:mm:ss"); // use .fff for milliseconds
+                })
+                .ConfigureServices((context, services) =>
+                {
+                    services
+                        .AddSingleton<IConsole>(PhysicalConsole.Singleton)
+                        .AddSingleton<IBraindumpService, BraindumService>();
+                });
 
-            var app = new CommandLineApplication<Program>();
-
-            app.Conventions
-                .UseDefaultConventions()
-                .UseConstructorInjection(services);
-            
-            return app.Execute(args);
+            return await hostBuilder.RunCommandLineApplicationAsync<Program>(args);
         }
 
         /// <summary>

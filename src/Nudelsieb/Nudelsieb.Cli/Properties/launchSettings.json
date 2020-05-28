@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Nudelsieb.Cli": {
+      "commandName": "Project",
+      "commandLineArgs": "add MyMessage -g MyGroup"
+    }
+  }
+}

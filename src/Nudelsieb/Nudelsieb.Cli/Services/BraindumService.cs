@@ -1,4 +1,5 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
+using Microsoft.Extensions.Logging;
 using Nudelsieb.Cli.Models;
 using System;
 using System.Collections.Generic;
@@ -11,16 +12,21 @@ namespace Nudelsieb.Cli.Services
 {
     class BraindumService : IBraindumpService
     {
-        private readonly IConsole console;
 
-        public BraindumService(IConsole console)
+        private readonly ILogger<BraindumService> logger;
+
+        public BraindumService(ILogger<BraindumService> logger)
         {
-            this.console = console;
+            this.logger = logger;
         }
 
         public async Task Add(Neuron neuron)
         {
-            this.console.WriteLine($"Adding {neuron.Information} with {neuron.Groups.Count} groups: '{string.Join(", ", neuron.Groups)}'");
+            this.logger.LogDebug(
+                $"Adding '{neuron.Information}' " +
+                $"with {neuron.Groups.Count} groups: '{string.Join(", ", neuron.Groups)}'");
+
+            this.logger.LogInformation("Info");
         }
 
         public List<Neuron> GetAll()
