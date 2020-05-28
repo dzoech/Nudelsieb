@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Cli", "Nudelsieb.Cli\Nudelsieb.Cli.csproj", "{0E8C6529-DC7F-4ED5-88A7-4883DB1B8CEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nudelsieb.WebApi", "Nudelsieb.WebApi\Nudelsieb.WebApi.csproj", "{A81135D0-3BE0-4CEA-B177-F337B9D7B76C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{0E8C6529-DC7F-4ED5-88A7-4883DB1B8CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E8C6529-DC7F-4ED5-88A7-4883DB1B8CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E8C6529-DC7F-4ED5-88A7-4883DB1B8CEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A81135D0-3BE0-4CEA-B177-F337B9D7B76C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A81135D0-3BE0-4CEA-B177-F337B9D7B76C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A81135D0-3BE0-4CEA-B177-F337B9D7B76C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A81135D0-3BE0-4CEA-B177-F337B9D7B76C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
