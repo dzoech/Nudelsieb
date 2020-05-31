@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Nudelsieb.Cli
 {
@@ -24,7 +25,7 @@ namespace Nudelsieb.Cli
             this.braindumpService = braindumpService;
         }
 
-        protected override int OnExecute(CommandLineApplication app)
+        protected override async Task<int> OnExecuteAsync(CommandLineApplication app)
         {
             var neuron = new Neuron
             {
@@ -32,9 +33,9 @@ namespace Nudelsieb.Cli
                 Information = Message
             };
 
-            this.braindumpService.Add(neuron);
+            await this.braindumpService.Add(neuron);
 
-            return base.OnExecute(app);
+            return await base.OnExecuteAsync(app);
         }
     }
 }

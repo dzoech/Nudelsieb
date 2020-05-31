@@ -22,11 +22,10 @@ namespace Nudelsieb.Cli.Services
 
         public async Task Add(Neuron neuron)
         {
-            this.logger.LogDebug(
-                $"Adding '{neuron.Information}' " +
-                $"with {neuron.Groups.Count} groups: '{string.Join(", ", neuron.Groups)}'");
-
-            this.logger.LogInformation("Info");
+            await Task.Run(() =>
+                this.logger.LogDebug(
+                    $"Adding '{neuron.Information}' " +
+                    $"with {neuron.Groups.Count} groups: '{string.Join(", ", neuron.Groups)}'"));
         }
 
         public List<Neuron> GetAll()
