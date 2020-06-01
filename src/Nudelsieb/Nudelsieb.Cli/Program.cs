@@ -36,11 +36,16 @@ namespace Nudelsieb.Cli
         public static async Task<int> Main(string[] args)
         {
             var hostBuilder = Host.CreateDefaultBuilder()
-                .ConfigureAppConfiguration((configBuilder) =>
+                .ConfigureAppConfiguration((context, configBuilder) =>
                 {
                     configBuilder.SetBasePath(Directory.GetCurrentDirectory());
                     configBuilder.AddJsonFile("appsettings.json");
-                    
+
+                    if (context.HostingEnvironment.IsDevelopment())
+                    {
+                        configBuilder.AddUserSecrets<Program>();
+                    }
+
                 })
                 .ConfigureLogging((context, loggingBuilder) =>
                 {
@@ -53,11 +58,11 @@ namespace Nudelsieb.Cli
                     var authOptions = new AuthOptions();
                     context.Configuration.GetSection("Auth").Bind(authOptions);
 
-                    
+
                     // composite root
                     services
                         .AddSingleton<IConsole>(PhysicalConsole.Singleton)
-                        .AddSingleton<IPublicClientApplication>(_ => 
+                        .AddSingleton<IPublicClientApplication>(_ =>
                             PublicClientApplicationBuilder
                                 .Create(authOptions.ClientId)
                                 .WithRedirectUri("http://localhost:14001") // AAD B2C requires a port https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/System-Browser-on-.Net-Core#limitations

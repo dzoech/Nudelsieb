@@ -2,7 +2,10 @@
   "profiles": {
     "Nudelsieb.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "login MyMessage -g MyGroup"
+      "commandLineArgs": "login MyMessage -g MyGroup",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
     }
   }
 }

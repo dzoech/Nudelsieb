@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>aspnet-Nudelsieb.WebApi-D6BF8BE4-F800-4715-AB18-0BC8F84E3629</UserSecretsId>
+    <UserSecretsId>Nudelsieb.WebApi-D6BF8BE4-F800-4715-AB18-0BC8F84E3629</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
