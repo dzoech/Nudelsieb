@@ -56,7 +56,7 @@ namespace Nudelsieb.Cli
                 {
                     // read configs
                     var authOptions = new AuthOptions();
-                    context.Configuration.GetSection("Auth").Bind(authOptions);
+                    context.Configuration.GetSection(AuthOptions.SectionName).Bind(authOptions);
 
 
                     // composite root
@@ -65,7 +65,7 @@ namespace Nudelsieb.Cli
                         .AddSingleton<IPublicClientApplication>(_ =>
                             PublicClientApplicationBuilder
                                 .Create(authOptions.ClientId)
-                                .WithRedirectUri("http://localhost:14001") // AAD B2C requires a port https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/System-Browser-on-.Net-Core#limitations
+                                .WithRedirectUri(authOptions.RedirectUri) // AAD B2C requires a port https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/System-Browser-on-.Net-Core#limitations
                                 .WithB2CAuthority(authOptions.B2cAuthority)
                                 .Build())
                         .AddSingleton<IBraindumpService, BraindumService>();
@@ -87,7 +87,7 @@ namespace Nudelsieb.Cli
         private static string GetVersion()
             => typeof(Program)
                 .Assembly
-                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-                .InformationalVersion;
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+                .InformationalVersion ?? "No version information available.";
     }
 }

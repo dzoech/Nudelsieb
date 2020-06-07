@@ -12,8 +12,9 @@ namespace Nudelsieb.Cli.Models
 
         public List<string> Groups { get; set; }
 
-        public Neuron()
+        public Neuron(string information)
         {
+            Information = information;
             Groups = new List<string>();
         }
     }
