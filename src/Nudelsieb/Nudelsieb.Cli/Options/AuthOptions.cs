@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Identity.Client;
 
 namespace Nudelsieb.Cli.Options
 {
@@ -25,6 +26,17 @@ namespace Nudelsieb.Cli.Options
         {
             get => requiredScopes.Select(s => ReplacePlaceholder(s)).ToList();
             set => requiredScopes = value;
+        }
+
+        public string? ClientSecret { get; set; }
+
+        public CacheOptions Cache { get; set; } = new CacheOptions();
+
+        public class CacheOptions
+        {        
+            public string? FileName { get; set; }
+
+            public string? Directory { get; set; }
         }
 
         private string ReplacePlaceholder(string scope)
