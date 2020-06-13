@@ -67,14 +67,15 @@ namespace Nudelsieb.Cli
                     // read configs
                     var authOptions = new AuthOptions();
                     context.Configuration.GetSection(AuthOptions.SectionName).Bind(authOptions);
+
                     // useing Microsoft.Identity.Client.Extensions.Msal (preview) as Cache
                     // https://github.com/AzureAD/microsoft-authentication-extensions-for-dotnet/tree/master/src/Microsoft.Identity.Client.Extensions.Msal
                     var props = new StorageCreationPropertiesBuilder(
                         authOptions.Cache.FileName,
                         authOptions.Cache.Directory, 
                         authOptions.ClientId).Build();
-                    var msalCacheHelper = await MsalCacheHelper.CreateAsync(props); 
 
+                    var msalCacheHelper = await MsalCacheHelper.CreateAsync(props); 
 
                     // composition root
                     services

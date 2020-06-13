@@ -18,7 +18,7 @@ namespace Nudelsieb.WebApi
 {
     public class Startup
     {
-        const string ApiName = "Braindump";
+        const string ApiName = "Nudelsieb";
         const string ApiVersion = "V1";
 
         public Startup(IConfiguration configuration)
@@ -36,6 +36,7 @@ namespace Nudelsieb.WebApi
                 .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
 
             services.AddControllers();
+            services.AddHealthChecks();
 
             services.AddSwaggerGen(c =>
             {
@@ -81,6 +82,7 @@ namespace Nudelsieb.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("health");
             });
 
             app.UseSwagger();
