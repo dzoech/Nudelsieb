@@ -7,7 +7,9 @@ using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensions.Msal;
 using Nudelsieb.Cli.Options;
+using Nudelsieb.Cli.RestClients;
 using Nudelsieb.Cli.Services;
+using Refit;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -62,20 +64,21 @@ namespace Nudelsieb.Cli
                     loggingBuilder.AddConfiguration(context.Configuration.GetSection("Logging"));
                     loggingBuilder.AddConsole(c => c.TimestampFormat = "HH:mm:ss"); // use .fff for milliseconds
                 })
-                .ConfigureServices(async (context, services) =>
+                .ConfigureServices((context, services) =>
                 {
                     // read configs
                     var authOptions = new AuthOptions();
                     context.Configuration.GetSection(AuthOptions.SectionName).Bind(authOptions);
+                    var endpointsOptions = new EndpointsOptions();
+                    context.Configuration.GetSection(EndpointsOptions.SectionName).Bind(endpointsOptions);
 
                     // useing Microsoft.Identity.Client.Extensions.Msal (preview) as Cache
                     // https://github.com/AzureAD/microsoft-authentication-extensions-for-dotnet/tree/master/src/Microsoft.Identity.Client.Extensions.Msal
                     var props = new StorageCreationPropertiesBuilder(
-                        authOptions.Cache.FileName,
-                        authOptions.Cache.Directory, 
-                        authOptions.ClientId).Build();
-
-                    var msalCacheHelper = await MsalCacheHelper.CreateAsync(props); 
+                            authOptions.Cache.FileName,
+                            authOptions.Cache.Directory,
+                            authOptions.ClientId)
+                        .Build();
 
                     // composition root
                     services
@@ -88,13 +91,15 @@ namespace Nudelsieb.Cli
                               .WithB2CAuthority(authOptions.B2cAuthority)
                               .Build();
 
-
-                            
+                            var msalCacheHelper = MsalCacheHelper.CreateAsync(props).Result;
                             msalCacheHelper.RegisterCache(app.UserTokenCache);
 
                             return app;
                         })
-                        .AddSingleton<IBraindumpService, BraindumService>();
+                        .AddSingleton<IBraindumpService, BraindumService>()
+                        .AddTransient<IBraindumpRestClient>(_ =>
+                            RestService.For<IBraindumpRestClient>(
+                                endpointsOptions.Braindump ?? throw new ArgumentNullException()));
 
                 });
 

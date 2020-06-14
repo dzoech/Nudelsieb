@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace Nudelsieb.Cli
         public string? Message { get; set; }
 
         [Option]
-        public string[]? Groups { get; set; }
+        public string[] Groups { get; set; } = Array.Empty<string>();
 
         private readonly IBraindumpService braindumpService;
 
@@ -28,12 +29,8 @@ namespace Nudelsieb.Cli
 
         protected override async Task<int> OnExecuteAsync(CommandLineApplication app)
         {
-            var neuron = new Neuron(Message!) // Message is not null because it is [Required]
-            {
-                Id = Guid.NewGuid()
-            };
-
-            await this.braindumpService.Add(neuron);
+            // Message is not null because it is [Required]
+            await this.braindumpService.AddNeuron(Message!, Groups.ToList());
 
             return await base.OnExecuteAsync(app);
         }

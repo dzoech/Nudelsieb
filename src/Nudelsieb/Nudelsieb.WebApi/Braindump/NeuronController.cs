@@ -27,11 +27,13 @@ namespace Nudelsieb.WebApi.Braindump
         {
             var neurons = await neuronRepository.GetAllAsync();
 
-            var dtos = neurons.Select(n => new NeuronDto(n.Information)
-            {
-                Id = n.Id,
-                Groups = n.Groups
-            });
+            var dtos = neurons.Select(n => 
+                new NeuronDto
+                {
+                    Information = n.Information,
+                    Id = n.Id,
+                    Groups = n.Groups
+                });
 
             return dtos;
         }

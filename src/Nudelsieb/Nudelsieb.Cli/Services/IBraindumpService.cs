@@ -8,8 +8,8 @@ namespace Nudelsieb.Cli.Services
 {
     interface IBraindumpService
     {
-        Task Add(Neuron neuron);
+        Task AddNeuron(string information, List<string> groups);
 
-        List<Neuron> GetAll();
+        Task<List<Neuron>> GetAll();
     }
 }

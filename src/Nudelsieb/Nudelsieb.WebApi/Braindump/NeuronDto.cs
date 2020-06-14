@@ -9,14 +9,8 @@ namespace Nudelsieb.WebApi.Braindump
     {
         public Guid Id { get; set; }
 
-        public string Information { get; set; }
+        public string Information { get; set; } = string.Empty;
 
-        public List<string> Groups { get; set; }
-
-        public NeuronDto(string information)
-        {
-            Information = information;
-            Groups = new List<string>();
-        }
+        public List<string> Groups { get; set; } = new List<string>();
     }
 }

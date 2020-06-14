@@ -10,6 +10,12 @@ namespace Nudelsieb.Cli.RestClients
     interface IBraindumpRestClient
     {
         [Get("/Neuron/{id}")]
-        Task<List<Neuron>> GetNeuron(Guid id);
+        Task<List<Neuron>> GetNeuronAsync(Guid id);
+
+        [Get("/Neuron")]
+        Task<List<Neuron>> GetAllNeuronsAsync();
+
+        [Post("/Neuron")]
+        Task AddNeuron(Neuron neuron);
     }
 }

@@ -70,7 +70,7 @@ namespace Nudelsieb.Cli
             }
             catch (Exception ex)
             {
-                console.WriteLine(ex);
+                console.Error.WriteLine(ex);
             }
 
             return await base.OnExecuteAsync(app);

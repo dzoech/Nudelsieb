@@ -1,6 +1,7 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Logging;
 using Nudelsieb.Cli.Models;
+using Nudelsieb.Cli.RestClients;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -12,25 +13,35 @@ namespace Nudelsieb.Cli.Services
 {
     class BraindumService : IBraindumpService
     {
-
         private readonly ILogger<BraindumService> logger;
+        private readonly IBraindumpRestClient restClient;
 
-        public BraindumService(ILogger<BraindumService> logger)
+        /// <summary>
+        /// This abstraction in form of a service layer is intended 
+        /// to manage an offline data store in the future.
+        /// </summary>
+        public BraindumService(
+            ILogger<BraindumService> logger,
+            IBraindumpRestClient restClient)
         {
             this.logger = logger;
+            this.restClient = restClient;
         }
 
-        public async Task Add(Neuron neuron)
+        public async Task AddNeuron(string information, List<string> groups)
         {
-            await Task.Run(() =>
-                this.logger.LogDebug(
-                    $"Adding '{neuron.Information}' " +
-                    $"with {neuron.Groups.Count} groups: '{string.Join(", ", neuron.Groups)}'"));
+            var neuron = new Neuron(information)
+            {
+                Id = Guid.NewGuid(),
+                Groups = groups
+            };            
+
+            await restClient.AddNeuron(neuron);
         }
 
-        public List<Neuron> GetAll()
+        public async Task<List<Neuron>> GetAll()
         {
-            return new List<Neuron>();
+            return await restClient.GetAllNeuronsAsync();
         }
     }
 }
