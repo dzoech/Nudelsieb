@@ -1,20 +1,12 @@
-﻿using McMaster.Extensions.CommandLineUtils;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Microsoft.Identity.Client;
-using Microsoft.IdentityModel.JsonWebTokens;
-using Nudelsieb.Cli.Models;
-using Nudelsieb.Cli.Options;
-using Nudelsieb.Cli.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
+using McMaster.Extensions.CommandLineUtils;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Client;
+using Nudelsieb.Cli.Options;
 
 namespace Nudelsieb.Cli
 {
