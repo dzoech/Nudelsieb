@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Cli", "Nudelsieb.Cli\Nudelsieb.Cli.csproj", "{0E8C6529-DC7F-4ED5-88A7-4883DB1B8CEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nudelsieb.WebApi", "Nudelsieb.WebApi\Nudelsieb.WebApi.csproj", "{A81135D0-3BE0-4CEA-B177-F337B9D7B76C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.WebApi", "Nudelsieb.WebApi\Nudelsieb.WebApi.csproj", "{A81135D0-3BE0-4CEA-B177-F337B9D7B76C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nudelsieb.Domain", "Nudelsieb.Domain\Nudelsieb.Domain.csproj", "{CDCDBD8C-8A8A-4C51-8354-7DC9264CCA72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nudelsieb.Persistence", "Nudelsieb.Persistence\Nudelsieb.Persistence.csproj", "{F6D01AB0-1DEB-40D7-BFB1-C606E505038F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{A81135D0-3BE0-4CEA-B177-F337B9D7B76C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A81135D0-3BE0-4CEA-B177-F337B9D7B76C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A81135D0-3BE0-4CEA-B177-F337B9D7B76C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDCDBD8C-8A8A-4C51-8354-7DC9264CCA72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDCDBD8C-8A8A-4C51-8354-7DC9264CCA72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDCDBD8C-8A8A-4C51-8354-7DC9264CCA72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDCDBD8C-8A8A-4C51-8354-7DC9264CCA72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6D01AB0-1DEB-40D7-BFB1-C606E505038F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6D01AB0-1DEB-40D7-BFB1-C606E505038F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6D01AB0-1DEB-40D7-BFB1-C606E505038F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6D01AB0-1DEB-40D7-BFB1-C606E505038F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
