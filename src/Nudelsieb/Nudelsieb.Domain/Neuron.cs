@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Nudelsieb.Domain
 {
-    class NeuronDto
+    class Neuron
     {
         public Guid Id { get; set; }
 
@@ -13,7 +13,7 @@ namespace Nudelsieb.Domain
 
         public List<string> Groups { get; set; }
 
-        public NeuronDto(string information)
+        public Neuron(string information)
         {
             Information = information;
             Groups = new List<string>();
