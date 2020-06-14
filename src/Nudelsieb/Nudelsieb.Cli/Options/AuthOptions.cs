@@ -41,7 +41,7 @@ namespace Nudelsieb.Cli.Options
 
         private string ReplacePlaceholder(string scope)
         {
-            return scope.Replace("{TenantName}", $"https://{AadTenant}");
+            return scope.Replace("{AadTenantUri}", $"https://{AadTenant}");
         }
 
         private List<string> requiredScopes = new List<string>();
