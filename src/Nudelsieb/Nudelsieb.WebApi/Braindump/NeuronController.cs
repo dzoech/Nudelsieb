@@ -14,28 +14,26 @@ namespace Nudelsieb.WebApi.Braindump
     public class NeuronController : ControllerBase
     {
         private readonly ILogger<NeuronController> logger;
+        private readonly INeuronRepository neuronRepository;
 
-        public NeuronController(ILogger<NeuronController> logger)
+        public NeuronController(ILogger<NeuronController> logger, INeuronRepository neuronRepository)
         {
             this.logger = logger;
+            this.neuronRepository = neuronRepository;
         }
 
         [HttpGet]
-        public IEnumerable<NeuronDto> Get()
+        public async Task<IEnumerable<NeuronDto>> GetAsync()
         {
-            return new List<NeuronDto>
+            var neurons = await neuronRepository.GetAllAsync();
+
+            var dtos = neurons.Select(n => new NeuronDto(n.Information)
             {
-                new NeuronDto("An unbelievable idea that I would otherwise forget instantly...") 
-                {
-                    Groups = new List<string> { "projects", "programming" } 
-                },
-                new NeuronDto("Remind me to turn off the oven."),
-                new NeuronDto("Keep in mind that the API is only a dummy yet.")
-                {
-                    Groups = new List<string> { "programming" }
-                },
-                new NeuronDto("Why is my kitchen burning down?")
-            };
+                Id = n.Id,
+                Groups = n.Groups
+            });
+
+            return dtos;
         }
 
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Nudelsieb.Domain
 {
-    class Neuron
+    public class Neuron
     {
         public Guid Id { get; set; }
 

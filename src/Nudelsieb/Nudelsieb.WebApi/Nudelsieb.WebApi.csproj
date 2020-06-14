@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nudelsieb.Domain\Nudelsieb.Domain.csproj" />
+    <ProjectReference Include="..\Nudelsieb.Persistence\Nudelsieb.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
