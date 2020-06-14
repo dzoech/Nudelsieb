@@ -25,7 +25,7 @@ namespace Nudelsieb.WebApi.Braindump
         [HttpGet]
         public async Task<IEnumerable<NeuronDto>> GetAsync()
         {
-            var neurons = await neuronRepository.GetAllAsync();
+            var neurons = await this.neuronRepository.GetAllAsync();
 
             var dtos = neurons.Select(n => 
                 new NeuronDto
@@ -40,9 +40,17 @@ namespace Nudelsieb.WebApi.Braindump
 
 
         [HttpPost]
-        public void Post([FromBody] NeuronDto neuronDto)
+        public async Task Add([FromBody] NeuronDto neuronDto)
         {
             this.logger.LogInformation($"POST {neuronDto.Information}");
+
+            var neuron = new Neuron(neuronDto.Information)
+            {
+                Id = neuronDto.Id,
+                Groups = neuronDto.Groups
+            };
+
+            await this.neuronRepository.AddAsync(neuron);
         }
 
         [HttpPut("{id}")]

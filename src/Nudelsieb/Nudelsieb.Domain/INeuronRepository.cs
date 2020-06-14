@@ -8,5 +8,7 @@ namespace Nudelsieb.Domain
     public interface INeuronRepository
     {
         Task<List<Neuron>> GetAllAsync();
+
+        Task AddAsync(Neuron neuron);
     }
 }

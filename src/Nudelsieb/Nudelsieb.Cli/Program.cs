@@ -73,7 +73,7 @@ namespace Nudelsieb.Cli
                     var endpointsOptions = new EndpointsOptions();
                     context.Configuration.GetSection(EndpointsOptions.SectionName).Bind(endpointsOptions);
 
-                    // useing Microsoft.Identity.Client.Extensions.Msal (preview) as Cache
+                    // using Microsoft.Identity.Client.Extensions.Msal (preview) as Cache
                     // https://github.com/AzureAD/microsoft-authentication-extensions-for-dotnet/tree/master/src/Microsoft.Identity.Client.Extensions.Msal
                     var props = new StorageCreationPropertiesBuilder(
                             authOptions.Cache.FileName,
