@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Nudelsieb.Domain;
 using Nudelsieb.Persistence;
+using Microsoft.Azure.Cosmos;
 
 namespace Nudelsieb.WebApi
 {
@@ -33,8 +34,13 @@ namespace Nudelsieb.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var cosmosDbContainer = InitializeCosmosDbContainerAsync(
+                Configuration.GetSection("Persistence").GetSection("CosmosDb"))
+                .Result;
+
             // add as singleton to enable in-memory data for dummy repository
             services.AddSingleton<INeuronRepository, DummyNeuronRepository>();
+            services.AddSingleton<Container>(_ => cosmosDbContainer);
 
             services
                 .AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
@@ -96,6 +102,23 @@ namespace Nudelsieb.WebApi
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{ApiName} {ApiVersion}");
             });
+        }
+
+        private async Task<Container> InitializeCosmosDbContainerAsync(IConfigurationSection configSection)
+        {
+            var accountConfig = configSection.GetSection("Account");
+            CosmosClient client = new CosmosClient(
+                accountConfig.GetValue<string>("Endpoint"),
+                accountConfig.GetValue<string>("Key"));
+
+            Database database = await client.CreateDatabaseIfNotExistsAsync(
+                configSection.GetValue<string>("Database"));
+
+            Container container = await database.CreateContainerIfNotExistsAsync(
+                configSection.GetValue<string>("Container"),
+                configSection.GetValue<string>("PartitionKeyPath"));
+
+            return container;
         }
     }
 }
