@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Client;
 using Nudelsieb.Cli.Options;
+using Nudelsieb.Cli.Services;
 
 namespace Nudelsieb.Cli
 {
@@ -18,66 +20,36 @@ namespace Nudelsieb.Cli
         [Option]
         public string[]? Groups { get; set; }
 
+        private readonly ILogger<LoginCommand> logger;
         private readonly IConsole console;
-        private readonly IPublicClientApplication clientApplication;
-        private readonly IConfiguration config;
+        private readonly IAuthenticationService authService;
 
-        public LoginCommand(IConsole console, IPublicClientApplication clientApplication, IConfiguration config)
+        public LoginCommand(
+            ILogger<LoginCommand> logger,
+            IConsole console,
+            IAuthenticationService authService)
         {
+            this.logger = logger;
             this.console = console;
-            this.clientApplication = clientApplication;
-            this.config = config;
+            this.authService = authService;
         }
 
         protected override async Task<int> OnExecuteAsync(CommandLineApplication app)
         {
-            var authOptions = new AuthOptions();
-            this.config.GetSection(AuthOptions.SectionName).Bind(authOptions);
-
-            if (authOptions.PolicySignUpSignIn is null)
-            {
-                throw new ArgumentNullException(nameof(authOptions.PolicySignUpSignIn));
-            }
-
             try
             {
-                // call aad b2c
-                var accounts = await this.clientApplication.GetAccountsAsync();
-
-                var result = await this.clientApplication
-                    .AcquireTokenInteractive(authOptions.RequiredScopes)
-                    .WithAccount(GetAccountByPolicy(accounts, authOptions.PolicySignUpSignIn))
-                    .ExecuteAsync();
-
-                var idToken = new JwtSecurityTokenHandler().ReadJwtToken(result.IdToken);
-                var accessToken = new JwtSecurityTokenHandler().ReadJwtToken(result.AccessToken);
-
-                var user = new
-                {
-                    GivenName = idToken.Claims.Single(c => c.Type == "given_name").Value,
-                    Email = idToken.Claims.SingleOrDefault(c => c.Type == "emails")?.Value
-                };
-
+                var (idToken, _) = await authService.LoginAsync();
+                var user = authService.GetUserFromIdToken(idToken);
                 this.console.WriteLine($"Hello {user.GivenName}! You are logged in as '{user.Email ?? ""}'.");
             }
             catch (Exception ex)
             {
-                console.Error.WriteLine(ex);
+                logger.LogError(ex, "Error while authenticating user.");
+                console.Error.WriteLine("Error during authentication. Please make sure you are connected to the internet, and try again.");
             }
 
             return await base.OnExecuteAsync(app);
         }
 
-        private IAccount GetAccountByPolicy(IEnumerable<IAccount> accounts, string policy)
-        {
-            foreach (var account in accounts)
-            {
-                string userIdentifier = account.HomeAccountId.ObjectId.Split('.')[0];
-
-                if (userIdentifier.EndsWith(policy.ToLower()))
-                    return account;
-            }
-            return null!; // todo non null
-        }
     }
 }

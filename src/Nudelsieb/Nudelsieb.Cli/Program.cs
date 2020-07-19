@@ -98,6 +98,7 @@ namespace Nudelsieb.Cli
                             return app;
                         })
                         .AddSingleton<IBraindumpService, BraindumService>()
+                        .AddSingleton<IAuthenticationService, AuthenticationService>()
                         .AddTransient<IBraindumpRestClient>(_ =>
                             RestService.For<IBraindumpRestClient>(
                                 endpointsOptions.Braindump ?? throw new ArgumentNullException()));

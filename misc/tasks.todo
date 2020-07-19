@@ -1,0 +1,5 @@
+☐ enforce "this." for private members via stylecop
+☐ use AutoMapper to map between DTOs and domain models
+☐ deployment pipeline
+☐ unit tests
+☐ enforce authorization
