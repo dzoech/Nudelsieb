@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Nudelsieb.Domain;
@@ -9,6 +10,7 @@ using Nudelsieb.Domain;
 namespace Nudelsieb.WebApi.Braindump
 {
     [Area("braindump")]
+    [Authorize]
     [Route("[area]/[controller]")]
     [ApiController]
     public class NeuronController : ControllerBase

@@ -16,6 +16,7 @@ using Microsoft.OpenApi.Models;
 using Nudelsieb.Domain;
 using Nudelsieb.Persistence;
 using Microsoft.Azure.Cosmos;
+using Microsoft.IdentityModel.Logging;
 
 namespace Nudelsieb.WebApi
 {
@@ -34,13 +35,14 @@ namespace Nudelsieb.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var cosmosDbContainer = InitializeCosmosDbContainerAsync(
-                Configuration.GetSection("Persistence").GetSection("CosmosDb"))
-                .Result;
+            // TODO implement cosmos db persistence 
+            //var cosmosDbContainer = InitializeCosmosDbContainerAsync(
+            //    Configuration.GetSection("Persistence").GetSection("CosmosDb"))
+            //    .Result;
 
             // add as singleton to enable in-memory data for dummy repository
             services.AddSingleton<INeuronRepository, DummyNeuronRepository>();
-            services.AddSingleton<Container>(_ => cosmosDbContainer);
+            //services.AddSingleton<Container>(_ => cosmosDbContainer);
 
             services
                 .AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
@@ -81,6 +83,7 @@ namespace Nudelsieb.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                IdentityModelEventSource.ShowPII = true;
             }
 
             app.UseHttpsRedirection();
@@ -106,6 +109,8 @@ namespace Nudelsieb.WebApi
 
         private async Task<Container> InitializeCosmosDbContainerAsync(IConfigurationSection configSection)
         {
+            // var b = new CosmosClientBuilder("",""). ...
+
             var accountConfig = configSection.GetSection("Account");
             CosmosClient client = new CosmosClient(
                 accountConfig.GetValue<string>("Endpoint"),

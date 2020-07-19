@@ -48,7 +48,7 @@ namespace Nudelsieb.Cli.Services
 
                 var accessToken = ExtractTokens(result).AccessToken;
 
-                return (Success: false, AccessToken: accessToken);
+                return (Success: true, AccessToken: accessToken);
 
             }
             catch (MsalUiRequiredException ex)
