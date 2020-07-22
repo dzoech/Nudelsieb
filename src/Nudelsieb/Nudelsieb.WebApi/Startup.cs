@@ -17,6 +17,8 @@ using Nudelsieb.Domain;
 using Nudelsieb.Persistence;
 using Microsoft.Azure.Cosmos;
 using Microsoft.IdentityModel.Logging;
+using Nudelsieb.Persistence.Relational;
+using Microsoft.EntityFrameworkCore;
 
 namespace Nudelsieb.WebApi
 {
@@ -75,6 +77,9 @@ namespace Nudelsieb.WebApi
                     }
                 });
             });
+
+            services.AddDbContext<BraindumpDbContext>(options => 
+                options.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Braindump;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
