@@ -43,7 +43,7 @@ namespace Nudelsieb.WebApi
             //    .Result;
 
             // add as singleton to enable in-memory data for dummy repository
-            services.AddSingleton<INeuronRepository, DummyNeuronRepository>();
+            services.AddTransient<INeuronRepository, RelationalDbNeuronRepository>();
             //services.AddSingleton<Container>(_ => cosmosDbContainer);
 
             services
@@ -83,7 +83,10 @@ namespace Nudelsieb.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app, 
+            IWebHostEnvironment env,
+            BraindumpDbContext braindumpContext)
         {
             if (env.IsDevelopment())
             {
@@ -91,10 +94,10 @@ namespace Nudelsieb.WebApi
                 IdentityModelEventSource.ShowPII = true;
             }
 
+            braindumpContext.Database.Migrate();
+
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 

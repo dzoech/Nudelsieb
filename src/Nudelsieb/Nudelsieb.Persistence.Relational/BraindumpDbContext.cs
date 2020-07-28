@@ -23,7 +23,8 @@ namespace Nudelsieb.Persistence.Relational
             modelBuilder.Entity<Neuron>().HasKey(n => n.Id);
             modelBuilder.Entity<Neuron>().Property(n => n.Information).IsRequired();
 
-            modelBuilder.Entity<Group>().HasKey(g => new { g.Name, g.Neuron });
+            modelBuilder.Entity<Group>().HasKey(g => new { g.Name, g.NeuronId });
+            modelBuilder.Entity<Group>().HasOne<Neuron>(g => g.Neuron).WithMany(n => n.Groups).HasForeignKey(g => g.NeuronId);
         }
     }
 }

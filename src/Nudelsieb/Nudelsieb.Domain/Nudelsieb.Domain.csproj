@@ -4,8 +4,4 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Nudelsieb.Persistence.Relational\Nudelsieb.Persistence.Relational.csproj" />
-  </ItemGroup>
-
 </Project>

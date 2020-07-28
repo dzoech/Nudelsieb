@@ -11,6 +11,14 @@
     <Compile Remove="Migrations\20200722210939_AddInitialNeuronEntity.Designer.cs" />
     <Compile Remove="Migrations\20200722211139_AddInitialNeuronEntity.cs" />
     <Compile Remove="Migrations\20200722211139_AddInitialNeuronEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200728180627_InitialNeuronEntity.cs" />
+    <Compile Remove="Migrations\20200728180627_InitialNeuronEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200728181504_InitialNeuronEntity.cs" />
+    <Compile Remove="Migrations\20200728181504_InitialNeuronEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200728181733_InitialNeuronEntity.cs" />
+    <Compile Remove="Migrations\20200728181733_InitialNeuronEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200728182344_InitialNeuronEntity.cs" />
+    <Compile Remove="Migrations\20200728182344_InitialNeuronEntity.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\Nudelsieb.Domain\Nudelsieb.Domain.csproj" />
   </ItemGroup>
 
 </Project>
