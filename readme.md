@@ -7,3 +7,10 @@ The following architecture sketch illustrates the big picture:
 
 # Setup instructions for local development
 Install [Azure Cosmos Emulator](https://aka.ms/cosmosdb-emulator) (currently, no Docker image for Linux is available). Per default the emulator is listening on localhost:8081.
+
+# Todos
+- [ ] Query neurons by group name
+- [ ] Create some seed demo data
+- [ ] Setup deployment pipeline for WebApi service
+- [ ] Allow to switch between different endpoints (cloud, localhost) in the CLI
+- [ ] Implement registration process from the CLI against Azure AD
