@@ -10,6 +10,7 @@ Install [Azure Cosmos Emulator](https://aka.ms/cosmosdb-emulator) (currently, no
 
 # Todos
 - [ ] Query neurons by group name
+- [ ] Cli: Support #myGroup in message text to be converted into groups without using --group 
 - [ ] Create some seed demo data
 - [ ] Setup deployment pipeline for WebApi service
 - [ ] Allow to switch between different endpoints (cloud, localhost) in the CLI
