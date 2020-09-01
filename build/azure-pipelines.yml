@@ -31,9 +31,9 @@ stages:
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+        containerRegistry: '$(dockerRegistryServiceConnection)'
+        repository: '$(imageRepository)'
+        command: 'buildAndPush'
+        Dockerfile: '$(Build.SourcesDirectory)/src/Nudelsieb/Nudelsieb.WebApi/Dockerfile'
+        buildContext: '$(Build.SourcesDirectory)/src/Nudelsieb'
+        tags: '$(tag)'
