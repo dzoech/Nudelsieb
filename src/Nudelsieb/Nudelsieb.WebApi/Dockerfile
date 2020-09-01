@@ -8,6 +8,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["Nudelsieb.WebApi/Nudelsieb.WebApi.csproj", "Nudelsieb.WebApi/"]
+COPY ["Nudelsieb.Persistence/Nudelsieb.Persistence.csproj", "Nudelsieb.Persistence/"]
+COPY ["Nudelsieb.Domain/Nudelsieb.Domain.csproj", "Nudelsieb.Domain/"]
+COPY ["Nudelsieb.Persistence.Relational/Nudelsieb.Persistence.Relational.csproj", "Nudelsieb.Persistence.Relational/"]
 RUN dotnet restore "Nudelsieb.WebApi/Nudelsieb.WebApi.csproj"
 COPY . .
 WORKDIR "/src/Nudelsieb.WebApi"
