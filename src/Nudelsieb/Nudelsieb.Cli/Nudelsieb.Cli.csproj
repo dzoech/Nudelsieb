@@ -7,6 +7,9 @@
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <Version>0.1.0</Version>
     <UserSecretsId>Nudelsieb.Cli-bfb854f1-47ab-48b9-aabf-8b91e62d8dbd</UserSecretsId>
+    <NoWin32Manifest>true</NoWin32Manifest>
+    <AssemblyName>nudelsieb</AssemblyName>
+    <RootNamespace>Nudelsieb.Cli</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.0.0" />
@@ -29,4 +32,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(OutDir)nudelsieb.exe&quot; &quot;$(OutDir)nds.exe&quot; /y" />
+  </Target>
 </Project>
