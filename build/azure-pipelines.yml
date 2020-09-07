@@ -37,3 +37,12 @@ stages:
         Dockerfile: '$(Build.SourcesDirectory)/src/Nudelsieb/Nudelsieb.WebApi/Dockerfile'
         buildContext: '$(Build.SourcesDirectory)/src/Nudelsieb'
         tags: '$(tag)'
+- stage: Publish
+  jobs:
+  - job: Publish
+    steps:
+    - task: AzureWebAppContainer@1
+      inputs:
+        azureSubscription: 'Visual Studio Enterprise – MPN(c82af33e-d706-46fc-af9d-96e2d14d5c74)'
+        appName: 'nudelsieb'
+        containers: '$(containerRegistry)/$(imageRepository):$(tag)'
