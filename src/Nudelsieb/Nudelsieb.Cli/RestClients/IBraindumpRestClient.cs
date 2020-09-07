@@ -7,15 +7,13 @@ using Refit;
 
 namespace Nudelsieb.Cli.RestClients
 {
-    [Headers("User-Agent: Nudelsieb.Cli")]
+    [Headers("User-Agent: Nudelsieb.Cli", "Authorization: Bearer")]
     interface IBraindumpRestClient
     {
         [Get("/Neuron/{id}")]
         Task<List<Neuron>> GetNeuronAsync(Guid id);
 
         [Get("/Neuron")]
-        [Headers("Authorization: Bearer")]
-
         Task<List<Neuron>> GetAllNeuronsAsync();
 
         [Post("/Neuron")]
