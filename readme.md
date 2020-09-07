@@ -15,3 +15,4 @@ Install [Azure Cosmos Emulator](https://aka.ms/cosmosdb-emulator) (currently, no
 - [ ] Setup deployment pipeline for WebApi service
 - [ ] Allow to switch between different endpoints (cloud, localhost) in the CLI
 - [ ] Implement registration process from the CLI against Azure AD
+- [ ] Cli: implement command to get upcoming reminders
