@@ -13,7 +13,7 @@ Param(
 Write-Host "Building version $Version"
 
 rmdir ./chocolatey/tools/win-x64/* | Out-Null
-dotnet publish --configuration Release --runtime win-x64 --output ./chocolatey/tools/win-x64 --self-contained true -p:PublishReadyToRun=true -p:PublishTrimmed=true -p:DebugType=None --verbosity minimal ./../../src/Nudelsieb/Nudelsieb.Cli/Nudelsieb.Cli.csproj
+dotnet publish --configuration Release --runtime win-x64 --output ./chocolatey/tools/win-x64 --self-contained true -p:AssemblyVersion=$Version -p:PublishReadyToRun=true -p:PublishTrimmed=true -p:DebugType=None --verbosity minimal ./../../src/Nudelsieb/Nudelsieb.Cli/Nudelsieb.Cli.csproj
 
 choco pack --version $Version --outputdirectory $OutputPath ./chocolatey/nudelsieb-cli.nuspec
 
