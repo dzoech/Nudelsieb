@@ -1,32 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Nullable>enable</Nullable>
-    <WarningsAsErrors>nullable</WarningsAsErrors>
-    <Version>0.1.0</Version>
-    <UserSecretsId>Nudelsieb.Cli-bfb854f1-47ab-48b9-aabf-8b91e62d8dbd</UserSecretsId>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.0.0" />
-    <PackageReference Include="McMaster.Extensions.Hosting.CommandLine" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.16.1" />
-    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.12.0" />
-    <PackageReference Include="refit" Version="5.1.67" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="hostsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Nullable>enable</Nullable>
+        <WarningsAsErrors>nullable</WarningsAsErrors>
+        <Version>0.1.0</Version>
+        <UserSecretsId>Nudelsieb.Cli-bfb854f1-47ab-48b9-aabf-8b91e62d8dbd</UserSecretsId>
+        <NoWin32Manifest>true</NoWin32Manifest>
+        <AssemblyName>nudelsieb</AssemblyName>
+        <RootNamespace>Nudelsieb.Cli</RootNamespace>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.0.0" />
+        <PackageReference Include="McMaster.Extensions.Hosting.CommandLine" Version="3.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.6" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.6" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.6" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.6" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.6" />
+        <PackageReference Include="Microsoft.Identity.Client" Version="4.16.1" />
+        <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.12.0" />
+        <PackageReference Include="refit" Version="5.1.67" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="hostsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <Target Name="DuplicateExeBuild" AfterTargets="PostBuildEvent">
+        <Copy SourceFiles="$(TargetDir)nudelsieb.exe" DestinationFiles="$(TargetDir)nds.exe" />
+    </Target>
+    
+    <!--
+        Target called by 'dotnet publish' is 'Publish'
+        https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-publish#msbuild
+    -->
+    <Target Name="DuplicateExePublish" AfterTargets="Publish">
+        <Copy SourceFiles="$(PublishDir)nudelsieb.exe" DestinationFiles="$(PublishDir)nds.exe" />
+    </Target>
 </Project>
