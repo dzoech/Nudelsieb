@@ -78,13 +78,21 @@ namespace Nudelsieb.WebApi
                 });
             });
 
-            services.AddDbContext<BraindumpDbContext>(options => 
-                options.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Braindump;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
+            services.AddDbContext<BraindumpDbContext>(options =>
+            {
+                var connStr = Configuration
+                    .GetSection("Persistence")
+                    .GetSection("Relational")
+                    .GetSection("SqlConnectionString")
+                    .Value;
+
+                options.UseSqlServer(connStr);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(
-            IApplicationBuilder app, 
+            IApplicationBuilder app,
             IWebHostEnvironment env,
             BraindumpDbContext braindumpContext)
         {
