@@ -7,6 +7,8 @@
 The following architecture sketch illustrates the big picture:
 ![Architecture sketch from first brainstorming session](misc/brainstorming/brainstormin-v1.jpeg "Architecture sketch")
 
+See the Swagger specification of our REST API at https://nudelsieb.zoechbauer.dev/swagger.
+
 # Setup instructions for local development
 Install [Azure Cosmos Emulator](https://aka.ms/cosmosdb-emulator) (currently, no Docker image for Linux is available). Per default the emulator is listening on localhost:8081.
 
