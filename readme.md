@@ -1,6 +1,4 @@
-[![Build Status](https://zoechbauer.visualstudio.com/Nudelsieb/_apis/build/status/dzoech.Nudelsieb?branchName=master)](https://zoechbauer.visualstudio.com/Nudelsieb/_build/latest?definitionId=2&branchName=master)
-
-https://zoechbauer.visualstudio.com/Nudelsieb/_apis/build/status/dzoech.Nudelsieb?branchName=master
+[![Build Status](https://dev.azure.com/zoechbauer/Nudelsieb/_apis/build/status/dzoech.Nudelsieb?branchName=master)](https://dev.azure.com/zoechbauer.com/Nudelsieb/_build/latest?definitionId=2&branchName=master)
 
 *Nudelsieb* is a service that enables one to quickly write down thoughts and ideas before having forgotten them already.
 
