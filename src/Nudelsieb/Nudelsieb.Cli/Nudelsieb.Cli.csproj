@@ -5,11 +5,16 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <Nullable>enable</Nullable>
         <WarningsAsErrors>nullable</WarningsAsErrors>
-        <Version>0.1.0</Version>
+        <Version>0.0.1</Version>
         <UserSecretsId>Nudelsieb.Cli-bfb854f1-47ab-48b9-aabf-8b91e62d8dbd</UserSecretsId>
         <NoWin32Manifest>true</NoWin32Manifest>
         <AssemblyName>nudelsieb</AssemblyName>
         <RootNamespace>Nudelsieb.Cli</RootNamespace>
+        <Authors>Dominik Zöchbauer</Authors>
+        <PackageLicenseExpression></PackageLicenseExpression>
+        <Product>Nudelsieb</Product>
+        <PackageProjectUrl>https://nudelsieb.zoechbauer.dev</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/dzoech/Nudelsieb</RepositoryUrl>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.0.0" />
