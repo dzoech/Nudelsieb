@@ -9,6 +9,7 @@ using Microsoft.Identity.Client.Extensions.Msal;
 using Nudelsieb.Cli.Options;
 using Nudelsieb.Cli.RestClients;
 using Nudelsieb.Cli.Services;
+using Nudelsieb.Cli.UserSettings;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -99,7 +100,9 @@ namespace Nudelsieb.Cli
                         })
                         .AddSingleton<IBraindumpService, BraindumService>()
                         .AddSingleton<IAuthenticationService, AuthenticationService>()
-                        .AddRestClients(endpointsOptions);
+                        .AddRestClients(endpointsOptions)
+                        .AddSingleton<IUserSettingsService, LocalUserSettingsService>()
+                        ;
 
                 });
 
