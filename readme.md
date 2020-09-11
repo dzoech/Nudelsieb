@@ -22,3 +22,4 @@ Install [Azure Cosmos Emulator](https://aka.ms/cosmosdb-emulator) (currently, no
   - [ ] utilizing Azure AD
   - [ ] utilizing GitHub 
 - [ ] Cli: implement command to get upcoming reminders
+- [ ] Cli: implement config resolver service that gets required values on demand (instead of loading them all on application start)
