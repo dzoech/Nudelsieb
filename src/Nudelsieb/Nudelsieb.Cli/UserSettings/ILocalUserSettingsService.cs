@@ -2,9 +2,10 @@
 
 namespace Nudelsieb.Cli.UserSettings
 {
-    public interface IUserSettingsService
+    public interface ILocalUserSettingsService
     {
-        public string Location { get; }
+        string AbsoluteLocation { get; }
+
         Task<UserSettingsModel> Read();
         Task Write(UserSettingsModel settings);
     }

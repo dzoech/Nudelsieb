@@ -13,15 +13,18 @@ namespace Nudelsieb.Cli.UserSettings
     {
         private readonly ILogger _logger;
         private static string RelativeLocation => Path.Combine("nudelsieb", "settings.json");
-        private readonly string _absoluteLocation;
+        /// <summary>
+        /// Returns the absolute path of the user settings file.
+        /// </summary>
+        public string Location { get; }
 
-        public LocalUserSettingsService(
+        public LocalUserSettingsService(    
             ILogger<LocalUserSettingsService> logger,
             Environment.SpecialFolder baseLocation)
         {
             _logger = logger;
-            _absoluteLocation = Path.Combine(Environment.GetFolderPath(baseLocation), RelativeLocation);
-            Directory.CreateDirectory(Path.GetDirectoryName(_absoluteLocation));
+            Location = Path.Combine(Environment.GetFolderPath(baseLocation), RelativeLocation);
+            Directory.CreateDirectory(Path.GetDirectoryName(Location));
         }
 
         /// <summary>
@@ -29,12 +32,12 @@ namespace Nudelsieb.Cli.UserSettings
         /// </summary>
         public async Task<UserSettingsModel> Read()
         {
-            if (!File.Exists(_absoluteLocation))
+            if (!File.Exists(Location))
             {
-                await InitializeFile(_absoluteLocation);
+                await InitializeFile(Location);
             }
 
-            using (var file = File.OpenRead(_absoluteLocation))
+            using (var file = File.OpenRead(Location))
             {
                 return await JsonSerializer.DeserializeAsync<UserSettingsModel>(file);
             }
@@ -52,14 +55,14 @@ namespace Nudelsieb.Cli.UserSettings
 
         public async Task Write(UserSettingsModel settings)
         {
-            using (var file = File.OpenWrite(_absoluteLocation))
+            using (var file = File.OpenWrite(Location))
             {
                 await JsonSerializer.SerializeAsync(file, settings, new JsonSerializerOptions
                 {
                     WriteIndented = true
                 });
 
-                _logger.LogDebug($"Initializing file for {nameof(UserSettingsModel)} at {_absoluteLocation}");
+                _logger.LogDebug($"Initializing file for {nameof(UserSettingsModel)} at {Location}");
             }
         }
     }
