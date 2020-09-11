@@ -36,7 +36,8 @@ namespace Nudelsieb.Cli
     [Subcommand(
         typeof(GetCommand),
         typeof(AddCommand),
-        typeof(LoginCommand))]
+        typeof(LoginCommand),
+        typeof(ConfigCommand))]
     class Program : CommandBase
     {
         public static async Task<int> Main(string[] args)

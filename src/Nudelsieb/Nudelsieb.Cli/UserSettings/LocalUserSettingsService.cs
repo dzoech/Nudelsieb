@@ -20,9 +20,8 @@ namespace Nudelsieb.Cli.UserSettings
             Environment.SpecialFolder baseLocation = Environment.SpecialFolder.ApplicationData)
         {
             _logger = logger;
-
             _absoluteLocation = Path.Combine(Environment.GetFolderPath(baseLocation), RelativeLocation);
-            Directory.CreateDirectory(_absoluteLocation);
+            Directory.CreateDirectory(Path.GetDirectoryName(_absoluteLocation));
         }
 
         /// <summary>
@@ -37,10 +36,7 @@ namespace Nudelsieb.Cli.UserSettings
 
             using (var file = File.OpenRead(_absoluteLocation))
             {
-                return await JsonSerializer.DeserializeAsync<UserSettingsModel>(file, new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                });
+                return await JsonSerializer.DeserializeAsync<UserSettingsModel>(file);
             }
         }
 
@@ -58,7 +54,11 @@ namespace Nudelsieb.Cli.UserSettings
         {
             using (var file = File.OpenWrite(_absoluteLocation))
             {
-                await JsonSerializer.SerializeAsync(file, settings);
+                await JsonSerializer.SerializeAsync(file, settings, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                });
+
                 _logger.LogDebug($"Initializing file for {nameof(UserSettingsModel)} at {_absoluteLocation}");
             }
         }
