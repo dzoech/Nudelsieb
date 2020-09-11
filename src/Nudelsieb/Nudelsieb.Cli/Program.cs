@@ -40,6 +40,8 @@ namespace Nudelsieb.Cli
         typeof(ConfigCommand))]
     class Program : CommandBase
     {
+        private const Environment.SpecialFolder UserSettingsLocation = Environment.SpecialFolder.ApplicationData;
+
         public static async Task<int> Main(string[] args)
         {
             var hostBuilder = Host.CreateDefaultBuilder()
@@ -55,6 +57,11 @@ namespace Nudelsieb.Cli
 
                     configBuilder.SetBasePath(Path.GetDirectoryName(executingAssembly));
                     configBuilder.AddJsonFile("appsettings.json");
+
+                    var location = Environment.GetFolderPath(UserSettingsLocation);
+                    // TODO sub dir and file name are defined here and in LocalUserSettingsService
+                    var settingsFile = Path.Combine(location, "nudelsieb", "settings.json");
+                    configBuilder.AddJsonFile(settingsFile, optional: true);
 
                     if (context.HostingEnvironment.IsDevelopment())
                     {
@@ -102,7 +109,11 @@ namespace Nudelsieb.Cli
                         .AddSingleton<IBraindumpService, BraindumService>()
                         .AddSingleton<IAuthenticationService, AuthenticationService>()
                         .AddRestClients(endpointsOptions)
-                        .AddSingleton<IUserSettingsService, LocalUserSettingsService>()
+                        .AddSingleton<IUserSettingsService, LocalUserSettingsService>(sp =>
+                        {
+                            var logger = sp.GetRequiredService<ILogger<LocalUserSettingsService>>();
+                            return new LocalUserSettingsService(logger, Environment.SpecialFolder.ApplicationData);
+                        })
                         ;
 
                 });

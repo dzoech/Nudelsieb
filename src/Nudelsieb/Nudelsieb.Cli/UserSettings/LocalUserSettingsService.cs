@@ -12,12 +12,12 @@ namespace Nudelsieb.Cli.UserSettings
     public class LocalUserSettingsService : IUserSettingsService
     {
         private readonly ILogger _logger;
-        private static string RelativeLocation => Path.Combine("nudelsieb", "user.settings");
+        private static string RelativeLocation => Path.Combine("nudelsieb", "settings.json");
         private readonly string _absoluteLocation;
 
         public LocalUserSettingsService(
             ILogger<LocalUserSettingsService> logger,
-            Environment.SpecialFolder baseLocation = Environment.SpecialFolder.ApplicationData)
+            Environment.SpecialFolder baseLocation)
         {
             _logger = logger;
             _absoluteLocation = Path.Combine(Environment.GetFolderPath(baseLocation), RelativeLocation);

@@ -22,7 +22,7 @@ namespace Nudelsieb.Cli.UserSettings
             var settings = await this.userSettingsService.Read();
 
             // Just printing the settings in a quick and dirty way
-            console.WriteLine($"{nameof(settings.BraindumpEndpoint)}: {settings.BraindumpEndpoint}");
+            console.WriteLine($"{nameof(settings.Endpoints.Braindump)}: {settings.Endpoints.Braindump}");
             console.WriteLine($"{nameof(settings.ConvertHashtagToGroup)}: {settings.ConvertHashtagToGroup}");
 
             return await base.OnExecuteAsync(app);
