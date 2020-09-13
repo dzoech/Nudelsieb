@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 using Nudelsieb.Cli.Services;
 
@@ -9,6 +10,8 @@ namespace Nudelsieb.Cli
     {
         private readonly IConsole console;
         private readonly IBraindumpService braindumpService;
+
+        // TODO bug: 'get all' requires --group because it inherits it from 'get'
 
         public GetAllCommand(IBraindumpService braindumpService, IConsole console)
         {
