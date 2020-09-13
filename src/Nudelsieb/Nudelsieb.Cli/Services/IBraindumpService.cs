@@ -9,7 +9,7 @@ namespace Nudelsieb.Cli.Services
     interface IBraindumpService
     {
         Task AddNeuron(string information, List<string> groups);
-
         Task<List<Neuron>> GetAll();
+        Task<List<Neuron>> GetNeuronsByGroup(string group);
     }
 }

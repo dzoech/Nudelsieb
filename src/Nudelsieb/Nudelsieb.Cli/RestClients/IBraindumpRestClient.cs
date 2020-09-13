@@ -16,6 +16,9 @@ namespace Nudelsieb.Cli.RestClients
         [Get("/Neuron")]
         Task<List<Neuron>> GetAllNeuronsAsync();
 
+        [Get("/Group/{groupName}/neuron")]
+        Task<List<Neuron>> GetNeuronsByGroupAsync(string groupName);
+
         [Post("/Neuron")]
         Task AddNeuron(Neuron neuron);
     }
