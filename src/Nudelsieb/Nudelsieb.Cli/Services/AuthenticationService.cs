@@ -118,7 +118,9 @@ namespace Nudelsieb.Cli.Services
                 string userIdentifier = account.HomeAccountId.ObjectId.Split('.')[0];
 
                 if (userIdentifier.EndsWith(policy.ToLower()))
+                {
                     return account;
+                }
             }
             return null!; // todo non null
         }

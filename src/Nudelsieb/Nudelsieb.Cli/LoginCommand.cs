@@ -14,12 +14,6 @@ namespace Nudelsieb.Cli
 {
     class LoginCommand : CommandBase
     {
-        [Argument(0)]
-        public string? Message { get; set; }
-
-        [Option]
-        public string[]? Groups { get; set; }
-
         private readonly ILogger<LoginCommand> logger;
         private readonly IConsole console;
         private readonly IAuthenticationService authService;
