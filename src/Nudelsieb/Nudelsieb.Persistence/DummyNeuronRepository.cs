@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Nudelsieb.Domain;
@@ -38,6 +39,15 @@ namespace Nudelsieb.Persistence
         public Task<List<Neuron>> GetAllAsync()
         {
             return Task.FromResult(this.neuronInMemoryStore);
+        }
+
+        public Task<List<Neuron>> GetByGroupAsync(string group)
+        {
+            return Task.FromResult(
+                neuronInMemoryStore
+                    .Where(n => n.Groups
+                    .Contains(group))
+                    .ToList());
         }
     }
 }
