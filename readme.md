@@ -18,7 +18,12 @@ Install [Azure Cosmos Emulator](https://aka.ms/cosmosdb-emulator) (currently, no
 
 # Todos
 - [X] Setup deployment pipeline for WebApi service
+  - [ ] Separate build and deployment/release into separate pipelines
+  - [ ] Automate releasing chocolatey package
 - [ ] Allow to switch between different endpoints (cloud, localhost) in the CLI (`nudelsieb config endpoints switch`)
+- [ ] Compare cli version with REST API version
+  - [ ] Set assembly and package version in build pipeline
+  - [ ] Warn when mismatching
 - [ ] Query neurons by group name
 - [ ] Cli: Support #myGroup in message text to be converted into groups without using --group 
 - [ ] Create some seed demo data

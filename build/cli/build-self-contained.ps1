@@ -7,7 +7,10 @@ Param(
     $OutputPath="./publish",
     [Parameter()]
     [Bool]
-    $Publish=$false
+    $Publish=$false,
+    [Parameter()]
+    [Bool]
+    $Verbose=$false
 )
 
 Write-Host "Building version $Version"
@@ -18,7 +21,13 @@ dotnet publish --configuration Release --runtime win-x64 --output ./chocolatey/t
 choco pack --version $Version --outputdirectory $OutputPath ./chocolatey/nudelsieb-cli.nuspec
 
 choco uninstall nudelsieb-cli | Out-Null
-choco install -s $OutputPath nudelsieb-cli # use -dv for debug and verbose output
+
+if ($Verbose) {
+    # using -dv for debug and verbose output
+    choco install -s -dv $OutputPath nudelsieb-cli 
+} else {
+    choco install -s $OutputPath nudelsieb-cli
+}
 
 if ($Publish) {
     mkdir -f $OutputPath # -f to suppress error when already existing
