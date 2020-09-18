@@ -51,21 +51,12 @@ namespace Nudelsieb.Persistence.Relational
 
         public async Task<List<Domain.Neuron>> GetByGroupAsync(string groupName)
         {
-            var myneurons = await context.Groups.Where(g => g.Name == groupName)
+            var neurons = await context.Groups
+                .Where(g => g.Name == groupName)
                 .Select(group => new Domain.Neuron(group.Neuron.Information)
                 {
                     Id = group.Neuron.Id,
                     Groups = group.Neuron.Groups.Select(g => g.Name).ToList()
-                })
-                .ToSql(logger)
-                .ToListAsync();
-
-            var neurons = await context.Neurons
-                .Where(n => n.Groups.Any(g => g.Name == groupName))
-                .Select(n => new Domain.Neuron(n.Information)
-                {
-                    Id = n.Id,
-                    Groups = n.Groups.Select(g => g.Name).ToList()
                 })
                 .ToSql(logger)
                 .ToListAsync();

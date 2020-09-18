@@ -12,7 +12,7 @@ namespace Nudelsieb.WebApi.Braindump
 {
     [Area("braindump")]
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("[area]/[controller]")]
     [ApiController]
     public class GroupController : ControllerBase
     {
