@@ -15,8 +15,8 @@ namespace Nudelsieb.Cli
         private readonly IBraindumpService braindumpService;
         private readonly IConsole console;
 
-        [Option]
-        [RegularExpression(AlphanumericDashUnderscoreDigitRegex)]
+        [Option(Description = "The name of the group for which all neurons are listed.")]
+        [RegularExpression(AlphanumericDashUnderscoreDigitRegex, ErrorMessage = "Group name must only consist of alphanumeric characters, digits, and dashes (-).")]
         public string Group { get; set; } = string.Empty;
 
         public GetCommand(IBraindumpService braindumpService, IConsole console)

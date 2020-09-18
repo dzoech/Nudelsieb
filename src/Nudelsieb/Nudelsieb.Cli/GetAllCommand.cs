@@ -11,8 +11,6 @@ namespace Nudelsieb.Cli
         private readonly IConsole console;
         private readonly IBraindumpService braindumpService;
 
-        // TODO bug: 'get all' requires --group because it inherits it from 'get'
-
         public GetAllCommand(IBraindumpService braindumpService, IConsole console)
         {
             this.console = console;
