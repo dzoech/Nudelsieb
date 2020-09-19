@@ -15,6 +15,7 @@ variables:
   containerRegistry: 'nudelsiebacr.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/src/Nudelsieb/Nudelsieb.WebApi/Dockerfile'
   version: '0.0.2.$(Build.BuildId)'
+  chocolateyArtifactName: 'choco-nupkg-drop'
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -62,20 +63,23 @@ stages:
     - task: PowerShell@2
       name: BuildChocoPackage
       inputs:
-        filePath: '$(System.DefaultWorkingDirectory)\build\cli\build-self-contained.ps1'
+        filePath: '$(System.DefaultWorkingDirectory)/build/cli/build-self-contained.ps1'
         arguments: '-Version $(version) -OutputPath $(Build.ArtifactStagingDirectory)'
     - task: PublishBuildArtifacts@1
       inputs:
-        ArtifactName: choco-drop
+        ArtifactName: $(chocolateyArtifactName)
         PathtoPublish: $(Build.ArtifactStagingDirectory)
   - deployment: PublishCli
     environment: Production
     dependsOn: InstallPrerequisits
     strategy:
-     runOnce:
-       deploy:
-         steps:
-           - task: PowerShell@2
-             inputs:
-               targetType: inline
-               script: 'choco push "./nudelsieb-cli.$(version).nupkg" --source https://push.chocolatey.org --apikey  $(ChocolateyApiKey)'
+      runOnce:
+        deploy:
+          steps:
+            - task: PowerShell@2
+              inputs:
+                targetType: inline
+                script: >-
+                  choco push "$(Pipeline.Workspace)/$(chocolateyArtifactName)/nudelsieb-cli.$(version).nupkg"
+                  --source https://push.chocolatey.org 
+                  --apikey  $(ChocolateyApiKey)
