@@ -22,16 +22,16 @@ variables:
   windowsVmImageName: 'windows-latest'
 
 stages:
-- stage: BuildWebApi
-  displayName: Build and push stage
+- stage: BuildAndPushWebApiContainer
+  displayName: 'Web API: Build and push Docker image'
   jobs:  
   - job: Build
-    displayName: Build
+    displayName: Build and push Docker image
     pool:
       vmImage: $(vmImageName)
     steps:
     - task: Docker@2
-      displayName: Build and push an image to container registry
+      displayName: Build and push an image to the container registry
       inputs:
         containerRegistry: '$(dockerRegistryServiceConnection)'
         repository: '$(imageRepository)'
@@ -40,7 +40,8 @@ stages:
         buildContext: '$(Build.SourcesDirectory)/src/Nudelsieb'
         tags: '$(version)'
 - stage: PublishWebApi
-  dependsOn: BuildWebApi
+  displayName: Update Docker image in Azure App Service
+  dependsOn: BuildAndPushWebApiContainer
   jobs:
   - job: Publish
     steps:
@@ -49,19 +50,20 @@ stages:
         azureSubscription: 'nudelsieb-service-connection'
         appName: 'nudelsieb'
         containers: '$(containerRegistry)/$(imageRepository):$(version)'
-- stage: BuildCli
+- stage: ReleaseCliToChocolatey
+  displayName: 'CLI: Release to Chocolatey'
   pool:
     vmImage: $(windowsVmImageName)
   jobs:
-  - job: InstallPrerequisits
-    steps:
+  - job: CreatePackage
+    steps: 
     - task: ChocolateyToolInstaller@0
     - task: UseDotNet@2
       inputs:
         packageType: 'sdk'
         version: '3.1.x'
     - task: PowerShell@2
-      name: BuildChocoPackage
+      name: BuildAndPackageBinaries
       inputs:
         filePath: '$(System.DefaultWorkingDirectory)/build/cli/build-self-contained.ps1'
         arguments: '-Version $(version) -OutputPath $(Build.ArtifactStagingDirectory)'
@@ -69,9 +71,9 @@ stages:
       inputs:
         ArtifactName: $(chocolateyArtifactName)
         PathtoPublish: $(Build.ArtifactStagingDirectory)
-  - deployment: PublishCli
+  - deployment: PushCliPackageToChocolatey
     environment: Production
-    dependsOn: InstallPrerequisits
+    dependsOn: CreatePackage
     strategy:
       runOnce:
         deploy:
