@@ -28,8 +28,6 @@ if ($Verbose) {
     choco install -s $OutputPath nudelsieb-cli
 }
 
-nudelsieb --version
-
 if ($Publish) {
     # only for publishing from local dev environment
     choco push "$OutputPath/nudelsieb-cli.$($Version).nupkg" --source https://push.chocolatey.org
