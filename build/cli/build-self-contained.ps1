@@ -7,10 +7,7 @@ Param(
     $OutputPath="./publish",
     [Parameter()]
     [Bool]
-    $Publish=$false,
-    [Parameter()]
-    [Bool]
-    $Verbose=$false
+    $Publish=$false
 )
 
 Write-Host "Building version $Version"
@@ -22,6 +19,8 @@ choco pack --version $Version --outputdirectory $OutputPath ./chocolatey/nudelsi
 
 choco uninstall nudelsieb-cli | Out-Null
 
+mkdir -f $OutputPath # -f to suppress error when already existing
+
 if ($Verbose) {
     # using -dv for debug and verbose output
     choco install -s -dv $OutputPath nudelsieb-cli 
@@ -29,7 +28,9 @@ if ($Verbose) {
     choco install -s $OutputPath nudelsieb-cli
 }
 
+nudelsieb --version
+
 if ($Publish) {
-    mkdir -f $OutputPath # -f to suppress error when already existing
+    # only for publishing from local dev environment
     choco push "./$OutputPath/nudelsieb-cli.$($Version).nupkg" --source https://push.chocolatey.org
 }
