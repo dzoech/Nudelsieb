@@ -43,5 +43,10 @@ namespace Nudelsieb.Cli.Services
         {
             return await restClient.GetAllNeuronsAsync();
         }
+
+        public async Task<List<Neuron>> GetNeuronsByGroup(string group)
+        {
+            return await restClient.GetNeuronsByGroupAsync(group);
+        }
     }
 }

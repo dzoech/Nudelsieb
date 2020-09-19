@@ -25,5 +25,10 @@ namespace Nudelsieb.Persistence
         {
             throw new NotImplementedException();
         }
+
+        public Task<List<Neuron>> GetByGroupAsync(string group)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

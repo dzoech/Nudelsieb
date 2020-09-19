@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 using Nudelsieb.Cli.Services;
 
@@ -18,7 +19,6 @@ namespace Nudelsieb.Cli
 
         protected override async Task<int> OnExecuteAsync(CommandLineApplication app)
         {
-            // Message is not null because it is [Required]
             var neurons = await this.braindumpService.GetAll();
 
             foreach (var n in neurons)

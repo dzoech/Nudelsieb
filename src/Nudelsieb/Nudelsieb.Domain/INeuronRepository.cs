@@ -9,6 +9,8 @@ namespace Nudelsieb.Domain
     {
         Task<List<Neuron>> GetAllAsync();
 
+        Task<List<Neuron>> GetByGroupAsync(string group);
+
         Task AddAsync(Neuron neuron);
     }
 }
