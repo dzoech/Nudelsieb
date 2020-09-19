@@ -12,12 +12,12 @@ Param(
 
 Write-Host "Building version $Version"
 
-rmdir ./chocolatey/tools/win-x64/* | Out-Null
+rmdir ./chocolatey/tools/win-x64/* -Force -Recurse -ErrorAction SilentlyContinue
 dotnet publish --configuration Release --runtime win-x64 --output ./chocolatey/tools/win-x64 --self-contained true -p:AssemblyVersion=$Version -p:PublishReadyToRun=true -p:PublishTrimmed=true -p:DebugType=None --verbosity minimal ./../../src/Nudelsieb/Nudelsieb.Cli/Nudelsieb.Cli.csproj
 
 choco pack --version $Version --outputdirectory $OutputPath ./chocolatey/nudelsieb-cli.nuspec
 
-choco uninstall nudelsieb-cli | Out-Null
+choco uninstall nudelsieb-cli -ErrorAction SilentlyContinue
 
 mkdir -f $OutputPath # -f to suppress error when already existing
 
