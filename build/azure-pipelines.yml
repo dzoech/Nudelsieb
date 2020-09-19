@@ -14,13 +14,14 @@ variables:
   imageRepository: 'nudelsieb-webapi'
   containerRegistry: 'nudelsiebacr.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/src/Nudelsieb/Nudelsieb.WebApi/Dockerfile'
-  tag: '$(Build.BuildId)'
+  version: '0.0.2.$(Build.BuildId)'
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
+  windowsVmImageName: 'windows-latest'
 
 stages:
-- stage: Build
+- stage: BuildWebApi
   displayName: Build and push stage
   jobs:  
   - job: Build
@@ -36,8 +37,9 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '$(Build.SourcesDirectory)/src/Nudelsieb/Nudelsieb.WebApi/Dockerfile'
         buildContext: '$(Build.SourcesDirectory)/src/Nudelsieb'
-        tags: '$(tag)'
+        tags: '$(version)'
 - stage: Publish
+  dependsOn: BuildWebApi
   jobs:
   - job: Publish
     steps:
@@ -45,4 +47,24 @@ stages:
       inputs:
         azureSubscription: 'Visual Studio Enterprise – MPN(c82af33e-d706-46fc-af9d-96e2d14d5c74)'
         appName: 'nudelsieb'
-        containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+        containers: '$(containerRegistry)/$(imageRepository):$(version)'
+- stage: BuildCli
+  pool: $(windowsVmImageName)
+  jobs:
+  - job: InstallPrerequisits
+    steps:
+    - task: ChocolateyToolInstaller@0
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '3.1.x'
+  - deployment: PublishCli
+    strategy:
+     runOnce:
+       deploy:
+         steps:
+           - task: PowerShell@2
+             inputs:
+               filePath: './build/cli/build-self-contained.ps1'
+               arguments: '-Version $(version) -Publish=$true'
+               workingDirectory: './build/cli/'
