@@ -27,7 +27,9 @@ namespace Nudelsieb.Cli.UserSettings
             await this.userSettingsService.Write(settings);
 
             // Just printing the settings in a quick and dirty way
-            console.WriteLine($"Changed {nameof(settings.Endpoints.Braindump)} endpoint to {settings.Endpoints.Braindump.Value}");
+            console.WriteLine(
+                $"Changed {nameof(settings.Endpoints.Braindump)} endpoint from " +
+                $"{settings.Endpoints.Braindump.Previous} to {settings.Endpoints.Braindump.Value}");
 
             return await base.OnExecuteAsync(app);
         }
