@@ -1,20 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 
 namespace Nudelsieb.Cli.UserSettings
 {
+
     [Command(
-        Name = "switch", 
-        Description = "Switches the braindum endpoint back to its previous value.")]
-    class ConfigEndpointsSwitchCommand : CommandBase
+        Name = "set", 
+        Description = "Sets the braindum endpoint to a new URL.")]
+    class ConfigEndpointsSetCommand : CommandBase
     {
         private readonly IConsole console;
         private readonly IUserSettingsService userSettingsService;
 
-        public ConfigEndpointsSwitchCommand(IConsole console, IUserSettingsService userSettingsService)
+        [Required]
+        [Argument(0)]
+        [Url]
+        public string? EndpointUrl { get; set; }
+
+        public ConfigEndpointsSetCommand(IConsole console, IUserSettingsService userSettingsService)
         {
             this.console = console;
             this.userSettingsService = userSettingsService;
@@ -23,7 +30,7 @@ namespace Nudelsieb.Cli.UserSettings
         protected override async Task<int> OnExecuteAsync(CommandLineApplication app)
         {
             var settings = await this.userSettingsService.ReadAsync();
-            this.userSettingsService.SwitchEndpoint(settings.Endpoints.Braindump);
+            this.userSettingsService.SetEndpoint(settings.Endpoints.Braindump, EndpointUrl!);
             await this.userSettingsService.Write(settings);
 
             // Just printing the settings in a quick and dirty way
