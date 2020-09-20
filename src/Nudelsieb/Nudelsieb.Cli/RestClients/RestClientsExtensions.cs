@@ -14,7 +14,7 @@ namespace Nudelsieb.Cli.RestClients
         {
             services.AddTransient<IBraindumpRestClient>(sp =>
                 RestService.For<IBraindumpRestClient>(
-                    endpointsOptions.Braindump ?? throw new ArgumentNullException(),
+                    endpointsOptions.Braindump?.Value ?? throw new ArgumentNullException(),
                     new RefitSettings
                     {
                         AuthorizationHeaderValueGetter = async () =>
