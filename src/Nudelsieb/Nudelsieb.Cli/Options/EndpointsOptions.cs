@@ -4,10 +4,14 @@ using System.Text;
 
 namespace Nudelsieb.Cli.Options
 {
-    class EndpointsOptions
+    public class EndpointsOptions
     {
         public const string SectionName = "Endpoints";
+        public EndpointValue? Braindump { get; set; }
 
-        public string? Braindump { get; set; }
+        public class EndpointValue
+        {
+            public string? Value { get; set; }
+        }
     }
 }

@@ -6,10 +6,17 @@ namespace Nudelsieb.Cli.UserSettings
 {
     public class UserSettingsModel
     {
+        private static readonly Uri BlankUri = new Uri("https://localhost");
 
         public class UserSettingsModelEndpoints
         {
-            public Uri Braindump { get; set; } = new Uri("https://nudelsieb.zoechbauer.dev");
+            public EndpointSetting Braindump { get; set; } = new EndpointSetting();
+        }
+
+        public class EndpointSetting
+        {
+            public Uri Value { get; set; } = BlankUri;
+            public Uri Previous { get; set; } = BlankUri;
         }
 
         public UserSettingsModelEndpoints Endpoints { get; set; } = new UserSettingsModelEndpoints();

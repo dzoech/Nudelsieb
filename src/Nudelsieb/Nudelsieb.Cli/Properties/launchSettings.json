@@ -2,7 +2,7 @@
   "profiles": {
     "Nudelsieb.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "get all",
+      "commandLineArgs": "config endpoints switch",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       }

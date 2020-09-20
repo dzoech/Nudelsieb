@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensions.Msal;
 using Nudelsieb.Cli.Options;
@@ -60,6 +61,7 @@ namespace Nudelsieb.Cli
 
                     var location = Environment.GetFolderPath(UserSettingsLocation);
                     // TODO sub dir and file name are defined here and in LocalUserSettingsService
+                    // inject sub dir and file name settings into LocalUserSettingsService 
                     var settingsFile = Path.Combine(location, "nudelsieb", "settings.json");
                     configBuilder.AddJsonFile(settingsFile, optional: true);
 
@@ -76,11 +78,14 @@ namespace Nudelsieb.Cli
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    // read configs
                     var authOptions = new AuthOptions();
                     context.Configuration.GetSection(AuthOptions.SectionName).Bind(authOptions);
-                    var endpointsOptions = new EndpointsOptions();
-                    context.Configuration.GetSection(EndpointsOptions.SectionName).Bind(endpointsOptions);
+
+                    services.Configure<AuthOptions>(o => o = authOptions);
+
+                    services.Configure<EndpointsOptions>(o =>
+                        context.Configuration.GetSection(
+                            EndpointsOptions.SectionName).Bind(o));
 
                     // using Microsoft.Identity.Client.Extensions.Msal as Cache
                     // https://github.com/AzureAD/microsoft-authentication-extensions-for-dotnet/tree/master/src/Microsoft.Identity.Client.Extensions.Msal
@@ -106,13 +111,17 @@ namespace Nudelsieb.Cli
 
                             return app;
                         })
-                        .AddSingleton<IBraindumpService, BraindumService>()
-                        .AddSingleton<IAuthenticationService, AuthenticationService>()
-                        .AddRestClients(endpointsOptions)
+                        .AddTransient<IBraindumpService, BraindumService>()
+                        .AddTransient<IAuthenticationService, AuthenticationService>()
+                        .AddRestClients()
                         .AddSingleton<IUserSettingsService, LocalUserSettingsService>(sp =>
                         {
                             var logger = sp.GetRequiredService<ILogger<LocalUserSettingsService>>();
-                            return new LocalUserSettingsService(logger, Environment.SpecialFolder.ApplicationData);
+                            var endpointOptions = sp.GetRequiredService<IOptions<EndpointsOptions>>();
+                            return new LocalUserSettingsService(
+                                logger, 
+                                endpointOptions, 
+                                Environment.SpecialFolder.ApplicationData);
                         })
                         ;
 

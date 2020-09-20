@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Nudelsieb.Cli.Options;
 using Nudelsieb.Cli.Services;
 using Refit;
@@ -10,11 +11,14 @@ namespace Nudelsieb.Cli.RestClients
 {
     static class RestClientsExtensions
     {
-        public static IServiceCollection AddRestClients(this IServiceCollection services, EndpointsOptions endpointsOptions)
+        public static IServiceCollection AddRestClients(this IServiceCollection services)
         {
             services.AddTransient<IBraindumpRestClient>(sp =>
-                RestService.For<IBraindumpRestClient>(
-                    endpointsOptions.Braindump ?? throw new ArgumentNullException(),
+            {
+                var endpointsOptions = sp.GetRequiredService<IOptions<EndpointsOptions>>();
+
+                return RestService.For<IBraindumpRestClient>(
+                    endpointsOptions.Value.Braindump?.Value ?? throw new ArgumentNullException(),
                     new RefitSettings
                     {
                         AuthorizationHeaderValueGetter = async () =>
@@ -29,7 +33,8 @@ namespace Nudelsieb.Cli.RestClients
 
                             return string.Empty;
                         }
-                    }));
+                    });
+            });
 
             return services;
         }

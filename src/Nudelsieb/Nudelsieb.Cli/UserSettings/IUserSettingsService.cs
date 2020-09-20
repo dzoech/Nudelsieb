@@ -5,7 +5,9 @@ namespace Nudelsieb.Cli.UserSettings
     public interface IUserSettingsService
     {
         public string Location { get; }
-        Task<UserSettingsModel> Read();
+        Task<UserSettingsModel> ReadAsync();
+        void SetEndpoint(UserSettingsModel.EndpointSetting endpoint, string value);
+        void SwitchEndpoint(UserSettingsModel.EndpointSetting endpoint);
         Task Write(UserSettingsModel settings);
     }
 }
