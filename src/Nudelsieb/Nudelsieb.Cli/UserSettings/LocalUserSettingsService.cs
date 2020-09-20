@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Nudelsieb.Cli.Options;
+using static Nudelsieb.Cli.UserSettings.UserSettingsModel;
 
 namespace Nudelsieb.Cli.UserSettings
 {
@@ -22,7 +23,7 @@ namespace Nudelsieb.Cli.UserSettings
         /// </summary>
         public string Location { get; }
 
-        public LocalUserSettingsService(    
+        public LocalUserSettingsService(
             ILogger<LocalUserSettingsService> logger,
             IOptions<EndpointsOptions> endpointOptions,
             Environment.SpecialFolder baseLocation)
@@ -36,7 +37,7 @@ namespace Nudelsieb.Cli.UserSettings
         /// <summary>
         /// Reads the local config file from disk into a <see cref="UserSettingsModel"/>.
         /// </summary>
-        public async Task<UserSettingsModel> Read()
+        public async Task<UserSettingsModel> ReadAsync()
         {
             if (!File.Exists(Location))
             {
@@ -49,6 +50,17 @@ namespace Nudelsieb.Cli.UserSettings
             }
         }
 
+        public void SwitchEndpoint(EndpointSetting endpoint)
+        {
+            (endpoint.Value, endpoint.Previous) = (endpoint.Previous, endpoint.Value);
+        }
+
+        public void SetEndpoint(EndpointSetting endpoint, string value)
+        {
+            endpoint.Previous = endpoint.Value;
+            endpoint.Value = new Uri(value);
+        }
+
         private async Task InitializeFile(string location)
         {
             if (File.Exists(location))
@@ -56,13 +68,12 @@ namespace Nudelsieb.Cli.UserSettings
                 throw new ArgumentException($"File {location} already exists.", nameof(location));
             }
 
-            // TODO user options
             var defaultUserSettings = new UserSettingsModel();
-            var appDefaultEndpoint = endpointOptions.Value.Braindump?.Value;
+            var applicationDefaultEndpoint = endpointOptions.Value.Braindump?.Value;
 
-            if (appDefaultEndpoint != null)
+            if (applicationDefaultEndpoint != null)
             {
-                defaultUserSettings.Endpoints.Braindump.Set(appDefaultEndpoint);
+                defaultUserSettings.Endpoints.Braindump.Value = new Uri(applicationDefaultEndpoint);
             }
 
             await Write(defaultUserSettings);

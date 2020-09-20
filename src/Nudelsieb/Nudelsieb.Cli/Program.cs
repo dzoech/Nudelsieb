@@ -111,8 +111,8 @@ namespace Nudelsieb.Cli
 
                             return app;
                         })
-                        .AddSingleton<IBraindumpService, BraindumService>()
-                        .AddSingleton<IAuthenticationService, AuthenticationService>()
+                        .AddTransient<IBraindumpService, BraindumService>()
+                        .AddTransient<IAuthenticationService, AuthenticationService>()
                         .AddRestClients()
                         .AddSingleton<IUserSettingsService, LocalUserSettingsService>(sp =>
                         {

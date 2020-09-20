@@ -27,8 +27,8 @@ namespace Nudelsieb.Cli.UserSettings
 
         protected override async Task<int> OnExecuteAsync(CommandLineApplication app)
         {
-            var settings = await this.userSettingsService.Read();
-            settings.Endpoints.Braindump.Switch();
+            var settings = await this.userSettingsService.ReadAsync();
+            this.userSettingsService.SwitchEndpoint(settings.Endpoints.Braindump);
             await this.userSettingsService.Write(settings);
 
             // Just printing the settings in a quick and dirty way

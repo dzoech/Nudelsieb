@@ -6,7 +6,7 @@ namespace Nudelsieb.Cli.UserSettings
 {
     public class UserSettingsModel
     {
-        private static readonly Uri BlankUri = new Uri("about:blank");
+        private static readonly Uri BlankUri = new Uri("https://localhost");
 
         public class UserSettingsModelEndpoints
         {
@@ -15,19 +15,8 @@ namespace Nudelsieb.Cli.UserSettings
 
         public class EndpointSetting
         {
-            public Uri Value { get; private set; } = BlankUri;
-            public Uri Previous { get; private set; } = BlankUri;
-
-            public void Switch()
-            {
-                (Value, Previous) = (Previous, Value);
-            }
-
-            public void Set(string endpoint)
-            {
-                Previous = Value;
-                Value = new Uri(endpoint);
-            }
+            public Uri Value { get; set; } = BlankUri;
+            public Uri Previous { get; set; } = BlankUri;
         }
 
         public UserSettingsModelEndpoints Endpoints { get; set; } = new UserSettingsModelEndpoints();
