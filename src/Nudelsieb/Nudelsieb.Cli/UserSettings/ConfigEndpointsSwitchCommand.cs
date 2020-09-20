@@ -7,15 +7,19 @@ using McMaster.Extensions.CommandLineUtils;
 namespace Nudelsieb.Cli.UserSettings
 {
 
-    [Subcommand(
-        typeof(ConfigLocationCommand),
-        typeof(ConfigEndpointsCommand))]
-    class ConfigCommand : CommandBase
+    [Command(Name = "endpoints")]
+    [Subcommand(typeof(ConfigEndpointsSwitchCommand))]
+    class ConfigEndpointsCommand : CommandBase
+    {
+    }
+
+    [Command(Name = "switch")]
+    class ConfigEndpointsSwitchCommand : CommandBase
     {
         private readonly IConsole console;
         private readonly IUserSettingsService userSettingsService;
 
-        public ConfigCommand(IConsole console, IUserSettingsService userSettingsService)
+        public ConfigEndpointsSwitchCommand(IConsole console, IUserSettingsService userSettingsService)
         {
             this.console = console;
             this.userSettingsService = userSettingsService;
@@ -24,10 +28,11 @@ namespace Nudelsieb.Cli.UserSettings
         protected override async Task<int> OnExecuteAsync(CommandLineApplication app)
         {
             var settings = await this.userSettingsService.Read();
+            settings.Endpoints.Braindump.Switch();
+            await this.userSettingsService.Write(settings);
 
             // Just printing the settings in a quick and dirty way
-            console.WriteLine($"{nameof(settings.Endpoints.Braindump)}: {settings.Endpoints.Braindump.Value}");
-            console.WriteLine($"{nameof(settings.ConvertHashtagToGroup)}: {settings.ConvertHashtagToGroup}");
+            console.WriteLine($"Changed {nameof(settings.Endpoints.Braindump)} endpoint to {settings.Endpoints.Braindump.Value}");
 
             return await base.OnExecuteAsync(app);
         }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Nudelsieb.Cli.Options
 {
-    class EndpointsOptions
+    public class EndpointsOptions
     {
         public const string SectionName = "Endpoints";
         public EndpointValue? Braindump { get; set; }

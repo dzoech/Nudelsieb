@@ -6,42 +6,27 @@ namespace Nudelsieb.Cli.UserSettings
 {
     public class UserSettingsModel
     {
+        private static readonly Uri BlankUri = new Uri("about:blank");
+
         public class UserSettingsModelEndpoints
         {
-            public EndpointSetting Braindump { get; set; } = new EndpointSetting("https://nudelsieb.zoechbauer.dev/braindump");
+            public EndpointSetting Braindump { get; set; } = new EndpointSetting();
         }
 
         public class EndpointSetting
         {
-            private Uri value;
-            public Uri Previous { get; private set; }
-            public Uri Value
-            {
-                get => value;
-                set
-                {
-                    (Previous, this.value) = (this.value, value);
-                    //Previous = this.value;
-                    //this.value = value;
-                }
-            }
+            public Uri Value { get; private set; } = BlankUri;
+            public Uri Previous { get; private set; } = BlankUri;
 
             public void Switch()
             {
-                (value, Previous) = (Previous, value);
+                (Value, Previous) = (Previous, Value);
             }
 
-            /// <summary>
-            /// Required for JSON serializer.
-            /// </summary>
-            private EndpointSetting() : this("https://www.example.com")
+            public void Set(string endpoint)
             {
-            }
-
-            public EndpointSetting(string endpoint)
-            {
-                value = new Uri(endpoint);
-                Previous = value;
+                Previous = Value;
+                Value = new Uri(endpoint);
             }
         }
 

@@ -6,12 +6,16 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Nudelsieb.Cli.Options;
 
 namespace Nudelsieb.Cli.UserSettings
 {
     public class LocalUserSettingsService : IUserSettingsService
     {
         private readonly ILogger _logger;
+        private readonly IOptions<EndpointsOptions> endpointOptions;
+
         private static string RelativeLocation => Path.Combine("nudelsieb", "settings.json");
         /// <summary>
         /// Returns the absolute path of the user settings file.
@@ -20,9 +24,11 @@ namespace Nudelsieb.Cli.UserSettings
 
         public LocalUserSettingsService(    
             ILogger<LocalUserSettingsService> logger,
+            IOptions<EndpointsOptions> endpointOptions,
             Environment.SpecialFolder baseLocation)
         {
             _logger = logger;
+            this.endpointOptions = endpointOptions;
             Location = Path.Combine(Environment.GetFolderPath(baseLocation), RelativeLocation);
             Directory.CreateDirectory(Path.GetDirectoryName(Location));
         }
@@ -50,13 +56,24 @@ namespace Nudelsieb.Cli.UserSettings
                 throw new ArgumentException($"File {location} already exists.", nameof(location));
             }
 
-            await Write(new UserSettingsModel());
+            // TODO user options
+            var defaultUserSettings = new UserSettingsModel();
+            var appDefaultEndpoint = endpointOptions.Value.Braindump?.Value;
+
+            if (appDefaultEndpoint != null)
+            {
+                defaultUserSettings.Endpoints.Braindump.Set(appDefaultEndpoint);
+            }
+
+            await Write(defaultUserSettings);
         }
 
         public async Task Write(UserSettingsModel settings)
         {
             using (var file = File.OpenWrite(Location))
             {
+                var pos = file.Position;
+
                 await JsonSerializer.SerializeAsync(file, settings, new JsonSerializerOptions
                 {
                     WriteIndented = true
