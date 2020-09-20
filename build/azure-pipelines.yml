@@ -14,35 +14,74 @@ variables:
   imageRepository: 'nudelsieb-webapi'
   containerRegistry: 'nudelsiebacr.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/src/Nudelsieb/Nudelsieb.WebApi/Dockerfile'
-  tag: '$(Build.BuildId)'
+  version: '0.0.2.$(Build.BuildId)'
+  chocolateyArtifactName: 'choco-nupkg-drop'
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
+  windowsVmImageName: 'windows-latest'
 
 stages:
-- stage: Build
-  displayName: Build and push stage
+- stage: BuildAndPushWebApiContainer
+  displayName: 'Web API: Build and push Docker image'
   jobs:  
   - job: Build
-    displayName: Build
+    displayName: Build and push Docker image
     pool:
       vmImage: $(vmImageName)
     steps:
     - task: Docker@2
-      displayName: Build and push an image to container registry
+      displayName: Build and push an image to the container registry
       inputs:
         containerRegistry: '$(dockerRegistryServiceConnection)'
         repository: '$(imageRepository)'
         command: 'buildAndPush'
         Dockerfile: '$(Build.SourcesDirectory)/src/Nudelsieb/Nudelsieb.WebApi/Dockerfile'
         buildContext: '$(Build.SourcesDirectory)/src/Nudelsieb'
-        tags: '$(tag)'
-- stage: Publish
+        tags: '$(version)'
+- stage: PublishWebApi
+  displayName: Update Docker image in Azure App Service
+  dependsOn: BuildAndPushWebApiContainer
   jobs:
   - job: Publish
     steps:
     - task: AzureWebAppContainer@1
       inputs:
-        azureSubscription: 'Visual Studio Enterprise – MPN(c82af33e-d706-46fc-af9d-96e2d14d5c74)'
+        azureSubscription: 'nudelsieb-service-connection'
         appName: 'nudelsieb'
-        containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+        containers: '$(containerRegistry)/$(imageRepository):$(version)'
+- stage: ReleaseCliToChocolatey
+  displayName: 'CLI: Release to Chocolatey'
+  pool:
+    vmImage: $(windowsVmImageName)
+  jobs:
+  - job: CreatePackage
+    steps: 
+    - task: ChocolateyToolInstaller@0
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '3.1.x'
+    - task: PowerShell@2
+      name: BuildAndPackageBinaries
+      inputs:
+        filePath: '$(System.DefaultWorkingDirectory)/build/cli/build-self-contained.ps1'
+        arguments: '-Version $(version) -OutputPath $(Build.ArtifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        ArtifactName: $(chocolateyArtifactName)
+        PathtoPublish: $(Build.ArtifactStagingDirectory)
+  - deployment: PushCliPackageToChocolatey
+    environment: Production
+    dependsOn: CreatePackage
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: PowerShell@2
+              inputs:
+                targetType: inline
+                script: >-
+                  choco push "$(Pipeline.Workspace)/$(chocolateyArtifactName)/nudelsieb-cli.$(version).nupkg"
+                  --source https://push.chocolatey.org 
+                  --apikey  $(ChocolateyApiKey)
