@@ -53,6 +53,7 @@ stages:
         containers: '$(containerRegistry)/$(imageRepository):$(version)'
 - stage: ReleaseCliToChocolatey
   displayName: 'CLI: Release to Chocolatey'
+  dependsOn: []
   pool:
     vmImage: $(windowsVmImageName)
   jobs:
