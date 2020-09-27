@@ -43,6 +43,7 @@ stages:
 - stage: PublishWebApi
   displayName: Update Docker image in Azure App Service
   dependsOn: BuildAndPushWebApiContainer
+  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
   jobs:
   - job: Publish
     steps:
@@ -53,6 +54,7 @@ stages:
         containers: '$(containerRegistry)/$(imageRepository):$(version)'
 - stage: ReleaseCliToChocolatey
   displayName: 'CLI: Release to Chocolatey'
+  dependsOn: []
   pool:
     vmImage: $(windowsVmImageName)
   jobs:
@@ -84,6 +86,7 @@ stages:
   - deployment: PushCliPackageToChocolatey
     environment: Production
     dependsOn: CreatePackage
+    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
     strategy:
       runOnce:
         deploy:
