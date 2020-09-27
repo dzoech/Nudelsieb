@@ -16,6 +16,7 @@ variables:
   dockerfilePath: '$(Build.SourcesDirectory)/src/Nudelsieb/Nudelsieb.WebApi/Dockerfile'
   version: '0.0.2.$(Build.BuildId)'
   chocolateyArtifactName: 'choco-nupkg-drop'
+  braindumpEndpoint: 'https://nudelsieb.zoechbauer.dev/braindump'
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -62,6 +63,15 @@ stages:
       inputs:
         packageType: 'sdk'
         version: '3.1.x'
+    - powershell: | # use dots for nested variables
+        Write-Host "##vso[task.setvariable variable=Endpoints.Braindump.Value]$(braindumpEndpoint)"
+      displayName: Create environment variables with identical names as in appsettings.json
+    - task: FileTransform@2
+      inputs:
+        xmlTransformationRules: '' # disables xml transformation, fixes https://github.com/MicrosoftDocs/azure-devops-docs/issues/7413
+        folderPath: '$(System.DefaultWorkingDirectory)/src/Nudelsieb/Nudelsieb.Cli'
+        jsonTargetFiles: |
+          appsettings.json
     - task: PowerShell@2
       name: BuildAndPackageBinaries
       inputs:
@@ -78,10 +88,10 @@ stages:
       runOnce:
         deploy:
           steps:
-            - task: PowerShell@2
-              inputs:
-                targetType: inline
-                script: >-
-                  choco push "$(Pipeline.Workspace)/$(chocolateyArtifactName)/nudelsieb-cli.$(version).nupkg"
-                  --source https://push.chocolatey.org 
-                  --apikey  $(ChocolateyApiKey)
+          - task: PowerShell@2
+            inputs:
+              targetType: inline
+              script: >-
+                choco push "$(Pipeline.Workspace)/$(chocolateyArtifactName)/nudelsieb-cli.$(version).nupkg"
+                --source https://push.chocolatey.org 
+                --apikey  $(ChocolateyApiKey)
