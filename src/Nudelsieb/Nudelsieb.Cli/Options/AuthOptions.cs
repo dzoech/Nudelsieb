@@ -33,10 +33,10 @@ namespace Nudelsieb.Cli.Options
         public CacheOptions Cache { get; set; } = new CacheOptions();
 
         public class CacheOptions
-        {        
-            public string? FileName { get; set; }
+        {
+            public string FileName { get; set; } = "cache";
 
-            public string? Directory { get; set; }
+            public string Directory { get; set; } = string.Empty;
         }
 
         private string ReplacePlaceholder(string scope)

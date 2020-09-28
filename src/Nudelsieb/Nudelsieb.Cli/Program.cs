@@ -41,7 +41,10 @@ namespace Nudelsieb.Cli
         typeof(ConfigCommand))]
     class Program : CommandBase
     {
-        private const Environment.SpecialFolder UserSettingsLocation = Environment.SpecialFolder.ApplicationData;
+        private const Environment.SpecialFolder UserSettingsFolder = Environment.SpecialFolder.ApplicationData;
+
+        private static readonly string UserSettingsLocation = 
+            Path.Combine(Environment.GetFolderPath(UserSettingsFolder), "nudelsieb");
 
         public static async Task<int> Main(string[] args)
         {
@@ -59,10 +62,9 @@ namespace Nudelsieb.Cli
                     configBuilder.SetBasePath(Path.GetDirectoryName(executingAssembly));
                     configBuilder.AddJsonFile("appsettings.json");
 
-                    var location = Environment.GetFolderPath(UserSettingsLocation);
                     // TODO sub dir and file name are defined here and in LocalUserSettingsService
                     // inject sub dir and file name settings into LocalUserSettingsService 
-                    var settingsFile = Path.Combine(location, "nudelsieb", "settings.json");
+                    var settingsFile = Path.Combine(UserSettingsLocation, "settings.json");
                     configBuilder.AddJsonFile(settingsFile, optional: true);
 
                     if (context.HostingEnvironment.IsDevelopment())
@@ -78,20 +80,22 @@ namespace Nudelsieb.Cli
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    var authOptions = new AuthOptions();
-                    context.Configuration.GetSection(AuthOptions.SectionName).Bind(authOptions);
-
-                    services.Configure<AuthOptions>(o => o = authOptions);
+                    services.Configure<AuthOptions>(o => 
+                        context.Configuration.GetSection(
+                            AuthOptions.SectionName).Bind(o));
 
                     services.Configure<EndpointsOptions>(o =>
                         context.Configuration.GetSection(
                             EndpointsOptions.SectionName).Bind(o));
 
+                    var authOptions = new AuthOptions();
+                    context.Configuration.GetSection(AuthOptions.SectionName).Bind(authOptions);
+
                     // using Microsoft.Identity.Client.Extensions.Msal as Cache
                     // https://github.com/AzureAD/microsoft-authentication-extensions-for-dotnet/tree/master/src/Microsoft.Identity.Client.Extensions.Msal
                     var props = new StorageCreationPropertiesBuilder(
                             authOptions.Cache.FileName,
-                            authOptions.Cache.Directory,
+                            Path.Combine(UserSettingsLocation, authOptions.Cache.Directory),
                             authOptions.ClientId)
                         .Build();
 
