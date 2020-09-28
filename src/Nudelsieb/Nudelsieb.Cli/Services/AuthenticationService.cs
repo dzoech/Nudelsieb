@@ -4,8 +4,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 using Nudelsieb.Cli.Models;
 using Nudelsieb.Cli.Options;
@@ -16,22 +16,20 @@ namespace Nudelsieb.Cli.Services
     {
         private readonly ILogger<AuthenticationService> logger;
         private readonly IPublicClientApplication clientApplication;
-        private readonly IConfiguration config;
+        private readonly IOptions<AuthOptions> authOptions;
 
         public AuthenticationService(
             ILogger<AuthenticationService> logger,
             IPublicClientApplication clientApplication,
-            IConfiguration config)
+            IOptions<AuthOptions> authOptions)
         {
             this.logger = logger;
             this.clientApplication = clientApplication;
-            this.config = config;
+            this.authOptions = authOptions;
         }
 
         public async Task<(bool Success, JwtSecurityToken? AccessToken)> GetCachedAccessTokenAsync()
         {
-            AuthOptions authOptions = GetAuthOptionsFromConfig(this.config);
-
             // get accounts from token cache
             var accounts = await this.clientApplication.GetAccountsAsync();
 
@@ -43,7 +41,7 @@ namespace Nudelsieb.Cli.Services
             try
             {
                 AuthenticationResult result = await this.clientApplication
-                    .AcquireTokenSilent(authOptions.RequiredScopes, accounts.FirstOrDefault())
+                    .AcquireTokenSilent(this.authOptions.Value.RequiredScopes, accounts.FirstOrDefault())
                     .ExecuteAsync();
 
                 var accessToken = ExtractTokens(result).AccessToken;
@@ -60,18 +58,16 @@ namespace Nudelsieb.Cli.Services
 
         public async Task<(JwtSecurityToken IdToken, JwtSecurityToken AccessToken)> LoginAsync()
         {
-            var authOptions = GetAuthOptionsFromConfig(this.config);
-
-            if (authOptions.PolicySignUpSignIn is null)
+            if (this.authOptions.Value.PolicySignUpSignIn is null)
             {
-                throw new ArgumentNullException(nameof(authOptions.PolicySignUpSignIn));
+                throw new ArgumentNullException(nameof(authOptions.Value.PolicySignUpSignIn));
             }
                 
             var accounts = await this.clientApplication.GetAccountsAsync();
 
             var result = await this.clientApplication
-                .AcquireTokenInteractive(authOptions.RequiredScopes)
-                .WithAccount(GetAccountByPolicy(accounts, authOptions.PolicySignUpSignIn))
+                .AcquireTokenInteractive(authOptions.Value.RequiredScopes)
+                .WithAccount(GetAccountByPolicy(accounts, authOptions.Value.PolicySignUpSignIn))
                 .ExecuteAsync();
 
             var token = ExtractTokens(result);
@@ -101,14 +97,6 @@ namespace Nudelsieb.Cli.Services
             var accessToken = tokenHandler.ReadJwtToken(result.AccessToken);
 
             return (idToken, accessToken);
-        }
-
-        private AuthOptions GetAuthOptionsFromConfig(IConfiguration config)
-        {
-            // Todo evaluate usage of IOptions
-            var authOptions = new AuthOptions();
-            config.GetSection(AuthOptions.SectionName).Bind(authOptions);
-            return authOptions;
         }
 
         private IAccount GetAccountByPolicy(IEnumerable<IAccount> accounts, string policy)
