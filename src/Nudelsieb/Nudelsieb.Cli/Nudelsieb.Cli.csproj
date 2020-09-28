@@ -5,7 +5,8 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <Nullable>enable</Nullable>
         <WarningsAsErrors>nullable</WarningsAsErrors>
-        <Version>0.0.1</Version>
+        <VersionPrefix>0.0.1</VersionPrefix>
+        <VersionSuffix>dev</VersionSuffix>
         <UserSecretsId>Nudelsieb.Cli-bfb854f1-47ab-48b9-aabf-8b91e62d8dbd</UserSecretsId>
         <NoWin32Manifest>true</NoWin32Manifest>
         <AssemblyName>nudelsieb</AssemblyName>
