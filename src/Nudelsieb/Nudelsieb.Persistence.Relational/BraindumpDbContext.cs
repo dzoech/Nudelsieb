@@ -15,6 +15,7 @@ namespace Nudelsieb.Persistence.Relational
 
         public DbSet<Neuron> Neurons { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Reminder> Reminders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,6 +26,10 @@ namespace Nudelsieb.Persistence.Relational
 
             modelBuilder.Entity<Group>().HasKey(g => new { g.Name, g.NeuronId });
             modelBuilder.Entity<Group>().HasOne<Neuron>(g => g.Neuron).WithMany(n => n.Groups).HasForeignKey(g => g.NeuronId);
+
+            modelBuilder.Entity<Reminder>().HasKey(r => r.Id);
+            modelBuilder.Entity<Reminder>().HasOne<Neuron>(r => r.Subject).WithMany(n => n.Reminders);
+            modelBuilder.Entity<Reminder>().Property(r => r.At).IsRequired();
         }
     }
 }

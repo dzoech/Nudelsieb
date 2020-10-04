@@ -30,5 +30,10 @@ namespace Nudelsieb.Persistence
         {
             throw new NotImplementedException();
         }
+
+        public Task<List<Reminder>> GetRemindersAsync(DateTimeOffset until, ReminderState state)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

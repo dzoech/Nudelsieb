@@ -13,7 +13,6 @@ namespace Nudelsieb.Persistence.Relational.Entities
 
         public ICollection<Group> Groups { get; set; }
 
-        public DateTime? Reminder { get; set; }
-
+        public ICollection<Reminder> Reminders { get; set; }
     }
 }

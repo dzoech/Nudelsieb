@@ -12,5 +12,7 @@ namespace Nudelsieb.Domain
         Task<List<Neuron>> GetByGroupAsync(string group);
 
         Task AddAsync(Neuron neuron);
+
+        Task<List<Reminder>> GetRemindersAsync(DateTimeOffset until, ReminderState state);
     }
 }
