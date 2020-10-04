@@ -1,25 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Migrations\20200722204332_AddInitialNeuron.cs" />
-    <Compile Remove="Migrations\20200722204332_AddInitialNeuron.Designer.cs" />
-    <Compile Remove="Migrations\20200722210939_AddInitialNeuronEntity.cs" />
-    <Compile Remove="Migrations\20200722210939_AddInitialNeuronEntity.Designer.cs" />
-    <Compile Remove="Migrations\20200722211139_AddInitialNeuronEntity.cs" />
-    <Compile Remove="Migrations\20200722211139_AddInitialNeuronEntity.Designer.cs" />
-    <Compile Remove="Migrations\20200728180627_InitialNeuronEntity.cs" />
-    <Compile Remove="Migrations\20200728180627_InitialNeuronEntity.Designer.cs" />
-    <Compile Remove="Migrations\20200728181504_InitialNeuronEntity.cs" />
-    <Compile Remove="Migrations\20200728181504_InitialNeuronEntity.Designer.cs" />
-    <Compile Remove="Migrations\20200728181733_InitialNeuronEntity.cs" />
-    <Compile Remove="Migrations\20200728181733_InitialNeuronEntity.Designer.cs" />
-    <Compile Remove="Migrations\20200728182344_InitialNeuronEntity.cs" />
-    <Compile Remove="Migrations\20200728182344_InitialNeuronEntity.Designer.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
