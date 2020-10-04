@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Nudelsieb.Persistence.Relational.Entities
+namespace Nudelsieb.Domain
 {
     public class Reminder
     {
@@ -10,15 +10,8 @@ namespace Nudelsieb.Persistence.Relational.Entities
 
         public Neuron Subject { get; set; }
 
-        public DateTimeOffset At { get; set; }
+        public DateTimeOffset At { get; set; } = DateTimeOffset.Now;
 
         public ReminderState State { get; set; }
-    }
-
-    public enum ReminderState
-    {
-        Waiting,
-        Active,
-        Disabled
     }
 }

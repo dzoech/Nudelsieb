@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,15 +52,76 @@ namespace Nudelsieb.Persistence.Relational
         {
             var neurons = await context.Groups
                 .Where(g => g.Name == groupName)
-                .Select(group => new Domain.Neuron(group.Neuron.Information)
-                {
-                    Id = group.Neuron.Id,
-                    Groups = group.Neuron.Groups.Select(g => g.Name).ToList()
-                })
+                .Select(g => MapNeuron(g.Neuron))
                 .ToSql(logger)
                 .ToListAsync();
 
             return neurons;
+        }
+
+        public async Task<List<Reminder>> GetRemindersAsync(DateTimeOffset until)
+        {
+            return await context.Reminders
+                .Where(r => r.At <= until)
+                .Select(r => new Domain.Reminder
+                {
+                    Id = r.Id,
+                    At = r.At,
+                    State = MapReminderState(r.State),
+                    Subject = MapNeuron(r.Subject)
+                })
+                .ToSql(logger)
+                .ToListAsync();
+        }
+
+        public async Task<List<Reminder>> GetRemindersAsync(DateTimeOffset until, ReminderState state)
+        {
+            return await context.Reminders
+                .Where(r => r.At <= until && r.State == MapReminderState(state))
+                .Select(r => new Domain.Reminder
+                {
+                    Id = r.Id,
+                    At = r.At,
+                    State = MapReminderState(r.State),
+                    Subject = MapNeuron(r.Subject)
+                })
+                .ToSql(logger)
+                .ToListAsync();
+        }
+
+        private Domain.Neuron MapNeuron(Entities.Neuron neuron)
+        {
+            return new Domain.Neuron(neuron.Information)
+            {
+                Id = neuron.Id,
+                Groups = neuron.Groups.Select(g => g.Name).ToList()
+            };
+        }
+
+        private Domain.ReminderState MapReminderState(Entities.ReminderState state)
+        {
+            return state switch
+            {
+                Entities.ReminderState.Waiting => Domain.ReminderState.Waiting,
+                Entities.ReminderState.Active => Domain.ReminderState.Active,
+                Entities.ReminderState.Disabled => Domain.ReminderState.Disabled,
+                _ => throw new ArgumentException(
+                        $"Cannot map {nameof(Entities.ReminderState)} {state} to {nameof(Domain.ReminderState)}.",
+                        nameof(state)),
+            };
+        }
+
+        private Entities.ReminderState MapReminderState(Domain.ReminderState state)
+        {
+            return state switch
+            {
+                Domain.ReminderState.Waiting => Entities.ReminderState.Waiting,
+                Domain.ReminderState.Active => Entities.ReminderState.Active,
+                Domain.ReminderState.Disabled => Entities.ReminderState.Disabled,
+                _ => throw new ArgumentException(
+                        $"Cannot map {nameof(Domain.ReminderState)} {state} to {nameof(Entities.ReminderState)}.",
+                        nameof(state)),
+            };
         }
     }
 }
