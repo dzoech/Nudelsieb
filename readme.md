@@ -6,6 +6,9 @@
 
 # Installation
 
+[![Chocolatey Version](https://img.shields.io/chocolatey/v/nudelsieb-cli)](https://chocolatey.org/packages/nudelsieb-cli)
+[![Chocolatey](https://img.shields.io/chocolatey/dt/nudelsieb-cli)](https://chocolatey.org/packages/nudelsieb-cli)
+
 You can install the CLI via the Windows package manager [Chocolatey](https://chocolatey.org/packages/nudelsieb-cli):
 
 `choco install nudelsieb-cli`
