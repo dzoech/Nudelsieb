@@ -29,15 +29,7 @@ namespace Nudelsieb.WebApi.Braindump
         public async Task<IEnumerable<NeuronDto>> GetNeuronsForGroupAsync(string name)
         {
             var neurons = await neuronRepository.GetByGroupAsync(name);
-
-            var dtos = neurons.Select(n =>
-                new NeuronDto
-                {
-                    Information = n.Information,
-                    Id = n.Id,
-                    Groups = n.Groups
-                });
-
+            var dtos = neurons.Select(n => new NeuronDto(n));
             return dtos;
         }
     }

@@ -26,18 +26,10 @@ namespace Nudelsieb.WebApi.Braindump
         }
 
         [HttpGet]
-        public async Task<IEnumerable<NeuronDto>> GetRemindersAsync([FromQuery] DateTimeOffset until)
+        public async Task<IEnumerable<ReminderDto>> GetRemindersAsync([FromQuery] DateTimeOffset until)
         {
             var neurons = await neuronRepository.GetRemindersAsync(until);
-
-            var dtos = neurons.Select(n =>
-                new NeuronDto
-                {
-                    Information = n.Information,
-                    Id = n.Id,
-                    Groups = n.Groups
-                });
-
+            var dtos = neurons.Select(r => new ReminderDto(r));
             return dtos;
         }
     }
