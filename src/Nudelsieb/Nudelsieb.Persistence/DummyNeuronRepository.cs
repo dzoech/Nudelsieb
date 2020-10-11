@@ -49,6 +49,10 @@ namespace Nudelsieb.Persistence
                     .Contains(group))
                     .ToList());
         }
+        public Task<List<Reminder>> GetRemindersAsync(DateTimeOffset until)
+        {
+            throw new NotImplementedException();
+        }
 
         public Task<List<Reminder>> GetRemindersAsync(DateTimeOffset until, ReminderState state)
         {

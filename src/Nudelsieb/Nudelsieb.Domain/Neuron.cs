@@ -13,10 +13,42 @@ namespace Nudelsieb.Domain
 
         public List<string> Groups { get; set; }
 
+        public List<Reminder> Reminders { get; }
+
         public Neuron(string information)
         {
             Information = information;
             Groups = new List<string>();
+            Reminders = new List<Reminder>();
+        }
+
+        public bool SetReminders(DateTimeOffset[] reminderTimes, out List<int> errorIndices)
+        {
+            var allRemindersSuccessful = true;
+            errorIndices = new List<int>();
+
+            for (int i = 0; i < reminderTimes.Length; i++)
+            {
+                var time = reminderTimes[i];
+
+                if (time < DateTimeOffset.Now)
+                {
+                    allRemindersSuccessful = false;
+                    errorIndices.Add(i);
+                    continue;
+                }
+
+                var reminder = new Reminder
+                {
+                    At = time,
+                    State = ReminderState.Waiting,
+                    Subject = this
+                };
+
+                this.Reminders.Add(reminder);
+            }
+
+            return allRemindersSuccessful;
         }
     }
 }

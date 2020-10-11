@@ -12,10 +12,13 @@ namespace Nudelsieb.Cli.Models
 
         public List<string> Groups { get; set; }
 
+        public List<DateTimeOffset> Reminders { get; set; }
+
         public Neuron(string information)
         {
             Information = information;
             Groups = new List<string>();
+            Reminders = new List<DateTimeOffset>();
         }
     }
 }

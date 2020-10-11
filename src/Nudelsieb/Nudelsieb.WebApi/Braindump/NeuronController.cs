@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Nudelsieb.Domain;
@@ -28,21 +29,15 @@ namespace Nudelsieb.WebApi.Braindump
         public async Task<IEnumerable<NeuronDto>> GetAsync()
         {
             var neurons = await this.neuronRepository.GetAllAsync();
-
-            var dtos = neurons.Select(n => 
-                new NeuronDto
-                {
-                    Information = n.Information,
-                    Id = n.Id,
-                    Groups = n.Groups
-                });
-
+            var dtos = neurons.Select(n => new NeuronDto(n));
             return dtos;
         }
 
 
         [HttpPost]
-        public async Task Add([FromBody] NeuronDto neuronDto)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<int>))]
+        public async Task<ActionResult<List<int>>> Add([FromBody] NeuronDto neuronDto)
         {
             this.logger.LogInformation($"POST {neuronDto.Information}");
 
@@ -52,7 +47,19 @@ namespace Nudelsieb.WebApi.Braindump
                 Groups = neuronDto.Groups
             };
 
+            var reminders = neuronDto.Reminders.ToArray();
+            var success = neuron.SetReminders(reminders, out List<int> errors);
+
             await this.neuronRepository.AddAsync(neuron);
+
+            if (success)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return Ok(new { ErrorIndices = errors });
+            }
         }
 
         [HttpPut("{id}")]

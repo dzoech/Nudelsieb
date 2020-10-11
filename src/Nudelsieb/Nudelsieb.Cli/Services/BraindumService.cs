@@ -28,12 +28,13 @@ namespace Nudelsieb.Cli.Services
             this.restClient = restClient;
         }
 
-        public async Task AddNeuron(string information, List<string> groups)
+        public async Task AddNeuron(string information, List<string> groups, List<DateTimeOffset> reminders)
         {
             var neuron = new Neuron(information)
             {
                 Id = Guid.NewGuid(),
-                Groups = groups
+                Groups = groups,
+                Reminders = reminders
             };            
 
             await restClient.AddNeuron(neuron);

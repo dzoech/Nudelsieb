@@ -14,22 +14,22 @@ namespace Nudelsieb.WebApi.Braindump
     [Authorize]
     [Route("[area]/[controller]")]
     [ApiController]
-    public class GroupController : ControllerBase
+    public class ReminderController : ControllerBase
     {
-        private readonly ILogger<GroupController> logger;
+        private readonly ILogger<ReminderController> logger;
         private readonly INeuronRepository neuronRepository;
 
-        public GroupController(ILogger<GroupController> logger, INeuronRepository neuronRepository)
+        public ReminderController(ILogger<ReminderController> logger, INeuronRepository neuronRepository)
         {
             this.logger = logger;
             this.neuronRepository = neuronRepository;
         }
 
-        [HttpGet("{name}/neuron")]
-        public async Task<IEnumerable<NeuronDto>> GetNeuronsForGroupAsync(string name)
+        [HttpGet]
+        public async Task<IEnumerable<ReminderDto>> GetRemindersAsync([FromQuery] DateTimeOffset until)
         {
-            var neurons = await neuronRepository.GetByGroupAsync(name);
-            var dtos = neurons.Select(n => new NeuronDto(n));
+            var neurons = await neuronRepository.GetRemindersAsync(until);
+            var dtos = neurons.Select(r => new ReminderDto(r));
             return dtos;
         }
     }

@@ -89,7 +89,7 @@ namespace Nudelsieb.Persistence.Relational
                 .ToListAsync();
         }
 
-        private Domain.Neuron MapNeuron(Entities.Neuron neuron)
+        private static Domain.Neuron MapNeuron(Entities.Neuron neuron)
         {
             return new Domain.Neuron(neuron.Information)
             {
@@ -98,7 +98,7 @@ namespace Nudelsieb.Persistence.Relational
             };
         }
 
-        private Domain.ReminderState MapReminderState(Entities.ReminderState state)
+        private static Domain.ReminderState MapReminderState(Entities.ReminderState state)
         {
             return state switch
             {
@@ -111,7 +111,7 @@ namespace Nudelsieb.Persistence.Relational
             };
         }
 
-        private Entities.ReminderState MapReminderState(Domain.ReminderState state)
+        private static Entities.ReminderState MapReminderState(Domain.ReminderState state)
         {
             return state switch
             {
