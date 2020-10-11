@@ -14,11 +14,14 @@ namespace Nudelsieb.WebApi.Braindump
 
         public List<string> Groups { get; set; } = new List<string>();
 
+        public List<DateTimeOffset> Reminders { get; set; } = new List<DateTimeOffset>();
+
         public NeuronDto(Neuron neuron)
         {
             Information = neuron.Information;
             Id = neuron.Id;
             Groups = neuron.Groups;
+            Reminders = neuron.Reminders.Select(r => r.At).ToList();
         }
     }
 }
