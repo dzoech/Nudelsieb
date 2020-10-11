@@ -16,7 +16,7 @@ namespace Nudelsieb.Cli
         private readonly IConsole console;
 
         [Option(Description = "The name of the group for which all neurons are listed.")]
-        [RegularExpression(AlphanumericDashUnderscoreDigitRegex, ErrorMessage = "Group name must only consist of alphanumeric characters, digits, and dashes (-).")]
+        [RegularExpression(AlphanumericDashUnderscoreDigitRegex, ErrorMessage = "Group name must only consist of alphanumeric characters, digits, and dashes/hyphens (-).")]
         public string Group { get; set; } = string.Empty;
 
         public GetCommand(IBraindumpService braindumpService, IConsole console)

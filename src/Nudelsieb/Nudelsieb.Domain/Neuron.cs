@@ -19,6 +19,7 @@ namespace Nudelsieb.Domain
         {
             Information = information;
             Groups = new List<string>();
+            Reminders = new List<Reminder>();
         }
 
         public bool SetReminders(DateTimeOffset[] reminderTimes, out List<int> errorIndices)
@@ -44,7 +45,7 @@ namespace Nudelsieb.Domain
                     Subject = this
                 };
 
-                Reminders.Add(reminder);
+                this.Reminders.Add(reminder);
             }
 
             return allRemindersSuccessful;

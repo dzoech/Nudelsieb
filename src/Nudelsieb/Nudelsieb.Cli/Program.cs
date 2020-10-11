@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nudelsieb.Cli
@@ -117,6 +118,8 @@ namespace Nudelsieb.Cli
                         })
                         .AddTransient<IBraindumpService, BraindumService>()
                         .AddTransient<IAuthenticationService, AuthenticationService>()
+                        .AddTransient<IReminderParser>(_ => new ReminderParser(Thread.CurrentThread.CurrentCulture)
+                        )
                         .AddRestClients()
                         .AddSingleton<IUserSettingsService, LocalUserSettingsService>(sp =>
                         {

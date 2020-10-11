@@ -16,6 +16,9 @@ namespace Nudelsieb.WebApi.Braindump
 
         public List<DateTimeOffset> Reminders { get; set; } = new List<DateTimeOffset>();
 
+        public NeuronDto() 
+        { }
+
         public NeuronDto(Neuron neuron)
         {
             Information = neuron.Information;
