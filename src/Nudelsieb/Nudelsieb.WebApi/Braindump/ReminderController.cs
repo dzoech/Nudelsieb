@@ -11,7 +11,6 @@ using Nudelsieb.Domain;
 namespace Nudelsieb.WebApi.Braindump
 {
     [Area("braindump")]
-    [Authorize]
     [Route("[area]/[controller]")]
     [ApiController]
     public class ReminderController : ControllerBase

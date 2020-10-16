@@ -8,10 +8,15 @@ namespace Nudelsieb.Domain
     {
         public Guid Id { get; set; }
 
-        public Neuron Subject { get; set; }
+        public Neuron Subject { get; }
 
         public DateTimeOffset At { get; set; } = DateTimeOffset.Now;
 
         public ReminderState State { get; set; }
+
+        public Reminder(Neuron subject)
+        {
+            Subject = subject;
+        }
     }
 }
