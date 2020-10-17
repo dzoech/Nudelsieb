@@ -7,12 +7,12 @@ namespace Nudelsieb.Persistence.Relational.Entities
 {
     public class Neuron
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.Empty;
 
-        public string Information { get; set; }
+        public string Information { get; set; } = string.Empty;
 
-        public ICollection<Group> Groups { get; set; }
+        public ICollection<Group> Groups { get; set; } = Array.Empty<Group>();
 
-        public ICollection<Reminder> Reminders { get; set; }
+        public ICollection<Reminder> Reminders { get; set; } = Array.Empty<Reminder>();
     }
 }
