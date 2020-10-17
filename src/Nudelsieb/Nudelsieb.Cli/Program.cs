@@ -141,7 +141,7 @@ namespace Nudelsieb.Cli
             }
             catch (Exception ex)
             {
-                await Console.Error.WriteLineAsync($" Error ({ex.GetType()}): {ex.Message}");
+                await Console.Error.WriteLineAsync($"Error ({ex.GetType()}): {ex.Message}");
                 return 1; // exit with error
             }
         }

@@ -7,9 +7,9 @@ namespace Nudelsieb.Cli.Parsers
 {
     class GroupParser : IGroupParser
     {
-        public const string AlphanumericDashUnderscoreDigitRegex = @"^[\w\d-]+$";
+        public string ErrorMessage => "Group name must only consist of alphanumeric characters, digits, and dashes/hyphens (-).";
 
-        public const string ErrorMessage = "Group name must only consist of alphanumeric characters, digits, and dashes/hyphens (-).";
+        private const string AlphanumericDashUnderscoreDigitRegex = @"^[\w\d-]+$";
 
         private Regex regex = new Regex(AlphanumericDashUnderscoreDigitRegex);
 

@@ -12,19 +12,19 @@ namespace Nudelsieb.Cli
     {
         private readonly IBraindumpService braindumpService;
         private readonly IConsole console;
+        private readonly IGroupParser groupParser;
 
         [Option(Description = "The name of the group for which all neurons are listed.")]
-        [RegularExpression(
-            // todo: replace validation logic with parsing logic and automatically 
-            // correct mistakes/issues in user input
-            GroupParser.AlphanumericDashUnderscoreDigitRegex, 
-            ErrorMessage = GroupParser.ErrorMessage)]
         public string Group { get; set; } = string.Empty;
 
-        public GetCommand(IBraindumpService braindumpService, IConsole console)
+        public GetCommand(
+            IBraindumpService braindumpService,
+            IConsole console,
+            IGroupParser groupParser)
         {
             this.braindumpService = braindumpService;
             this.console = console;
+            this.groupParser = groupParser;
         }
 
         protected override async Task<int> OnExecuteAsync(CommandLineApplication app)
@@ -37,7 +37,14 @@ namespace Nudelsieb.Cli
             }
             else
             {
-                neurons = await this.braindumpService.GetNeuronsByGroup(Group);
+                if (groupParser.TryParse(Group, out var groupName))
+                {
+                    neurons = await this.braindumpService.GetNeuronsByGroup(groupName);
+                }
+                else
+                {
+                    throw new ArgumentException(groupParser.ErrorMessage, nameof(Group));
+                }
             }
 
             foreach (var n in neurons)
