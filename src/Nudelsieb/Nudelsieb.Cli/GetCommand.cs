@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
@@ -45,9 +46,37 @@ namespace Nudelsieb.Cli
                 {
                     console.WriteLine($"  groups: {string.Join(", ", n.Groups)}");
                 }
+
+                if (n.Reminders.Count > 0)
+                {
+                    // display the reminders in ascending order
+                    n.Reminders.Sort();
+
+                    var reminderTimeSpans = new string[n.Reminders.Count];
+
+                    for (int i = 0; i < n.Reminders.Count; i++)
+                    {
+                        var timeSpan = n.Reminders[i] - DateTimeOffset.Now;
+                        reminderTimeSpans[i] = FormatTimeSpan(timeSpan);
+                    }
+
+                    console.WriteLine($"  reminders: {string.Join(", ", reminderTimeSpans)}");
+                }
             }
 
             return await base.OnExecuteAsync(app);
+        }
+
+        private string FormatTimeSpan(TimeSpan timeSpan)
+        {
+            if (timeSpan.Days > 0)
+            {
+                return timeSpan.ToString(@"%d'd '%h'h'");
+            }
+            else
+            {
+                return timeSpan.ToString(@"%h'h '%m'm'");
+            }
         }
     }
 }
