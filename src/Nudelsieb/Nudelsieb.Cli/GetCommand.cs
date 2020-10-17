@@ -7,8 +7,6 @@ using Nudelsieb.Cli.Services;
 
 namespace Nudelsieb.Cli
 {
-    [Subcommand(
-        typeof(GetAllCommand))]
     class GetCommand : CommandBase
     {
         private const string AlphanumericDashUnderscoreDigitRegex = @"^[\w\d-]+$";
