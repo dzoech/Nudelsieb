@@ -119,6 +119,7 @@ namespace Nudelsieb.Cli
                         })
                         .AddTransient<IBraindumpService, BraindumService>()
                         .AddTransient<IAuthenticationService, AuthenticationService>()
+                        .AddTransient<IGroupParser, GroupParser>()
                         .AddTransient<IReminderParser>(_ => new ReminderParser(Thread.CurrentThread.CurrentCulture)
                         )
                         .AddRestClients()

@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
+using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.Services;
 
 namespace Nudelsieb.Cli
 {
     class GetCommand : CommandBase
     {
-        private const string AlphanumericDashUnderscoreDigitRegex = @"^[\w\d-]+$";
-
         private readonly IBraindumpService braindumpService;
         private readonly IConsole console;
 
         [Option(Description = "The name of the group for which all neurons are listed.")]
-        [RegularExpression(AlphanumericDashUnderscoreDigitRegex, ErrorMessage = "Group name must only consist of alphanumeric characters, digits, and dashes/hyphens (-).")]
+        [RegularExpression(
+            // todo: replace validation logic with parsing logic and automatically 
+            // correct mistakes/issues in user input
+            GroupParser.AlphanumericDashUnderscoreDigitRegex, 
+            ErrorMessage = GroupParser.ErrorMessage)]
         public string Group { get; set; } = string.Empty;
 
         public GetCommand(IBraindumpService braindumpService, IConsole console)
