@@ -15,9 +15,12 @@ namespace Nudelsieb.Cli.Parsers
 
         public bool TryParse(string group, out string groupName)
         {
-            // todo automatically fix mistakes/issues in user input
-            groupName = group;
-            return regex.IsMatch(group);
+            groupName = group
+                .Trim()
+                .TrimStart('#')
+                .Replace(' ', '-');
+
+            return regex.IsMatch(groupName);
         }
     }
 }
