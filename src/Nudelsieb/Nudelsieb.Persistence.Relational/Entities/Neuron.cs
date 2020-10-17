@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.Data.SqlClient.Server;
 
 namespace Nudelsieb.Persistence.Relational.Entities
 {
     public class Neuron
     {
-        public Guid Id { get; set; } = Guid.Empty;
+        public Guid Id { get; set; }
 
-        public string Information { get; set; } = string.Empty;
+        public string Information { get; set; }
 
-        public ICollection<Group> Groups { get; set; } = Array.Empty<Group>();
+        public ICollection<Group> Groups { get; set; } = new List<Group>();
 
-        public ICollection<Reminder> Reminders { get; set; } = Array.Empty<Reminder>();
+        public ICollection<Reminder> Reminders { get; set; } = new List<Reminder>();
     }
 }

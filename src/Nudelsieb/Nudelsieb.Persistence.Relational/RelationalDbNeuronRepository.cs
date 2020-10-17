@@ -22,14 +22,30 @@ namespace Nudelsieb.Persistence.Relational
 
         public async Task AddAsync(Domain.Neuron neuron)
         {
-            context.Neurons.Add(new Entities.Neuron
+            var neuronEntity = new Entities.Neuron
             {
                 Id = neuron.Id,
                 Information = neuron.Information,
                 Groups = neuron.Groups
                     .Select(g => new Entities.Group { Name = g })
                     .ToList()
-            });
+            };
+
+
+            context.Neurons.Add(neuronEntity);
+
+            await context.SaveChangesAsync();
+
+            var reminders = neuron.Reminders
+                .Select(r => new Entities.Reminder
+                {
+                    Id = r.Id,
+                    At = r.At,
+                    State = MapReminderState(r.State),
+                    Subject = neuronEntity
+                });
+
+            context.Reminders.AddRange(reminders);
 
             await context.SaveChangesAsync();
         }
