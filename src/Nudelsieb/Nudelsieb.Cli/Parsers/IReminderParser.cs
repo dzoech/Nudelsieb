@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nudelsieb.Cli
+namespace Nudelsieb.Cli.Parsers
 {
     internal interface IReminderParser
     {

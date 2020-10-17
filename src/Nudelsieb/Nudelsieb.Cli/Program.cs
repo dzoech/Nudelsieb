@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensions.Msal;
 using Nudelsieb.Cli.Options;
+using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.RestClients;
 using Nudelsieb.Cli.Services;
 using Nudelsieb.Cli.UserSettings;

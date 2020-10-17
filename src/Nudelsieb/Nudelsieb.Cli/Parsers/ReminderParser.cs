@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Nudelsieb.Cli
+namespace Nudelsieb.Cli.Parsers
 {
     class ReminderParser : IReminderParser
     {
