@@ -53,6 +53,7 @@ namespace Nudelsieb.Persistence.Relational
         public async Task<List<Domain.Neuron>> GetAllAsync()
         {
             var neurons = await context.Neurons
+                .Include(n => n.Groups)
                 .Include(n => n.Reminders)
                 .Select(n => MapNeuron(n))
                 .ToListAsync();
