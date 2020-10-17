@@ -7,19 +7,34 @@ namespace Nudelsieb.Domain
 {
     public class Neuron
     {
+        private List<Reminder> reminders = new List<Reminder>();
+
         public Guid Id { get; set; }
 
         public string Information { get; set; }
 
         public List<string> Groups { get; set; }
 
-        public List<Reminder> Reminders { get; }
+        public List<Reminder> Reminders
+        {
+            get => reminders; 
+            set
+            {
+                foreach (var r in value)
+                {
+                    if (r.Subject != this)
+                    {
+                        throw new InvalidOperationException($"{nameof(Reminder)} is already assinged to anothr {nameof(Neuron)}");
+                    }
+                }
 
+                reminders = value;
+            }
+        }
         public Neuron(string information)
         {
             Information = information;
             Groups = new List<string>();
-            Reminders = new List<Reminder>();
         }
 
         public bool SetReminders(DateTimeOffset[] reminderTimes, out List<int> errorIndices)
@@ -38,11 +53,10 @@ namespace Nudelsieb.Domain
                     continue;
                 }
 
-                var reminder = new Reminder
+                var reminder = new Reminder(this)
                 {
                     At = time,
-                    State = ReminderState.Waiting,
-                    Subject = this
+                    State = ReminderState.Waiting
                 };
 
                 this.Reminders.Add(reminder);

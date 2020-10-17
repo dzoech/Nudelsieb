@@ -62,12 +62,18 @@ namespace Nudelsieb.WebApi.Braindump
             }
         }
 
+        /// <summary>
+        /// Not implemented as of yet.
+        /// </summary>
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] NeuronDto neuronDto)
         {
-            this.logger.LogInformation($"PUT {id} -> {neuronDto.Information}");
+            this.logger.LogInformation($"PUT {id} -> {neuronDto?.Information}");
         }
 
+        /// <summary>
+        /// Not implemented as of yet.
+        /// </summary>
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

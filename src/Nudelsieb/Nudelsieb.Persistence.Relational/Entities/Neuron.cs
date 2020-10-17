@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.Data.SqlClient.Server;
 
 namespace Nudelsieb.Persistence.Relational.Entities
 {
@@ -11,8 +9,8 @@ namespace Nudelsieb.Persistence.Relational.Entities
 
         public string Information { get; set; }
 
-        public ICollection<Group> Groups { get; set; }
+        public ICollection<Group> Groups { get; set; } = new List<Group>();
 
-        public ICollection<Reminder> Reminders { get; set; }
+        public ICollection<Reminder> Reminders { get; set; } = new List<Reminder>();
     }
 }
