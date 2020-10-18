@@ -33,13 +33,13 @@ namespace Nudelsieb.Cli.Commands
 
             if (string.IsNullOrEmpty(Group))
             {
-                neurons = await this.braindumpService.GetAll();
+                neurons = await this.braindumpService.GetAllAsync();
             }
             else
             {
                 if (groupParser.TryParse(Group, out var groupName))
                 {
-                    neurons = await this.braindumpService.GetNeuronsByGroup(groupName);
+                    neurons = await this.braindumpService.GetNeuronsByGroupAsync(groupName);
                 }
                 else
                 {
@@ -77,14 +77,23 @@ namespace Nudelsieb.Cli.Commands
 
         private string FormatTimeSpan(TimeSpan timeSpan)
         {
-            if (timeSpan.Days > 0)
+            var s = string.Empty;
+
+            if (timeSpan <= TimeSpan.Zero)
             {
-                return timeSpan.ToString(@"%d'd '%h'h'");
+                s = "Overdue for ";
+            }
+
+            if (timeSpan.Days != 0)
+            {
+                s += timeSpan.ToString(@"%d'd '%h'h'");
             }
             else
             {
-                return timeSpan.ToString(@"%h'h '%m'm'");
+                s += timeSpan.ToString(@"%h'h '%m'm'");
             }
+
+            return s;
         }
     }
 }

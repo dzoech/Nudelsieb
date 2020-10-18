@@ -91,6 +91,7 @@ namespace Nudelsieb.Persistence.Relational
         public async Task<List<Domain.Reminder>> GetRemindersAsync(DateTimeOffset until)
         {
             return await context.Reminders
+                .Include(r => r.Subject).ThenInclude(n => n.Groups)
                 .Where(r => r.At <= until)
                 .Select(r => new Domain.Reminder(MapNeuron(r.Subject))
                 {
@@ -105,6 +106,7 @@ namespace Nudelsieb.Persistence.Relational
         public async Task<List<Domain.Reminder>> GetRemindersAsync(DateTimeOffset until, Domain.ReminderState state)
         {
             return await context.Reminders
+                .Include(r => r.Subject).ThenInclude(n => n.Groups)
                 .Where(r => r.At <= until && r.State == MapReminderState(state))
                 .Select(r => new Domain.Reminder(MapNeuron(r.Subject))
                 {

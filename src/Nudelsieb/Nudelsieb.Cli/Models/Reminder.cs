@@ -12,6 +12,6 @@ namespace Nudelsieb.Cli.Models
 
         public string NeuronInformation { get; set; } = string.Empty;
 
-        public string[] Groups { get; set; } = Array.Empty<string>();
+        public string[] NeuronGroups { get; set; } = Array.Empty<string>();
     }
 }

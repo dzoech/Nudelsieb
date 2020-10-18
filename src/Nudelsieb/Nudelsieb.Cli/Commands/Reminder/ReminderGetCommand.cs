@@ -38,7 +38,7 @@ namespace Nudelsieb.Cli.Commands.Reminder
                 {
                     var until = DateTimeOffset.Now + timeSpan;
                     console.WriteLine($"Showing reminders until {until}.");
-                    reminders = await braindumpService.GetReminders(until);
+                    reminders = await braindumpService.GetRemindersAsync(until);
                 }
                 else
                 {
@@ -48,12 +48,14 @@ namespace Nudelsieb.Cli.Commands.Reminder
                 foreach (var r in reminders)
                 {
                     var formatedReminder = FormatTimeSpan(r.At - DateTimeOffset.Now);
-                    console.WriteLine($"{formatedReminder} {r.NeuronInformation}");
+                    console.Write($"{formatedReminder} | {r.NeuronInformation}");
 
-                    if (r.Groups.Length > 0)
+                    if (r.NeuronGroups.Length > 0)
                     {
-                        console.WriteLine($"  Groups: {string.Join(", ", r.Groups)}");
+                        console.Write($" | Groups: #{string.Join(", #", r.NeuronGroups)}");
                     }
+
+                    console.WriteLine();
                 }
 
                 return await base.OnExecuteAsync(app);
@@ -62,13 +64,12 @@ namespace Nudelsieb.Cli.Commands.Reminder
             private string FormatTimeSpan(TimeSpan timeSpan)
             {
                 var s = string.Empty;
-
+             
                 if (timeSpan <= TimeSpan.Zero)
                 {
-                    s = "OVERDUE for ";
+                    s = "Overdue for ";
                 }
 
-                // TODO correctly format negative timespans
                 if (timeSpan.Days != 0)
                 {
                     s += timeSpan.ToString(@"%d'd '%h'h'");

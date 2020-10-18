@@ -83,7 +83,7 @@ namespace Nudelsieb.Cli.Commands
             }
 
             // Message is not null because it is [Required]
-            await this.braindumpService.AddNeuron(Message!, Groups.ToList(), reminderTimes);
+            await this.braindumpService.AddNeuronAsync(Message!, Groups.ToList(), reminderTimes);
 
             return await base.OnExecuteAsync(app);
         }

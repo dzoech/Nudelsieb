@@ -8,10 +8,9 @@ namespace Nudelsieb.Cli.Services
 {
     interface IBraindumpService
     {
-        Task AddNeuron(string information, List<string> groups, List<DateTimeOffset> reminders);
-        Task<List<Neuron>> GetAll();
-        Task<List<Neuron>> GetNeuronsByGroup(string group);
-
-        Task<List<Reminder>> GetReminders(DateTimeOffset until);
+        Task AddNeuronAsync(string information, List<string> groups, List<DateTimeOffset> reminders);
+        Task<List<Neuron>> GetAllAsync();
+        Task<List<Neuron>> GetNeuronsByGroupAsync(string group);
+        Task<List<Reminder>> GetRemindersAsync(DateTimeOffset until);
     }
 }

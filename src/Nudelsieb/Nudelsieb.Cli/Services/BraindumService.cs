@@ -28,7 +28,7 @@ namespace Nudelsieb.Cli.Services
             this.restClient = restClient;
         }
 
-        public async Task AddNeuron(string information, List<string> groups, List<DateTimeOffset> reminders)
+        public async Task AddNeuronAsync(string information, List<string> groups, List<DateTimeOffset> reminders)
         {
             var neuron = new Neuron(information)
             {
@@ -40,17 +40,17 @@ namespace Nudelsieb.Cli.Services
             await restClient.AddNeuronAsync(neuron);
         }
 
-        public async Task<List<Neuron>> GetAll()
+        public async Task<List<Neuron>> GetAllAsync()
         {
             return await restClient.GetAllNeuronsAsync();
         }
 
-        public async Task<List<Neuron>> GetNeuronsByGroup(string group)
+        public async Task<List<Neuron>> GetNeuronsByGroupAsync(string group)
         {
             return await restClient.GetNeuronsByGroupAsync(group);
         }
 
-        public async Task<List<Reminder>> GetReminders(DateTimeOffset until)
+        public async Task<List<Reminder>> GetRemindersAsync(DateTimeOffset until)
         {
             return await restClient.GetRemindersAsync(until);
         }
