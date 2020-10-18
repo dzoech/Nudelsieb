@@ -49,10 +49,10 @@ namespace Nudelsieb.Cli
 
             foreach (var n in neurons)
             {
-                console.WriteLine($"neuron: {n.Information}");
+                console.WriteLine(n.Information);
                 if (n.Groups.Count > 0)
                 {
-                    console.WriteLine($"  groups: {string.Join(", ", n.Groups)}");
+                    console.WriteLine($"  Groups: {string.Join(", ", n.Groups)}");
                 }
 
                 if (n.Reminders.Count > 0)
@@ -68,7 +68,7 @@ namespace Nudelsieb.Cli
                         reminderTimeSpans[i] = FormatTimeSpan(timeSpan);
                     }
 
-                    console.WriteLine($"  reminders: {string.Join(", ", reminderTimeSpans)}");
+                    console.WriteLine($"  Reminders: {string.Join(", ", reminderTimeSpans)}");
                 }
             }
 

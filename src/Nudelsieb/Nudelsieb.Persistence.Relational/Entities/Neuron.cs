@@ -12,5 +12,7 @@ namespace Nudelsieb.Persistence.Relational.Entities
         public ICollection<Group> Groups { get; set; } = new List<Group>();
 
         public ICollection<Reminder> Reminders { get; set; } = new List<Reminder>();
+
+        public DateTimeOffset CreatedAt { get; set; }
     }
 }

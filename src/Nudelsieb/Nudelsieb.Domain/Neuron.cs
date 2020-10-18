@@ -11,7 +11,7 @@ namespace Nudelsieb.Domain
 
         public Guid Id { get; set; }
 
-        public string Information { get; set; }
+        public string Information { get; }
 
         public List<string> Groups { get; set; }
 
@@ -31,10 +31,24 @@ namespace Nudelsieb.Domain
                 reminders = value;
             }
         }
+
+        public DateTimeOffset CreatedAt { get; }
+
         public Neuron(string information)
+            : this(information, DateTimeOffset.UtcNow)
         {
+        }
+
+        public Neuron(string information, DateTimeOffset createdAt)
+        {
+            if (createdAt > DateTimeOffset.UtcNow)
+            {
+                throw new ArgumentException("Creation date must not be in the future.", nameof(createdAt));
+            }
+
             Information = information;
             Groups = new List<string>();
+            CreatedAt = createdAt;
         }
 
         public bool SetReminders(DateTimeOffset[] reminderTimes, out List<int> errorIndices)
