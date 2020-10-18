@@ -10,7 +10,7 @@ using Microsoft.Identity.Client;
 using Nudelsieb.Cli.Options;
 using Nudelsieb.Cli.Services;
 
-namespace Nudelsieb.Cli
+namespace Nudelsieb.Cli.Commands
 {
     class LoginCommand : CommandBase
     {

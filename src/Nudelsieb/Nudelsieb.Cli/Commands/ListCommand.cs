@@ -6,9 +6,10 @@ using McMaster.Extensions.CommandLineUtils;
 using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.Services;
 
-namespace Nudelsieb.Cli
+namespace Nudelsieb.Cli.Commands
 {
-    class GetCommand : CommandBase
+    [Command(names: new[] { "list", "get" })]
+    class ListCommand : CommandBase
     {
         private readonly IBraindumpService braindumpService;
         private readonly IConsole console;
@@ -17,7 +18,7 @@ namespace Nudelsieb.Cli
         [Option(Description = "The name of the group for which all neurons are listed.")]
         public string Group { get; set; } = string.Empty;
 
-        public GetCommand(
+        public ListCommand(
             IBraindumpService braindumpService,
             IConsole console,
             IGroupParser groupParser)
@@ -33,13 +34,13 @@ namespace Nudelsieb.Cli
 
             if (string.IsNullOrEmpty(Group))
             {
-                neurons = await this.braindumpService.GetAll();
+                neurons = await this.braindumpService.GetAllAsync();
             }
             else
             {
                 if (groupParser.TryParse(Group, out var groupName))
                 {
-                    neurons = await this.braindumpService.GetNeuronsByGroup(groupName);
+                    neurons = await this.braindumpService.GetNeuronsByGroupAsync(groupName);
                 }
                 else
                 {
@@ -77,14 +78,23 @@ namespace Nudelsieb.Cli
 
         private string FormatTimeSpan(TimeSpan timeSpan)
         {
-            if (timeSpan.Days > 0)
+            var s = string.Empty;
+
+            if (timeSpan <= TimeSpan.Zero)
             {
-                return timeSpan.ToString(@"%d'd '%h'h'");
+                s = "Overdue for ";
+            }
+
+            if (timeSpan.Days != 0)
+            {
+                s += timeSpan.ToString(@"%d'd '%h'h'");
             }
             else
             {
-                return timeSpan.ToString(@"%h'h '%m'm'");
+                s += timeSpan.ToString(@"%h'h '%m'm'");
             }
+
+            return s;
         }
     }
 }

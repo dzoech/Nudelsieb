@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensions.Msal;
+using Nudelsieb.Cli.Commands;
+using Nudelsieb.Cli.Commands.Reminder;
 using Nudelsieb.Cli.Options;
 using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.RestClients;
@@ -36,10 +38,11 @@ namespace Nudelsieb.Cli
     [Command("nudelsieb")]
     [VersionOptionFromMember("-v|--version", MemberName = nameof(GetVersion))]
     [Subcommand(
-        typeof(GetCommand),
+        typeof(ListCommand),
         typeof(AddCommand),
         typeof(LoginCommand),
-        typeof(ConfigCommand))]
+        typeof(ConfigCommand),
+        typeof(ReminderCommand))]
     class Program : CommandBase
     {
         private const Environment.SpecialFolder UserSettingsFolder = Environment.SpecialFolder.ApplicationData;

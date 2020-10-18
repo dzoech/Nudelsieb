@@ -7,7 +7,7 @@ using McMaster.Extensions.CommandLineUtils;
 using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.Services;
 
-namespace Nudelsieb.Cli
+namespace Nudelsieb.Cli.Commands
 {
     class AddCommand : CommandBase
     {
@@ -83,7 +83,7 @@ namespace Nudelsieb.Cli
             }
 
             // Message is not null because it is [Required]
-            await this.braindumpService.AddNeuron(Message!, Groups.ToList(), reminderTimes);
+            await this.braindumpService.AddNeuronAsync(Message!, Groups.ToList(), reminderTimes);
 
             return await base.OnExecuteAsync(app);
         }

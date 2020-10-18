@@ -20,6 +20,9 @@ namespace Nudelsieb.Cli.RestClients
         Task<List<Neuron>> GetNeuronsByGroupAsync(string groupName);
 
         [Post("/Neuron")]
-        Task AddNeuron(Neuron neuron);
+        Task AddNeuronAsync(Neuron neuron);
+
+        [Get("/Reminder")]
+        Task<List<Reminder>> GetRemindersAsync(DateTimeOffset until);
     }
 }
