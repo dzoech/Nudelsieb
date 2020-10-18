@@ -28,7 +28,8 @@ namespace Nudelsieb.Persistence.Relational
                 Information = neuron.Information,
                 Groups = neuron.Groups
                     .Select(g => new Entities.Group { Name = g })
-                    .ToList()
+                    .ToList(),
+                CreatedAt = neuron.CreatedAt
             };
 
 
@@ -55,6 +56,7 @@ namespace Nudelsieb.Persistence.Relational
             var neurons = await context.Neurons
                 .Include(n => n.Groups)
                 .Include(n => n.Reminders)
+                .OrderByDescending(n => n.CreatedAt)
                 .Select(n => MapNeuron(n))
                 .ToListAsync();
 
@@ -78,6 +80,7 @@ namespace Nudelsieb.Persistence.Relational
         {
             var neurons = await context.Groups
                 .Where(g => g.Name == groupName)
+                .OrderByDescending(g => g.Neuron.CreatedAt)
                 .Select(g => MapNeuron(g.Neuron))
                 .ToSql(logger)
                 .ToListAsync();

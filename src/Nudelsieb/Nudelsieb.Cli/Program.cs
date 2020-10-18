@@ -12,7 +12,6 @@ using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.RestClients;
 using Nudelsieb.Cli.Services;
 using Nudelsieb.Cli.UserSettings;
-using Refit;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -138,6 +137,11 @@ namespace Nudelsieb.Cli
             try
             {
                 return await hostBuilder.RunCommandLineApplicationAsync<Program>(args);
+            }
+            catch (UnrecognizedCommandParsingException ex)
+            {
+                await Console.Error.WriteLineAsync($"Error: {ex.Message}");
+                return 1;
             }
             catch (Exception ex)
             {
