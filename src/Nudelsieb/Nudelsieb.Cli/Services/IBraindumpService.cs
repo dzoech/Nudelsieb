@@ -11,5 +11,7 @@ namespace Nudelsieb.Cli.Services
         Task AddNeuron(string information, List<string> groups, List<DateTimeOffset> reminders);
         Task<List<Neuron>> GetAll();
         Task<List<Neuron>> GetNeuronsByGroup(string group);
+
+        Task<List<Reminder>> GetReminders(DateTimeOffset until);
     }
 }

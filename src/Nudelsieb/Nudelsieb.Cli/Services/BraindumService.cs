@@ -37,7 +37,7 @@ namespace Nudelsieb.Cli.Services
                 Reminders = reminders
             };            
 
-            await restClient.AddNeuron(neuron);
+            await restClient.AddNeuronAsync(neuron);
         }
 
         public async Task<List<Neuron>> GetAll()
@@ -48,6 +48,11 @@ namespace Nudelsieb.Cli.Services
         public async Task<List<Neuron>> GetNeuronsByGroup(string group)
         {
             return await restClient.GetNeuronsByGroupAsync(group);
+        }
+
+        public async Task<List<Reminder>> GetReminders(DateTimeOffset until)
+        {
+            return await restClient.GetRemindersAsync(until);
         }
     }
 }
