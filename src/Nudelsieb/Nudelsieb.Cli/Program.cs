@@ -38,7 +38,7 @@ namespace Nudelsieb.Cli
     [Command("nudelsieb")]
     [VersionOptionFromMember("-v|--version", MemberName = nameof(GetVersion))]
     [Subcommand(
-        typeof(GetCommand),
+        typeof(ListCommand),
         typeof(AddCommand),
         typeof(LoginCommand),
         typeof(ConfigCommand),

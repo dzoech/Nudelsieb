@@ -8,7 +8,8 @@ using Nudelsieb.Cli.Services;
 
 namespace Nudelsieb.Cli.Commands
 {
-    class GetCommand : CommandBase
+    [Command(names: new[] { "list", "get" })]
+    class ListCommand : CommandBase
     {
         private readonly IBraindumpService braindumpService;
         private readonly IConsole console;
@@ -17,7 +18,7 @@ namespace Nudelsieb.Cli.Commands
         [Option(Description = "The name of the group for which all neurons are listed.")]
         public string Group { get; set; } = string.Empty;
 
-        public GetCommand(
+        public ListCommand(
             IBraindumpService braindumpService,
             IConsole console,
             IGroupParser groupParser)

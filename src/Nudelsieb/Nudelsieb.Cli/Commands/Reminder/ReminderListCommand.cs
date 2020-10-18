@@ -8,11 +8,12 @@ using Nudelsieb.Cli.Services;
 
 namespace Nudelsieb.Cli.Commands.Reminder
 {
-    [Subcommand(typeof(ReminderGetCommand))]
+    [Command(names: new[] { "reminder", "reminders" })]
+    [Subcommand(typeof(ReminderListCommand))]
     partial class ReminderCommand : CommandBase
     {
-        [Command("get")]
-        class ReminderGetCommand : CommandBase
+        [Command(names: new[] { "list", "get" })]
+        class ReminderListCommand : CommandBase
         {
             private readonly IBraindumpService braindumpService;
             private readonly IConsole console;
@@ -20,7 +21,7 @@ namespace Nudelsieb.Cli.Commands.Reminder
 
             public string Until { get; set; } = "7d";
 
-            public ReminderGetCommand(
+            public ReminderListCommand(
                 IBraindumpService braindumpService,
                 IConsole console,
                 IReminderParser reminderParser)
@@ -64,7 +65,7 @@ namespace Nudelsieb.Cli.Commands.Reminder
             private string FormatTimeSpan(TimeSpan timeSpan)
             {
                 var s = string.Empty;
-             
+
                 if (timeSpan <= TimeSpan.Zero)
                 {
                     s = "Overdue for ";
