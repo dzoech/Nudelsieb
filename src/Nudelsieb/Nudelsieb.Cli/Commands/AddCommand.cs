@@ -7,7 +7,7 @@ using McMaster.Extensions.CommandLineUtils;
 using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.Services;
 
-namespace Nudelsieb.Cli
+namespace Nudelsieb.Cli.Commands
 {
     class AddCommand : CommandBase
     {

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensions.Msal;
+using Nudelsieb.Cli.Commands;
 using Nudelsieb.Cli.Options;
 using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.RestClients;
