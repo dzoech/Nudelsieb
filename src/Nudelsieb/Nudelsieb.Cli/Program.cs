@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensions.Msal;
 using Nudelsieb.Cli.Options;
+using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.RestClients;
 using Nudelsieb.Cli.Services;
 using Nudelsieb.Cli.UserSettings;
@@ -34,7 +35,7 @@ namespace Nudelsieb.Cli
     }
 
     [Command("nudelsieb")]
-    [VersionOptionFromMember("--version", MemberName = nameof(GetVersion))]
+    [VersionOptionFromMember("-v|--version", MemberName = nameof(GetVersion))]
     [Subcommand(
         typeof(GetCommand),
         typeof(AddCommand),
@@ -44,7 +45,7 @@ namespace Nudelsieb.Cli
     {
         private const Environment.SpecialFolder UserSettingsFolder = Environment.SpecialFolder.ApplicationData;
 
-        private static readonly string UserSettingsLocation = 
+        private static readonly string UserSettingsLocation =
             Path.Combine(Environment.GetFolderPath(UserSettingsFolder), "nudelsieb");
 
         public static async Task<int> Main(string[] args)
@@ -81,7 +82,7 @@ namespace Nudelsieb.Cli
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    services.Configure<AuthOptions>(o => 
+                    services.Configure<AuthOptions>(o =>
                         context.Configuration.GetSection(
                             AuthOptions.SectionName).Bind(o));
 
@@ -118,6 +119,7 @@ namespace Nudelsieb.Cli
                         })
                         .AddTransient<IBraindumpService, BraindumService>()
                         .AddTransient<IAuthenticationService, AuthenticationService>()
+                        .AddTransient<IGroupParser, GroupParser>()
                         .AddTransient<IReminderParser>(_ => new ReminderParser(Thread.CurrentThread.CurrentCulture)
                         )
                         .AddRestClients()
@@ -126,15 +128,22 @@ namespace Nudelsieb.Cli
                             var logger = sp.GetRequiredService<ILogger<LocalUserSettingsService>>();
                             var endpointOptions = sp.GetRequiredService<IOptions<EndpointsOptions>>();
                             return new LocalUserSettingsService(
-                                logger, 
-                                endpointOptions, 
+                                logger,
+                                endpointOptions,
                                 Environment.SpecialFolder.ApplicationData);
                         })
                         ;
-
                 });
 
-            return await hostBuilder.RunCommandLineApplicationAsync<Program>(args);
+            try
+            {
+                return await hostBuilder.RunCommandLineApplicationAsync<Program>(args);
+            }
+            catch (Exception ex)
+            {
+                await Console.Error.WriteLineAsync($"Error ({ex.GetType()}): {ex.Message}");
+                return 1; // exit with error
+            }
         }
 
         /// <summary>
