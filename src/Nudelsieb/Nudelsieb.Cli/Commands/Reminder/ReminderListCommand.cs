@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.Services;
+using Nudelsieb.Cli.Utils;
+using static Nudelsieb.Cli.Utils.IConsoleExtensions;
 
 namespace Nudelsieb.Cli.Commands.Reminder
 {
@@ -46,18 +49,16 @@ namespace Nudelsieb.Cli.Commands.Reminder
                     throw new ArgumentException("Could not parse reminder", nameof(Until));
                 }
 
-                foreach (var r in reminders)
-                {
-                    var formatedReminder = FormatTimeSpan(r.At - DateTimeOffset.Now);
-                    console.Write($"{formatedReminder} | {r.NeuronInformation}");
-
-                    if (r.NeuronGroups.Length > 0)
+                console.WriteTable(
+                    reminders,
+                    r => new
                     {
-                        console.Write($" | Groups: #{string.Join(", #", r.NeuronGroups)}");
-                    }
-
-                    console.WriteLine();
-                }
+                        r.Id,
+                        Neuron = r.NeuronInformation,
+                        Groups = $"{string.Join(", ", r.NeuronGroups)}",
+                        DueIn = FormatTimeSpan(r.At - DateTimeOffset.Now)
+                    },
+                    r => r.IsOverdue ? Highlighting.Emphasize : Highlighting.None);
 
                 return await base.OnExecuteAsync(app);
             }
