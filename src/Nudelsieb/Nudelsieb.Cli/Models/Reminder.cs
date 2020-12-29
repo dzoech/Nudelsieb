@@ -13,5 +13,7 @@ namespace Nudelsieb.Cli.Models
         public string NeuronInformation { get; set; } = string.Empty;
 
         public string[] NeuronGroups { get; set; } = Array.Empty<string>();
+
+        public bool IsOverdue => this.At < DateTimeOffset.Now;
     }
 }

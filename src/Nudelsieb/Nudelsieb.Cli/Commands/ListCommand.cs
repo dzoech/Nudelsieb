@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.Services;
+using Nudelsieb.Cli.Utils;
 
 namespace Nudelsieb.Cli.Commands
 {
@@ -72,6 +74,14 @@ namespace Nudelsieb.Cli.Commands
                     console.WriteLine($"  Reminders: {string.Join(", ", reminderTimeSpans)}");
                 }
             }
+
+            console.WriteTable(neurons, 
+                n => new {
+                    n.Id,
+                    n.Information,
+                    Groups = string.Join(", ", n.Groups),
+                    Reminders = string.Join(", ", n.Reminders.Select(r => FormatTimeSpan(r - DateTimeOffset.Now)))
+            });
 
             return await base.OnExecuteAsync(app);
         }
