@@ -49,6 +49,12 @@ namespace Nudelsieb.Cli.Services
                 return (Success: true, AccessToken: accessToken);
 
             }
+            catch (MsalUiRequiredException ex) when (ex.Message.StartsWith("AADB2C90080"))
+            {
+                // AADB2C90080: The provided grant has expired. Please re-authenticate and try again.
+                var (_, accessToken) = await LoginAsync();
+                return (true, accessToken);
+            }
             catch (MsalUiRequiredException ex)
             {
                 this.logger.LogInformation($"{nameof(MsalUiRequiredException)}: {ex}");
