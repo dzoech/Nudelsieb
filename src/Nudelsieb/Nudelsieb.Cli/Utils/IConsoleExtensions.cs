@@ -10,6 +10,7 @@ namespace Nudelsieb.Cli.Utils
     internal static class IConsoleExtensions
     {
         private const string ColumnDelimiter = "  ";
+        private const int ColumnLengthLimit = 60;
 
         internal enum Highlighting
         {
@@ -64,12 +65,21 @@ namespace Nudelsieb.Cli.Utils
         internal static void WriteTable<T, TProjection>(
             this IConsole console,
             IEnumerable<T> data,
+            Func<T, TProjection> projection)
+                where T : class
+                where TProjection : class
+        {
+            WriteTable(console, data, projection, _ => Highlighting.None);
+        }
+
+        internal static void WriteTable<T, TProjection>(
+            this IConsole console,
+            IEnumerable<T> data,
             Func<T, TProjection> projection,
             Func<T, Highlighting> highlight)
                 where T : class
                 where TProjection : class
         {
-
             var projectionWithIndex = data.Select((val, idx) =>
                 new
                 {
@@ -97,12 +107,18 @@ namespace Nudelsieb.Cli.Utils
                     currMaxColumnLength = Math.Max(currMaxColumnLength, text.Length);
                 }
 
-                maxColumnLengths[c] = currMaxColumnLength;
+                maxColumnLengths[c] = Math.Min(currMaxColumnLength, ColumnLengthLimit);
             }
 
             // Print header
-            var columnNames = string.Join(ColumnDelimiter, propertyColumns.Select((c, i) => c.Name.PadRight(maxColumnLengths[i])));
-            var columnNameUnderlines = string.Join(ColumnDelimiter, maxColumnLengths.Select(l => new string('-', l)));
+            var columnNames = string.Join(
+                ColumnDelimiter,
+                propertyColumns.Select((c, i) => AdjustToWidth(c.Name, (maxColumnLengths[i]))));
+
+            var columnNameUnderlines = string.Join(
+                ColumnDelimiter,
+                maxColumnLengths.Select(l => new string('-', l)));
+
             console.WriteLine(columnNames);
             console.WriteLine(columnNameUnderlines);
 
@@ -114,7 +130,8 @@ namespace Nudelsieb.Cli.Utils
                 var rowHighlighting = highlight(item.Current);
                 for (int c = 0; c < tableSize.Columns; c++)
                 {
-                    console.Write(rowHighlighting, content[r, c].PadRight(maxColumnLengths[c]));
+                    var paddedContent = AdjustToWidth(content[r, c], maxColumnLengths[c]);
+                    console.Write(rowHighlighting, paddedContent);
 
                     if (c != tableSize.Columns)
                     {
@@ -123,6 +140,21 @@ namespace Nudelsieb.Cli.Utils
                 }
                 console.WriteLine();
             }
+        }
+
+        static string AdjustToWidth(string value, int width)
+        {
+            if (value.Length < width)
+            {
+                return value.PadRight(width);
+            }
+
+            if (value.Length > width)
+            {
+                return value.Remove(startIndex: width - 3) + "...";
+            }
+
+            return value;
         }
     }
 }

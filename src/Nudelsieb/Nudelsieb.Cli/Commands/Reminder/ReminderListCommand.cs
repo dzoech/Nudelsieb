@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
+using Nudelsieb.Cli.Models;
 using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.Services;
 using Nudelsieb.Cli.Utils;
