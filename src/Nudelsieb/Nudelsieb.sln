@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Domain", "Nudelsi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Persistence", "Nudelsieb.Persistence\Nudelsieb.Persistence.csproj", "{F6D01AB0-1DEB-40D7-BFB1-C606E505038F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nudelsieb.Persistence.Relational", "Nudelsieb.Persistence.Relational\Nudelsieb.Persistence.Relational.csproj", "{CC308F7A-E9F9-4574-80A2-2D0EC0540DEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Persistence.Relational", "Nudelsieb.Persistence.Relational\Nudelsieb.Persistence.Relational.csproj", "{CC308F7A-E9F9-4574-80A2-2D0EC0540DEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nudelsieb.Mobile.Android", "Nudelsieb.Mobile\Nudelsieb.Mobile.Android\Nudelsieb.Mobile.Android.csproj", "{08ABC336-4A55-4186-A9E7-4E0FB66826F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nudelsieb.Mobile", "Nudelsieb.Mobile\Nudelsieb.Mobile\Nudelsieb.Mobile.csproj", "{0B93D89D-B005-45C9-B7C4-2E38529AFD35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,16 @@ Global
 		{CC308F7A-E9F9-4574-80A2-2D0EC0540DEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC308F7A-E9F9-4574-80A2-2D0EC0540DEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC308F7A-E9F9-4574-80A2-2D0EC0540DEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08ABC336-4A55-4186-A9E7-4E0FB66826F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08ABC336-4A55-4186-A9E7-4E0FB66826F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08ABC336-4A55-4186-A9E7-4E0FB66826F8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{08ABC336-4A55-4186-A9E7-4E0FB66826F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08ABC336-4A55-4186-A9E7-4E0FB66826F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08ABC336-4A55-4186-A9E7-4E0FB66826F8}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{0B93D89D-B005-45C9-B7C4-2E38529AFD35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B93D89D-B005-45C9-B7C4-2E38529AFD35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B93D89D-B005-45C9-B7C4-2E38529AFD35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B93D89D-B005-45C9-B7C4-2E38529AFD35}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
