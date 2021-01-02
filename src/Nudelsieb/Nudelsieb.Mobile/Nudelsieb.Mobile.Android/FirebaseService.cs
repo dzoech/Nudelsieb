@@ -53,11 +53,15 @@ namespace Nudelsieb.Mobile.Droid
             var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
 
             var notificationBuilder = new NotificationCompat.Builder(this, AppConstants.NotificationChannelName)
-                .SetContentTitle("XamarinNotify Message")
-                .SetSmallIcon(Resource.Drawable.ic_launcher)
-                .SetContentText(body)
+                .SetContentTitle("ContentTitle: Nudelsieb")
+                .SetContentText("ContentText: " + body)
+                //.SetContentInfo("ContentInfo")
+                .SetSmallIcon(Resource.Drawable.xamarin_logo)
                 .SetAutoCancel(true)
                 .SetShowWhen(false)
+                .AddAction(new NotificationCompat.Action(0, "Snooze 1 hour", pendingIntent))
+                .AddAction(new NotificationCompat.Action(0, "Snooze 1 day", pendingIntent))
+                .AddAction(new NotificationCompat.Action(0, "Forget", pendingIntent))
                 .SetContentIntent(pendingIntent);
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
