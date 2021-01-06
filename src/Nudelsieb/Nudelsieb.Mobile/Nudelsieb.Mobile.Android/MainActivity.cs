@@ -39,7 +39,7 @@ namespace Nudelsieb.Mobile.Droid
 
         protected override void OnNewIntent(Intent intent)
         {
-            Log.Debug(AppConstants.DebugTag, "OnNewIntent");
+            Log.Debug(AppSettings.Settings.DebugTag, "OnNewIntent");
 
             if (intent.Extras != null)
             {
@@ -57,11 +57,11 @@ namespace Nudelsieb.Mobile.Droid
             {
                 if (GoogleApiAvailability.Instance.IsUserResolvableError(resultCode))
                 {
-                    Log.Debug(AppConstants.DebugTag, GoogleApiAvailability.Instance.GetErrorString(resultCode));
+                    Log.Debug(AppSettings.Settings.DebugTag, GoogleApiAvailability.Instance.GetErrorString(resultCode));
                 }
                 else
                 {
-                    Log.Debug(AppConstants.DebugTag, "This device is not supported");
+                    Log.Debug(AppSettings.Settings.DebugTag, "This device is not supported");
                 }
                 return false;
             }
@@ -74,7 +74,7 @@ namespace Nudelsieb.Mobile.Droid
             // There is no need to create a notification channel on older versions of Android.
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
-                var channelName = AppConstants.NotificationChannelName;
+                var channelName = AppSettings.Settings.NotificationChannelName;
                 var channelDescription = string.Empty;
                 var channel = new NotificationChannel(channelName, channelName, NotificationImportance.Default)
                 {

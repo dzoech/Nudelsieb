@@ -52,7 +52,7 @@ namespace Nudelsieb.Mobile.Droid
             intent.PutExtra("message", body);
             var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
 
-            var notificationBuilder = new NotificationCompat.Builder(this, AppConstants.NotificationChannelName)
+            var notificationBuilder = new NotificationCompat.Builder(this, AppSettings.Settings.NotificationChannelName)
                 .SetContentTitle("ContentTitle: Nudelsieb")
                 .SetContentText("ContentText: " + body)
                 //.SetContentInfo("ContentInfo")
@@ -66,7 +66,7 @@ namespace Nudelsieb.Mobile.Droid
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
-                notificationBuilder.SetChannelId(AppConstants.NotificationChannelName);
+                notificationBuilder.SetChannelId(AppSettings.Settings.NotificationChannelName);
             }
 
             var notificationManager = NotificationManager.FromContext(this);
@@ -82,18 +82,18 @@ namespace Nudelsieb.Mobile.Droid
         {
             try
             {
-                NotificationHub hub = new NotificationHub(AppConstants.NotificationHubName, AppConstants.ListenConnectionString, this);
+                NotificationHub hub = new NotificationHub(AppSettings.Settings.NotificationHubName, AppSettings.Settings.ListenConnectionString, this);
 
                 // register device with Azure Notification Hub using the token from FCM
-                Registration registration = hub.Register(token, AppConstants.SubscriptionTags);
+                Registration registration = hub.Register(token, AppSettings.Settings.SubscriptionTags);
 
                 // subscribe to the SubscriptionTags list with a simple template.
                 string pnsHandle = registration.PNSHandle;
-                TemplateRegistration templateReg = hub.RegisterTemplate(pnsHandle, "defaultTemplate", AppConstants.FCMTemplateBody, AppConstants.SubscriptionTags);
+                TemplateRegistration templateReg = hub.RegisterTemplate(pnsHandle, "defaultTemplate", AppSettings.Settings.FcmTemplateBody, AppSettings.Settings.SubscriptionTags);
             }
             catch (Exception e)
             {
-                Log.Error(AppConstants.DebugTag, $"Error registering device: {e.Message}");
+                Log.Error(AppSettings.Settings.DebugTag, $"Error registering device: {e.Message}");
             }
         }
     }
