@@ -10,19 +10,31 @@ namespace Nudelsieb.Mobile
 {
     public class AppSettings
     {
-        private const string SettingsFileName = "appsettings.json";
+        private const string AppSettingsFileName = "appsettings.json";
+        private const string SecretFileName = "secrets.json";
 
         private static AppSettings instance;
 
         public static AppSettings Initialize()
         {
-            var assembly = Assembly.GetAssembly(typeof(AppSettings));
-            var stream = assembly.GetManifestResourceStream($"Nudelsieb.Mobile.{SettingsFileName}");
-            using var reader = new StreamReader(stream);
-            var fileContent = reader.ReadToEnd();
-            var appSettings = JsonSerializer.Deserialize<AppSettings>(fileContent);
+            string appSettingsContent = ReadSettingsFile(AppSettingsFileName);
+            var appSettings = JsonSerializer.Deserialize<AppSettings>(appSettingsContent);
+            
+            string secretContent = ReadSettingsFile(SecretFileName);
+            var secretSettings = JsonSerializer.Deserialize<AppSettings>(secretContent);
+
+            // TODO use reflection to override all non-null secret properties
+            appSettings.ListenConnectionString = secretSettings.ListenConnectionString;
 
             return appSettings;
+        }
+
+        private static string ReadSettingsFile(string fileName)
+        {
+            var assembly = Assembly.GetAssembly(typeof(AppSettings));
+            var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.{fileName}");
+            using var reader = new StreamReader(stream);
+            return reader.ReadToEnd();
         }
 
         public static AppSettings Settings => instance ??= Initialize();
