@@ -5,6 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{08ABC336-4A55-4186-A9E7-4E0FB66826F8}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <!-- <UserSecretsId>f9194e5f-8ef5-4895-a178-2f82bf77d01f</UserSecretsId> -->
     <TemplateGuid>{6968b3a4-1835-46a3-ac5c-1ae33b475983}</TemplateGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Nudelsieb.Mobile.Droid</RootNamespace>
@@ -21,6 +22,7 @@
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
+    <AndroidManifestPlaceholders>identityClientId=6ea4a837-1b3b-483f-aaeb-e7a96d56d4d9</AndroidManifestPlaceholders>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>

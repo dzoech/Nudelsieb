@@ -10,6 +10,7 @@ using Android.Content;
 using Android.Gms.Common;
 using Android.Util;
 using Nudelsieb.Mobile.Views;
+using Microsoft.Identity.Client;
 
 namespace Nudelsieb.Mobile.Droid
 {
@@ -26,6 +27,7 @@ namespace Nudelsieb.Mobile.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
+            App.UiParent = this;
 
             if (!IsPlayServiceAvailable())
             {
@@ -91,6 +93,12 @@ namespace Nudelsieb.Mobile.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            AuthenticationContinuationHelper.SetAuthenticationContinuationEventArgs(requestCode, resultCode, data);
         }
     }
 }
