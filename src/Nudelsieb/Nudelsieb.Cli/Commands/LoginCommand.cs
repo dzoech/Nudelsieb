@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Client;
-using Nudelsieb.Cli.Options;
-using Nudelsieb.Cli.Services;
+using Nudelsieb.Shared.Clients.Authentication;
 
 namespace Nudelsieb.Cli.Commands
 {

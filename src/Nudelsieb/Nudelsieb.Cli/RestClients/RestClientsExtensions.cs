@@ -4,8 +4,7 @@ using Nudelsieb.Cli.Options;
 using Nudelsieb.Cli.Services;
 using Refit;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using Nudelsieb.Shared.Clients.Authentication;
 
 namespace Nudelsieb.Cli.RestClients
 {

@@ -17,9 +17,15 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Identity.Client" Version="4.24.0" />
     <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.16.7" />
+    <PackageReference Include="Refit" Version="5.2.4" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
     <PackageReference Include="System.Text.Json" Version="5.0.0" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1821" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Nudelsieb.Shared.Clients\Nudelsieb.Shared.Clients.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Identity.Client;
 
-namespace Nudelsieb.Cli.Options
+namespace Nudelsieb.Shared.Clients.Authentication
 {
-    class AuthOptions
+    public class AuthOptions
     {
         public const string SectionName = "Auth";
 

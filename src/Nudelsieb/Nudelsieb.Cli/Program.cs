@@ -14,6 +14,7 @@ using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.RestClients;
 using Nudelsieb.Cli.Services;
 using Nudelsieb.Cli.UserSettings;
+using Nudelsieb.Shared.Clients.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

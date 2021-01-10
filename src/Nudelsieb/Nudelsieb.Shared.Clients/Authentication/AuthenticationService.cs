@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
-using Nudelsieb.Cli.Models;
-using Nudelsieb.Cli.Options;
+using Nudelsieb.Shared.Clients.Models;
 
-namespace Nudelsieb.Cli.Services
+namespace Nudelsieb.Shared.Clients.Authentication
 {
-    class AuthenticationService : IAuthenticationService
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly ILogger<AuthenticationService> logger;
         private readonly IPublicClientApplication clientApplication;

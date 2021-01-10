@@ -18,17 +18,20 @@
         <RepositoryUrl>https://github.com/dzoech/Nudelsieb</RepositoryUrl>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.0.0" />
+        <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.1.0" />
         <PackageReference Include="McMaster.Extensions.Hosting.CommandLine" Version="3.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.6" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.6" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.6" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.6" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.6" />
-        <PackageReference Include="Microsoft.Identity.Client" Version="4.16.1" />
-        <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.12.0" />
-        <PackageReference Include="refit" Version="5.1.67" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
+        <PackageReference Include="Microsoft.Identity.Client" Version="4.24.0" />
+        <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.16.7" />
+        <PackageReference Include="refit" Version="5.2.4" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Nudelsieb.Shared.Clients\Nudelsieb.Shared.Clients.csproj" />
     </ItemGroup>
     <ItemGroup>
         <None Update="appsettings.json">

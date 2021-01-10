@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Nudelsieb.Cli.Models
+namespace Nudelsieb.Shared.Clients.Models
 {
-    class User
+    public class User
     {
         public Guid Id { get; set; }
 
