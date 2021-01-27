@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Nudelsieb.Mobile.Models;
-using Nudelsieb.Mobile.RestClients;
 using Nudelsieb.Mobile.Services;
 using Xamarin.Forms;
 
@@ -12,7 +11,6 @@ namespace Nudelsieb.Mobile.ViewModels
     public class BaseViewModel : INotifyPropertyChanged
     {
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
-        public IBraindumpRestClient BraindumRestClient => DependencyService.Get<IBraindumpRestClient>();
 
         bool isBusy = false;
         public bool IsBusy

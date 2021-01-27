@@ -3,6 +3,7 @@ using Microsoft.Identity.Client;
 using Nudelsieb.Mobile.Configuration;
 using Nudelsieb.Mobile.RestClients;
 using Nudelsieb.Mobile.Services;
+using Nudelsieb.Mobile.Utils;
 using Nudelsieb.Mobile.Views;
 using Nudelsieb.Shared.Clients;
 using Nudelsieb.Shared.Clients.Authentication;
@@ -34,10 +35,11 @@ namespace Nudelsieb.Mobile
             AuthOptions auth = new AuthOptions
             {
                 ClientId = AppSettings.Settings.ClientId
-                // to map, or better consolidate
+                // todo map, or better consolidate
             };
 
-            AuthenticationService = new AuthenticationService(null, AuthenticationClient, new SimpleOptions<AuthOptions>(auth));
+            var logger = new DebugLogger<AuthenticationService>();
+            AuthenticationService = new AuthenticationService(logger, AuthenticationClient, new SimpleOptions<AuthOptions>(auth));
 
             BraindumpRestClient = RestService.For<IBraindumpRestClient>(
                 "https://nudelsieb.zoechbauer.dev",

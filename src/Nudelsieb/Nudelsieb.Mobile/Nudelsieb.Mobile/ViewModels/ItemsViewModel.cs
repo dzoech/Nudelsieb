@@ -41,7 +41,7 @@ namespace Nudelsieb.Mobile.ViewModels
                     Items.Add(item);
                 }
 
-                var reminders = await BraindumRestClient.GetRemindersAsync(DateTimeOffset.Now + TimeSpan.FromDays(14));
+                var reminders = await App.BraindumpRestClient.GetRemindersAsync(DateTimeOffset.Now + TimeSpan.FromDays(14));
             }
             catch (Exception ex)
             {
