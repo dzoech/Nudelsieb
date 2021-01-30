@@ -21,7 +21,6 @@ namespace Nudelsieb.Mobile.Views
 
         protected override async void OnAppearing()
         {
-            return;
             try
             {
                 // Look for existing account

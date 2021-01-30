@@ -105,14 +105,9 @@ namespace Nudelsieb.Shared.Clients.Authentication
             if (authResult.AccessToken is null)
                 throw new AuthorizationException("No access token token provided. This might be due to missing permissions or consent for scopes.");
 
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var idToken = tokenHandler.ReadJwtToken(authResult.IdToken);
-            
-
-            
-                var accessToken = tokenHandler.ReadJwtToken(authResult.AccessToken);
-            
+            var accessToken = tokenHandler.ReadJwtToken(authResult.AccessToken);
 
             return (idToken, accessToken);
         }

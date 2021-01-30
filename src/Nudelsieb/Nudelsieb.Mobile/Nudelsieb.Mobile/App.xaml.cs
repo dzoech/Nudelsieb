@@ -44,7 +44,7 @@ namespace Nudelsieb.Mobile
             AuthenticationService = new AuthenticationService(logger, AuthenticationClient, new SimpleOptions<AuthOptions>(auth));
 
             BraindumpRestClient = RestService.For<IBraindumpRestClient>(
-                "https://nudelsieb.zoechbauer.dev",
+                "https://nudelsieb.zoechbauer.dev/braindump/",
                 //endpointsOptions.Value.Braindump?.Value ?? throw new ArgumentNullException(),
                 new RefitSettings
                 {
