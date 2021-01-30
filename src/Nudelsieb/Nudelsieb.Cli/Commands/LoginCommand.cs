@@ -27,6 +27,10 @@ namespace Nudelsieb.Cli.Commands
             try
             {
                 var (idToken, _) = await authService.LoginAsync();
+
+                if (idToken is null)
+                    throw new Exception("Could not retrieve login user and retrieve their id token.");
+
                 var user = authService.GetUserFromIdToken(idToken);
                 this.console.WriteLine($"Hello {user.GivenName}! You are logged in as '{user.Email ?? ""}'.");
             }

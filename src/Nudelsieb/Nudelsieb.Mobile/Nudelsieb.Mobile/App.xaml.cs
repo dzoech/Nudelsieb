@@ -34,7 +34,9 @@ namespace Nudelsieb.Mobile
 
             AuthOptions auth = new AuthOptions
             {
-                ClientId = AppSettings.Settings.ClientId
+                ClientId = AppSettings.Settings.ClientId,
+                RequiredScopes = AppSettings.Settings.RequiredScopes,
+                PolicySignUpSignIn = AppSettings.Settings.PolicySignUpSignIn
                 // todo map, or better consolidate
             };
 

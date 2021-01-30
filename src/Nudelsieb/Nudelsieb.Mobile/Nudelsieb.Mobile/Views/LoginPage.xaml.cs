@@ -21,10 +21,14 @@ namespace Nudelsieb.Mobile.Views
 
         protected override async void OnAppearing()
         {
+            return;
             try
             {
                 // Look for existing account
                 IEnumerable<IAccount> accounts = await App.AuthenticationClient.GetAccountsAsync();
+
+                if (accounts.Count() == 0)
+                    return;
 
                 AuthenticationResult result = await App.AuthenticationClient
                     .AcquireTokenSilent(AppSettings.Settings.RequiredScopes, accounts.FirstOrDefault())
