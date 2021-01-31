@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Nudelsieb.Mobile.Configuration;
+using Nudelsieb.Shared.Clients.Authentication;
 
 namespace Nudelsieb.Mobile
 {
@@ -16,13 +20,12 @@ namespace Nudelsieb.Mobile
 
         private static AppSettings instance;
 
-        private List<string> requiredScopes = new List<string>();
-
         public static AppSettings Initialize()
         {
             var options = new JsonSerializerOptions
             {
-                ReadCommentHandling = JsonCommentHandling.Skip
+                ReadCommentHandling = JsonCommentHandling.Skip,
+                AllowTrailingCommas = true
             };
 
             string appSettingsContent = ReadSettingsFile(AppSettingsFileName);
@@ -31,11 +34,7 @@ namespace Nudelsieb.Mobile
             string secretContent = ReadSettingsFile(SecretFileName);
             var secretSettings = JsonSerializer.Deserialize<AppSettings>(secretContent, options);
 
-            // TODO use reflection to override all non-null secret properties
-            appSettings.TenantName = secretSettings.TenantName;
-            appSettings.ClientId = secretSettings.ClientId;
-            appSettings.IosKeychainSecurityGroups = secretSettings.IosKeychainSecurityGroups;
-            appSettings.ListenConnectionString = secretSettings.ListenConnectionString;
+            OverrideSettings(source: secretSettings, target: appSettings);
 
             return appSettings;
         }
@@ -48,46 +47,65 @@ namespace Nudelsieb.Mobile
             return reader.ReadToEnd();
         }
 
-        public static AppSettings Settings => instance ??= Initialize();
-
-        public string TenantName { get; set; }
-        public string AadTenant => $"{TenantName}.onmicrosoft.com";
-        public string ClientId { get; set; }
-        public string PolicySignUpSignIn { get; set; }
-        public string PolicyPasswortReset { get; set; }
-        public string AuthoritySignin => $"https://{TenantName}.b2clogin.com/tfp/{AadTenant}/{PolicySignUpSignIn}";
-        public string AuthorityPasswordReset => $"https://{TenantName}.b2clogin.com/tfp/{AadTenant}/{PolicyPasswortReset}";
-
-        public List<string> RequiredScopes
+        /// <summary>
+        /// Overrides a <typeparamref name="TSettings"/> object with all non-null values of another <typeparamref name="TSettings"/> object.
+        /// </summary>
+        /// <typeparam name="TSettings">A plain object</typeparam>
+        /// <remarks>Overrides collections only if they are empty.</remarks> 
+        private static void OverrideSettings<TSettings>(in TSettings source, TSettings target)
+            where TSettings : class
         {
-            get => requiredScopes.Select(s => ReplacePlaceholder(s)).ToList();
-            set => requiredScopes = value;
+            foreach (var prop in source.GetType().GetProperties())
+            {
+                if (!prop.CanWrite)
+                    continue;
+
+                if (prop.Name == nameof(Settings))
+                    continue;
+
+                var sourceValue = prop.GetValue(source);
+
+                if (sourceValue is null)
+                    continue;
+
+                var isCollection =
+                    typeof(IEnumerable).IsAssignableFrom(prop.PropertyType) &&
+                    prop.PropertyType != typeof(string);
+
+                var isNativeType = prop.PropertyType.Namespace.StartsWith("System");
+
+                if (isCollection)
+                {
+                    var targetCollection = prop.GetValue(target) as IEnumerable;
+                    var isEmpty = targetCollection.GetEnumerator().MoveNext() == false;
+
+                    if (isEmpty)
+                    {
+                        prop.SetValue(target, sourceValue);
+                    }
+                    else
+                    {
+                        Debug.WriteLine(
+                            "Cannot override settings collection because" +
+                            "it already contains items.");
+                    }
+                }
+                else if (isNativeType)
+                {
+                    prop.SetValue(target, sourceValue);
+                }
+                else
+                {
+                    OverrideSettings(sourceValue, prop.GetValue(target));
+                }
+            }
         }
 
-        /// <summary>
-        /// Set to a unique value for your app, such as your bundle identifier. 
-        /// Used on iOS to share keychain access.
-        /// </summary>
-        public string IosKeychainSecurityGroups { get; set; }
+        public static AppSettings Settings => instance ??= Initialize();
 
-        /// <summary>
-        /// Notification channels are used on Android devices starting with "Oreo"
-        /// </summary>
-        public string NotificationChannelName { get; set; }
+        public AuthOptions Auth { get; set; } = new AuthOptions();
 
-        /// <summary>
-        /// This is the name of your Azure Notification Hub, found in your Azure portal.
-        /// </summary>
-        public string NotificationHubName { get; set; }
-
-        /// <summary>
-        /// This is the "DefaultListenSharedAccessSignature" connection string, which is
-        /// found in your Azure Notification Hub portal under "Access Policies".
-        /// 
-        /// You should always use the ListenShared connection string. Do not use the
-        /// FullShared connection string in a client application.
-        /// </summary>
-        public string ListenConnectionString { get; set; }
+        public NotificationOptions Notifications { get; set; } = new NotificationOptions();
 
         /// <summary>
         /// Tag used in log messages to easily filter the device log
@@ -96,27 +114,9 @@ namespace Nudelsieb.Mobile
         public string DebugTag { get; set; }
 
         /// <summary>
-        /// The tags the device will subscribe to. These could be subjects like
-        /// news, sports, and weather. Or they can be tags that identify a user
-        /// across devices.
+        /// Set to a unique value for your app, such as your bundle identifier. 
+        /// Used on iOS to share keychain access.
         /// </summary>
-        public string[] SubscriptionTags { get; set; }
-
-        /// <summary>
-        /// This is the template json that Android devices will use. Templates
-        /// are defined by the device and can include multiple parameters.
-        /// </summary>
-        public string FcmTemplateBody { get; set; }
-
-        /// <summary>
-        /// This is the template json that Apple devices will use. Templates
-        /// are defined by the device and can include multiple parameters.
-        /// </summary>
-        public string ApnTemplateBody { get; set; }
-
-        private string ReplacePlaceholder(string scope)
-        {
-            return scope.Replace("{AadTenantUri}", $"https://{AadTenant}");
-        }
+        public string IosKeychainSecurityGroups { get; set; }
     }
 }

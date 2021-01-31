@@ -76,7 +76,7 @@ namespace Nudelsieb.Mobile.Droid
             // There is no need to create a notification channel on older versions of Android.
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
-                var channelName = AppSettings.Settings.NotificationChannelName;
+                var channelName = AppSettings.Settings.Notifications.NotificationChannelName;
                 var channelDescription = string.Empty;
                 var channel = new NotificationChannel(channelName, channelName, NotificationImportance.Default)
                 {

@@ -52,7 +52,7 @@ namespace Nudelsieb.Mobile.Droid
             intent.PutExtra("message", body);
             var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
 
-            var notificationBuilder = new NotificationCompat.Builder(this, AppSettings.Settings.NotificationChannelName)
+            var notificationBuilder = new NotificationCompat.Builder(this, AppSettings.Settings.Notifications.NotificationChannelName)
                 .SetContentTitle("ContentTitle: Nudelsieb")
                 .SetContentText("ContentText: " + body)
                 //.SetContentInfo("ContentInfo")
@@ -66,7 +66,7 @@ namespace Nudelsieb.Mobile.Droid
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
-                notificationBuilder.SetChannelId(AppSettings.Settings.NotificationChannelName);
+                notificationBuilder.SetChannelId(AppSettings.Settings.Notifications.NotificationChannelName);
             }
 
             var notificationManager = NotificationManager.FromContext(this);
@@ -82,14 +82,14 @@ namespace Nudelsieb.Mobile.Droid
         {
             try
             {
-                NotificationHub hub = new NotificationHub(AppSettings.Settings.NotificationHubName, AppSettings.Settings.ListenConnectionString, this);
+                NotificationHub hub = new NotificationHub(AppSettings.Settings.Notifications.NotificationHubName, AppSettings.Settings.Notifications.ListenConnectionString, this);
 
                 // register device with Azure Notification Hub using the token from FCM
-                Registration registration = hub.Register(token, AppSettings.Settings.SubscriptionTags);
+                Registration registration = hub.Register(token, AppSettings.Settings.Notifications.SubscriptionTags);
 
                 // subscribe to the SubscriptionTags list with a simple template.
                 string pnsHandle = registration.PNSHandle;
-                TemplateRegistration templateReg = hub.RegisterTemplate(pnsHandle, "defaultTemplate", AppSettings.Settings.FcmTemplateBody, AppSettings.Settings.SubscriptionTags);
+                TemplateRegistration templateReg = hub.RegisterTemplate(pnsHandle, "defaultTemplate", AppSettings.Settings.Notifications.FcmTemplateBody, AppSettings.Settings.Notifications.SubscriptionTags);
             }
             catch (Exception e)
             {

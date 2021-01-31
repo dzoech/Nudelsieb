@@ -26,17 +26,17 @@ namespace Nudelsieb.Mobile
             InitializeComponent();
 
             AuthenticationClient =
-                PublicClientApplicationBuilder.Create(AppSettings.Settings.ClientId)
+                PublicClientApplicationBuilder.Create(AppSettings.Settings.Auth.ClientId)
                     .WithIosKeychainSecurityGroup(AppSettings.Settings.IosKeychainSecurityGroups)
-                    .WithB2CAuthority(AppSettings.Settings.AuthoritySignin)
-                    .WithRedirectUri($"msal{AppSettings.Settings.ClientId}://auth")
+                    .WithB2CAuthority(AppSettings.Settings.Auth.AuthoritySignUpSignin)
+                    .WithRedirectUri($"msal{AppSettings.Settings.Auth.ClientId}://auth")
                     .Build();
 
             AuthOptions auth = new AuthOptions
             {
-                ClientId = AppSettings.Settings.ClientId,
-                RequiredScopes = AppSettings.Settings.RequiredScopes,
-                PolicySignUpSignIn = AppSettings.Settings.PolicySignUpSignIn
+                ClientId = AppSettings.Settings.Auth.ClientId,
+                RequiredScopes = AppSettings.Settings.Auth.RequiredScopes,
+                PolicySignUpSignIn = AppSettings.Settings.Auth.PolicySignUpSignIn
                 // todo map, or better consolidate
             };
 

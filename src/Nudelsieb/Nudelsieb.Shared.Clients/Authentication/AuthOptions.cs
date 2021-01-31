@@ -8,6 +8,8 @@ namespace Nudelsieb.Shared.Clients.Authentication
 {
     public class AuthOptions
     {
+        public List<string> TestProp { get; set; } = new List<string>();
+
         public const string SectionName = "Auth";
 
         public string? ClientId { get; set; }
@@ -16,9 +18,9 @@ namespace Nudelsieb.Shared.Clients.Authentication
 
         public string? PolicySignUpSignIn { get; set; }
 
-        public string AadTenant => $"{TenantName}.onmicrosoft.com";
+        public string? PolicyPasswortReset { get; set; }
 
-        public string B2cAuthority => $"https://{TenantName}.b2clogin.com/tfp/{AadTenant}/{PolicySignUpSignIn}";
+        public string AadTenant => $"{TenantName}.onmicrosoft.com";
 
         public string? RedirectUri { get; set; }
 
@@ -30,6 +32,10 @@ namespace Nudelsieb.Shared.Clients.Authentication
 
         public string? ClientSecret { get; set; }
 
+        public string AuthoritySignUpSignin => $"https://{TenantName}.b2clogin.com/tfp/{AadTenant}/{PolicySignUpSignIn}";
+
+        public string AuthorityPasswordReset => $"https://{TenantName}.b2clogin.com/tfp/{AadTenant}/{PolicyPasswortReset}";
+
         public CacheOptions Cache { get; set; } = new CacheOptions();
 
         public class CacheOptions
@@ -39,11 +45,11 @@ namespace Nudelsieb.Shared.Clients.Authentication
             public string Directory { get; set; } = string.Empty;
         }
 
+        private List<string> requiredScopes = new List<string>();
+
         private string ReplacePlaceholder(string scope)
         {
             return scope.Replace("{AadTenantUri}", $"https://{AadTenant}");
         }
-
-        private List<string> requiredScopes = new List<string>();
     }
 }

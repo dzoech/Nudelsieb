@@ -112,7 +112,7 @@ namespace Nudelsieb.Cli
                             var app = PublicClientApplicationBuilder
                               .Create(authOptions.ClientId)
                               .WithRedirectUri(authOptions.RedirectUri) // AAD B2C requires a port https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/System-Browser-on-.Net-Core#limitations
-                              .WithB2CAuthority(authOptions.B2cAuthority)
+                              .WithB2CAuthority(authOptions.AuthoritySignUpSignin)
                               .Build();
 
                             var msalCacheHelper = MsalCacheHelper.CreateAsync(props).Result;

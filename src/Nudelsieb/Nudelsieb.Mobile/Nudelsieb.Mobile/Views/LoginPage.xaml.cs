@@ -30,7 +30,7 @@ namespace Nudelsieb.Mobile.Views
                     return;
 
                 AuthenticationResult result = await App.AuthenticationClient
-                    .AcquireTokenSilent(AppSettings.Settings.RequiredScopes, accounts.FirstOrDefault())
+                    .AcquireTokenSilent(AppSettings.Settings.Auth.RequiredScopes, accounts.FirstOrDefault())
                     .ExecuteAsync();
 
                 await Navigation.PushAsync(new MainPage());
@@ -49,7 +49,7 @@ namespace Nudelsieb.Mobile.Views
             try
             {
                 result = await App.AuthenticationClient
-                    .AcquireTokenInteractive(AppSettings.Settings.RequiredScopes)
+                    .AcquireTokenInteractive(AppSettings.Settings.Auth.RequiredScopes)
                     .WithPrompt(Prompt.SelectAccount)
                     .WithParentActivityOrWindow(App.UiParent)
                     .ExecuteAsync();
@@ -75,10 +75,10 @@ namespace Nudelsieb.Mobile.Views
             try
             {
                 return await App.AuthenticationClient
-                    .AcquireTokenInteractive(AppSettings.Settings.RequiredScopes)
+                    .AcquireTokenInteractive(AppSettings.Settings.Auth.RequiredScopes)
                     .WithPrompt(Prompt.SelectAccount)
                     .WithParentActivityOrWindow(App.UiParent)
-                    .WithB2CAuthority(AppSettings.Settings.AuthorityPasswordReset)
+                    .WithB2CAuthority(AppSettings.Settings.Auth.AuthorityPasswordReset)
                     .ExecuteAsync();
             }
             catch (MsalException)
