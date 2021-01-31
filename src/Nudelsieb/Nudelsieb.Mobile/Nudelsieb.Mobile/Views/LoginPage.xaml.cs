@@ -13,32 +13,35 @@ namespace Nudelsieb.Mobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
+        private LoginViewModel viewModel;
+
         public LoginPage()
         {
             InitializeComponent();
-            this.BindingContext = new LoginViewModel();
+            this.BindingContext = viewModel = new LoginViewModel();
         }
 
         protected override async void OnAppearing()
         {
-            try
-            {
-                // Look for existing account
-                IEnumerable<IAccount> accounts = await App.AuthenticationClient.GetAccountsAsync();
+            await viewModel.Refresh();
+            //try
+            //{
+            //    // Look for existing account
+            //    IEnumerable<IAccount> accounts = await App.AuthenticationClient.GetAccountsAsync();
 
-                if (accounts.Count() == 0)
-                    return;
+            //    if (accounts.Count() == 0)
+            //        return;
 
-                AuthenticationResult result = await App.AuthenticationClient
-                    .AcquireTokenSilent(AppSettings.Settings.Auth.RequiredScopes, accounts.FirstOrDefault())
-                    .ExecuteAsync();
+            //    AuthenticationResult result = await App.AuthenticationClient
+            //        .AcquireTokenSilent(AppSettings.Settings.Auth.RequiredScopes, accounts.FirstOrDefault())
+            //        .ExecuteAsync();
 
-                await Navigation.PushAsync(new MainPage());
-            }
-            catch
-            {
-                // Do nothing - the user isn't logged in
-            }
+            //    await Navigation.PushAsync(new MainPage());
+            //}
+            //catch
+            //{
+            //    // Do nothing - the user isn't logged in
+            //}
 
             base.OnAppearing();
         }
@@ -48,20 +51,19 @@ namespace Nudelsieb.Mobile.Views
             AuthenticationResult result;
             try
             {
-                result = await App.AuthenticationClient
-                    .AcquireTokenInteractive(AppSettings.Settings.Auth.RequiredScopes)
-                    .WithPrompt(Prompt.SelectAccount)
-                    .WithParentActivityOrWindow(App.UiParent)
-                    .ExecuteAsync();
+                //result = await App.AuthenticationClient
+                //    .AcquireTokenInteractive(AppSettings.Settings.Auth.RequiredScopes)
+                //    .WithPrompt(Prompt.SelectAccount)
+                //    .WithParentActivityOrWindow(App.UiParent)
+                //    .ExecuteAsync();
 
-                await Navigation.PushAsync(new LogoutPage(result));
+                //await Navigation.PushAsync(new LogoutPage(result));
             }
             catch (MsalException ex)
             {
                 if (ex.Message != null && ex.Message.Contains("AADB2C90118"))
                 {
-                    result = await OnForgotPassword();
-                    await Navigation.PushAsync(new LogoutPage(result));
+                    await Navigation.PushAsync(new LogoutPage());
                 }
                 else if (ex.ErrorCode != "authentication_canceled")
                 {
@@ -70,22 +72,6 @@ namespace Nudelsieb.Mobile.Views
             }
         }
 
-        async Task<AuthenticationResult> OnForgotPassword()
-        {
-            try
-            {
-                return await App.AuthenticationClient
-                    .AcquireTokenInteractive(AppSettings.Settings.Auth.RequiredScopes)
-                    .WithPrompt(Prompt.SelectAccount)
-                    .WithParentActivityOrWindow(App.UiParent)
-                    .WithB2CAuthority(AppSettings.Settings.Auth.AuthorityPasswordReset)
-                    .ExecuteAsync();
-            }
-            catch (MsalException)
-            {
-                // Do nothing - ErrorCode will be displayed in OnLoginButtonClicked
-                return null;
-            }
-        }
+
     }
 }

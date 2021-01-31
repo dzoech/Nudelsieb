@@ -7,6 +7,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <!-- variable ${identityClientId} is defined in Nudelsieb.Mobile.Android.csproj in section AndroidManifestPlaceholders-->
                 <data android:scheme="msal${identityClientId}" android:host="auth" />
             </intent-filter>
         </activity>

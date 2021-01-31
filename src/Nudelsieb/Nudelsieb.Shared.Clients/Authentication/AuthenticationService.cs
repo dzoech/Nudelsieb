@@ -64,11 +64,13 @@ namespace Nudelsieb.Shared.Clients.Authentication
         public async Task<(JwtSecurityToken IdToken, JwtSecurityToken AccessToken)> LoginAsync()
         {
             if (this.authOptions.Value.PolicySignUpSignIn is null)
-            {
                 throw new ArgumentNullException(nameof(authOptions.Value.PolicySignUpSignIn));
-            }
 
             var accounts = await this.clientApplication.GetAccountsAsync();
+
+            // TODO: Handle unsuccessful authentication
+            // ex.ErrorCode == "authentication_canceled" TODO
+            // AADB2C90118: TODO
 
             var result = await this.clientApplication
                 .AcquireTokenInteractive(authOptions.Value.RequiredScopes)

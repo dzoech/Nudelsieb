@@ -15,7 +15,6 @@ namespace Nudelsieb.Mobile
 {
     public partial class App : Application
     {
-        public static IPublicClientApplication AuthenticationClient { get; private set; }
         public static IAuthenticationService AuthenticationService { get; private set; }
         public static IBraindumpRestClient BraindumpRestClient { get; set; }
 
@@ -25,9 +24,9 @@ namespace Nudelsieb.Mobile
         {
             InitializeComponent();
 
-            AuthenticationClient =
+            var authenticationClient =
                 PublicClientApplicationBuilder.Create(AppSettings.Settings.Auth.ClientId)
-                    .WithIosKeychainSecurityGroup(AppSettings.Settings.IosKeychainSecurityGroups)
+                    .WithParentActivityOrWindow(() => App.UiParent)
                     .WithB2CAuthority(AppSettings.Settings.Auth.AuthoritySignUpSignin)
                     .WithRedirectUri($"msal{AppSettings.Settings.Auth.ClientId}://auth")
                     .Build();
@@ -41,7 +40,7 @@ namespace Nudelsieb.Mobile
             };
 
             var logger = new DebugLogger<AuthenticationService>();
-            AuthenticationService = new AuthenticationService(logger, AuthenticationClient, new SimpleOptions<AuthOptions>(auth));
+            AuthenticationService = new AuthenticationService(logger, authenticationClient, new SimpleOptions<AuthOptions>(auth));
 
             BraindumpRestClient = RestService.For<IBraindumpRestClient>(
                 "https://nudelsieb.zoechbauer.dev/braindump/",

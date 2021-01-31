@@ -5,11 +5,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Nudelsieb.Mobile.Views.LoginPage"
-             Shell.NavBarIsVisible="False">
+             BackgroundColor="{StaticResource Primary}">
     <ContentPage.Content>
         <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            <Button x:Name="loginButton" Text="Login (code behind)" Clicked="OnLoginButtonClicked" />
-            <Button VerticalOptions="Center" Text="Login (command binding)" Command="{Binding LoginCommand}"/>
+            <StackLayout IsVisible="{Binding IsLoggedIn}">
+                <Label Text="{Binding Name}" />
+                <Label Text="{Binding Email}" />
+            </StackLayout>
+            
+
+            <Button VerticalOptions="Center" 
+                    IsVisible="{Binding IsLoggedIn, Converter={StaticResource BoolInverter}}" 
+                    Text="Login (command binding)" 
+                    Command="{Binding LoginCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -44,15 +44,15 @@ namespace Nudelsieb.Mobile.Views
 
         async void OnLogoutButtonClicked(object sender, EventArgs e)
         {
-            IEnumerable<IAccount> accounts = await App.AuthenticationClient.GetAccountsAsync();
+            //IEnumerable<IAccount> accounts = await App.AuthenticationClient.GetAccountsAsync();
 
-            while (accounts.Any())
-            {
-                await App.AuthenticationClient.RemoveAsync(accounts.First());
-                accounts = await App.AuthenticationClient.GetAccountsAsync();
-            }
+            //while (accounts.Any())
+            //{
+            //    await App.AuthenticationClient.RemoveAsync(accounts.First());
+            //    accounts = await App.AuthenticationClient.GetAccountsAsync();
+            //}
 
-            await Navigation.PopAsync();
+            //await Navigation.PopAsync();
         }
     }
 }
