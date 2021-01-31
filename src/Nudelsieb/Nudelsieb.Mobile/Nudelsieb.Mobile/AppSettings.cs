@@ -48,7 +48,8 @@ namespace Nudelsieb.Mobile
         }
 
         /// <summary>
-        /// Overrides a <typeparamref name="TSettings"/> object with all non-null values of another <typeparamref name="TSettings"/> object.
+        /// Overrides a <typeparamref name="TSettings"/> object with all non-null 
+        /// values of another <typeparamref name="TSettings"/> object.
         /// </summary>
         /// <typeparam name="TSettings">A plain object</typeparam>
         /// <remarks>Overrides collections only if they are empty.</remarks> 

@@ -3,29 +3,31 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Nudelsieb.Mobile.Models;
+using Nudelsieb.Mobile.RestClients.Models;
+using Nudelsieb.Mobile.Utils;
 using Nudelsieb.Mobile.Views;
 using Xamarin.Forms;
 
 namespace Nudelsieb.Mobile.ViewModels
 {
-    public class ItemsViewModel : BaseViewModel
+    public class RemindersViewModel : BaseViewModel
     {
-        private Item _selectedItem;
+        private Reminder _selectedItem;
 
-        public ObservableCollection<Item> Items { get; }
-        public Command LoadItemsCommand { get; }
-        public Command AddItemCommand { get; }
-        public Command<Item> ItemTapped { get; }
+        public ObservableCollection<Reminder> Reminders { get; }
+        public Command LoadRemindersCommand { get; }
+        public Command AddReminderCommand { get; }
+        public Command<Reminder> ItemTapped { get; }
 
-        public ItemsViewModel()
+        public RemindersViewModel()
         {
             Title = "Browse";
-            Items = new ObservableCollection<Item>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            Reminders = new ObservableCollection<Reminder>();
+            LoadRemindersCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            ItemTapped = new Command<Item>(OnItemSelected);
+            ItemTapped = new Command<Reminder>(OnItemSelected);
 
-            AddItemCommand = new Command(OnAddItem);
+            AddReminderCommand = new Command(OnAddItem);
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -34,14 +36,8 @@ namespace Nudelsieb.Mobile.ViewModels
 
             try
             {
-                Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
-                foreach (var item in items)
-                {
-                    Items.Add(item);
-                }
-
                 var reminders = await App.BraindumpRestClient.GetRemindersAsync(DateTimeOffset.Now + TimeSpan.FromDays(14));
+                Reminders.ReplaceWith(reminders);
             }
             catch (Exception ex)
             {
@@ -59,7 +55,7 @@ namespace Nudelsieb.Mobile.ViewModels
             SelectedItem = null;
         }
 
-        public Item SelectedItem
+        public Reminder SelectedItem
         {
             get => _selectedItem;
             set
@@ -74,7 +70,7 @@ namespace Nudelsieb.Mobile.ViewModels
             await Shell.Current.GoToAsync(nameof(NewItemPage));
         }
 
-        async void OnItemSelected(Item item)
+        async void OnItemSelected(Reminder item)
         {
             if (item == null)
                 return;

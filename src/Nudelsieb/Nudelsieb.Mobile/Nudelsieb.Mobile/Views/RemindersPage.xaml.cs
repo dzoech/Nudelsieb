@@ -12,15 +12,15 @@ using Xamarin.Forms.Xaml;
 
 namespace Nudelsieb.Mobile.Views
 {
-    public partial class ItemsPage : ContentPage
+    public partial class RemindersPage : ContentPage
     {
-        ItemsViewModel _viewModel;
+        RemindersViewModel _viewModel;
 
-        public ItemsPage()
+        public RemindersPage()
         {
             InitializeComponent();
 
-            BindingContext = _viewModel = new ItemsViewModel();
+            BindingContext = _viewModel = new RemindersViewModel();
         }
 
         protected override void OnAppearing()
