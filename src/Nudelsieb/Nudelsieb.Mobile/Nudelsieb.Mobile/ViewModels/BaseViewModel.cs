@@ -11,6 +11,7 @@ namespace Nudelsieb.Mobile.ViewModels
     public class BaseViewModel : INotifyPropertyChanged
     {
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+        public IAlerter Alerter => DependencyService.Get<IAlerter>();
 
         bool isBusy = false;
         public bool IsBusy

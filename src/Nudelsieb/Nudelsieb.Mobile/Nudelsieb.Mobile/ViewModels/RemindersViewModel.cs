@@ -25,9 +25,7 @@ namespace Nudelsieb.Mobile.ViewModels
             Title = "Browse";
             Reminders = new ObservableCollection<Reminder>();
             LoadRemindersCommand = new Command(async () => await ExecuteLoadItemsCommand());
-
             ItemTapped = new Command<Reminder>(OnItemSelected);
-
             AddReminderCommand = new Command(OnAddItem);
         }
 
@@ -37,13 +35,15 @@ namespace Nudelsieb.Mobile.ViewModels
 
             try
             {
-                var reminders = await App.BraindumpRestClient.GetRemindersAsync(DateTimeOffset.Now + TimeSpan.FromDays(14));
+                var reminders = await App.BraindumpRestClient
+                    .GetRemindersAsync(DateTimeOffset.Now + TimeSpan.FromDays(14));
+
                 Reminders.ReplaceWith(reminders);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                DependencyService.Get<IAlerter>().Alert(ex.Message);
+                Alerter.Alert(ex.Message);
             }
             finally
             {
