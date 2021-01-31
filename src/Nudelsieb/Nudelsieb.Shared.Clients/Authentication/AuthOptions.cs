@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.Identity.Client;
 
 namespace Nudelsieb.Shared.Clients.Authentication
 {
@@ -37,13 +34,6 @@ namespace Nudelsieb.Shared.Clients.Authentication
         public string AuthorityPasswordReset => $"https://{TenantName}.b2clogin.com/tfp/{AadTenant}/{PolicyPasswortReset}";
 
         public CacheOptions Cache { get; set; } = new CacheOptions();
-
-        public class CacheOptions
-        {
-            public string FileName { get; set; } = "cache";
-
-            public string Directory { get; set; } = string.Empty;
-        }
 
         private List<string> requiredScopes = new List<string>();
 

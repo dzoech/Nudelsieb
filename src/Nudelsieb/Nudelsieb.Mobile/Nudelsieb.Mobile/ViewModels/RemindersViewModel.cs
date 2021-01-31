@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Nudelsieb.Mobile.Models;
 using Nudelsieb.Mobile.RestClients.Models;
+using Nudelsieb.Mobile.Services;
 using Nudelsieb.Mobile.Utils;
 using Nudelsieb.Mobile.Views;
 using Xamarin.Forms;
@@ -42,6 +43,7 @@ namespace Nudelsieb.Mobile.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+                DependencyService.Get<IAlerter>().Alert(ex.Message);
             }
             finally
             {
