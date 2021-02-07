@@ -8,6 +8,7 @@ using AndroidX.Core.App;
 using Firebase.Messaging;
 using Nudelsieb.Mobile.Views;
 using WindowsAzure.Messaging;
+using WindowsAzure.Messaging.NotificationHubs;
 
 namespace Nudelsieb.Mobile.Droid
 {
@@ -38,6 +39,10 @@ namespace Nudelsieb.Mobile.Droid
             SendMessageToMainPage(messageBody);
         }
 
+        /// <summary>
+        /// Only called once per installation.
+        /// </summary>
+        /// <param name="token"></param>
         public override void OnNewToken(string token)
         {
             // TODO: save token instance locally, or log if desired
@@ -56,7 +61,7 @@ namespace Nudelsieb.Mobile.Droid
                 .SetContentTitle("ContentTitle: Nudelsieb")
                 .SetContentText("ContentText: " + body)
                 //.SetContentInfo("ContentInfo")
-                .SetSmallIcon(Resource.Drawable.xamarin_logo)
+                .SetSmallIcon(Resource.Drawable.icon)
                 .SetAutoCancel(true)
                 .SetShowWhen(false)
                 .AddAction(new NotificationCompat.Action(0, "Snooze 1 hour", pendingIntent))
@@ -72,7 +77,7 @@ namespace Nudelsieb.Mobile.Droid
             var notificationManager = NotificationManager.FromContext(this);
             notificationManager.Notify(0, notificationBuilder.Build());
         }
-
+        
         void SendMessageToMainPage(string body)
         {
             (App.Current.MainPage as MainPage)?.AddMessage(body);
@@ -80,10 +85,15 @@ namespace Nudelsieb.Mobile.Droid
 
         void SendRegistrationToServer(string token)
         {
+            NotificationHub.Initialize("", "", "");
+
             try
             {
-                NotificationHub hub = new NotificationHub(AppSettings.Settings.Notifications.NotificationHubName, AppSettings.Settings.Notifications.ListenConnectionString, this);
-
+                NotificationHub hub = new NotificationHub(
+                    AppSettings.Settings.Notifications.NotificationHubName,
+                    AppSettings.Settings.Notifications.ListenConnectionString, 
+                    this);
+                
                 // register device with Azure Notification Hub using the token from FCM
                 Registration registration = hub.Register(token, AppSettings.Settings.Notifications.SubscriptionTags);
 
@@ -91,9 +101,9 @@ namespace Nudelsieb.Mobile.Droid
                 string pnsHandle = registration.PNSHandle;
                 TemplateRegistration templateReg = hub.RegisterTemplate(pnsHandle, "defaultTemplate", AppSettings.Settings.Notifications.FcmTemplateBody, AppSettings.Settings.Notifications.SubscriptionTags);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Log.Error(AppSettings.Settings.DebugTag, $"Error registering device: {e.Message}");
+                Log.Error(AppSettings.Settings.DebugTag, $"Error registering device: {ex.Message}");
             }
         }
     }

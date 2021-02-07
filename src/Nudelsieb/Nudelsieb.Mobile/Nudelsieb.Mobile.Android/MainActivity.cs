@@ -29,6 +29,8 @@ namespace Nudelsieb.Mobile.Droid
             LoadApplication(new App());
             App.UiParent = this;
 
+            //FirebaseInstanceId.Instance.DeleteInstanceId();
+
             if (!IsPlayServiceAvailable())
             {
                 throw new Exception("This device does not have Google Play Services and cannot receive push notifications.");
@@ -77,7 +79,7 @@ namespace Nudelsieb.Mobile.Droid
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
                 var channelName = AppSettings.Settings.Notifications.NotificationChannelName;
-                var channelDescription = string.Empty;
+                var channelDescription = "My channel description"; // string.Empty;
                 var channel = new NotificationChannel(channelName, channelName, NotificationImportance.Default)
                 {
                     Description = channelDescription
