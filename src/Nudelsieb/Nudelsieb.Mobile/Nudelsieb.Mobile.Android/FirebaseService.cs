@@ -8,7 +8,6 @@ using AndroidX.Core.App;
 using Firebase.Messaging;
 using Nudelsieb.Mobile.Views;
 using WindowsAzure.Messaging;
-using WindowsAzure.Messaging.NotificationHubs;
 
 namespace Nudelsieb.Mobile.Droid
 {
@@ -85,8 +84,6 @@ namespace Nudelsieb.Mobile.Droid
 
         void SendRegistrationToServer(string token)
         {
-            NotificationHub.Initialize("", "", "");
-
             try
             {
                 NotificationHub hub = new NotificationHub(

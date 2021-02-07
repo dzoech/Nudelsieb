@@ -19,6 +19,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.IdentityModel.Logging;
 using Nudelsieb.Persistence.Relational;
 using Microsoft.EntityFrameworkCore;
+using Nudelsieb.WebApi.Notifications;
 
 namespace Nudelsieb.WebApi
 {
@@ -37,6 +38,10 @@ namespace Nudelsieb.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // TODO doesn't work!
+            services.AddOptions<AzureNotificationHubOptions>().Bind(
+                Configuration.GetSection(AzureNotificationHubOptions.SectionName));
+
             // TODO implement cosmos db persistence 
             //var cosmosDbContainer = InitializeCosmosDbContainerAsync(
             //    Configuration.GetSection("Persistence").GetSection("CosmosDb"))
