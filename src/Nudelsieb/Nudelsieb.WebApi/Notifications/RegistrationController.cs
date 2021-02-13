@@ -70,7 +70,6 @@ namespace Nudelsieb.WebApi.Notifications
         [AllowAnonymous]
         public async Task Notify([FromQuery] string receiver, [FromQuery] string message)
         {
-
             var payload = "{\"data\": {\"action\": \"Movement\"},\"notification\": {\"title\": \"This is a title\",\"body\": \"test message\"}}";
 
             var outcome = await hub.SendFcmNativeNotificationAsync(payload, tagExpression: "user:ANY");

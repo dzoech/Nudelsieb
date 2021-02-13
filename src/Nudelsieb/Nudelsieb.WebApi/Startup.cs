@@ -20,6 +20,8 @@ using Microsoft.IdentityModel.Logging;
 using Nudelsieb.Persistence.Relational;
 using Microsoft.EntityFrameworkCore;
 using Nudelsieb.WebApi.Notifications;
+using System.IO;
+using System.Reflection;
 
 namespace Nudelsieb.WebApi
 {
@@ -61,6 +63,12 @@ namespace Nudelsieb.WebApi
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = ApiName, Version = ApiVersion });
+
+                var xmlDocPath = Path.Combine(
+                    AppContext.BaseDirectory,
+                    $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
+
+                c.IncludeXmlComments(xmlDocPath);
 
                 // TODO directly integrate Azure AD B2c into Swagger UI or use alternative UI
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
