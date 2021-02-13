@@ -7,6 +7,7 @@ using Nudelsieb.Mobile.Utils;
 using Nudelsieb.Mobile.Views;
 using Nudelsieb.Shared.Clients;
 using Nudelsieb.Shared.Clients.Authentication;
+using Nudelsieb.Shared.Clients.Notifications;
 using Refit;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -17,6 +18,7 @@ namespace Nudelsieb.Mobile
     {
         public static IAuthenticationService AuthenticationService { get; private set; }
         public static IBraindumpRestClient BraindumpRestClient { get; set; }
+        public static INotificationsRestClient NotificationsRestClient { get; set; }
 
         public static object UiParent { get; set; } = null;
 
@@ -59,6 +61,18 @@ namespace Nudelsieb.Mobile
                         return string.Empty;
                     }
                 });
+
+            var fact = new NotificationRestClientFactory(AuthenticationService, new DebugLogger<NotificationRestClientFactory>());
+            var uri = new Uri("https://192.168.8.201:5001/notifications");
+            NotificationsRestClient = fact.Create(uri);
+
+            
+            //App.NotificationsRestClient.RegisterDeviceAsync(new DeviceInstallation
+            //{
+            //    Id = "devid",
+            //    Platfrom = "FCM",
+            //    PnsHandle = "token",
+            //}).GetAwaiter().GetResult();
 
             DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -7,7 +8,8 @@ using Android.Util;
 using AndroidX.Core.App;
 using Firebase.Messaging;
 using Nudelsieb.Mobile.Views;
-using WindowsAzure.Messaging;
+using Nudelsieb.Shared.Clients.Notifications;
+using static Android.Provider.Settings;
 
 namespace Nudelsieb.Mobile.Droid
 {
@@ -86,22 +88,15 @@ namespace Nudelsieb.Mobile.Droid
         {
             try
             {
-                NotificationHub hub = new NotificationHub(
-                    AppSettings.Settings.Notifications.NotificationHubName,
-                    AppSettings.Settings.Notifications.ListenConnectionString, 
-                    this);
+                // just persist token here for later use after user has logged in
                 
-                // register device with Azure Notification Hub using the token from FCM
-                Registration registration = hub.Register(token, AppSettings.Settings.Notifications.SubscriptionTags);
-
-                // subscribe to the SubscriptionTags list with a simple template.
-                string pnsHandle = registration.PNSHandle;
-                TemplateRegistration templateReg = hub.RegisterTemplate(pnsHandle, "defaultTemplate", AppSettings.Settings.Notifications.FcmTemplateBody, AppSettings.Settings.Notifications.SubscriptionTags);
             }
             catch (Exception ex)
             {
                 Log.Error(AppSettings.Settings.DebugTag, $"Error registering device: {ex.Message}");
             }
         }
+
+        private string GetDeviceId() => Secure.GetString(Application.Context.ContentResolver, Secure.AndroidId);
     }
 }

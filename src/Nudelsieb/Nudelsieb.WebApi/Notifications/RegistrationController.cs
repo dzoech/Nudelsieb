@@ -22,14 +22,16 @@ namespace Nudelsieb.WebApi.Notifications
         private readonly NotificationHubClient hub;
 
         public RegistrationController(
-            IOptions<NotificationsOptions> options, 
+            IOptions<NotificationsOptions> options,
             ILogger<RegistrationController> logger)
         {
             this.hubOptions = options ?? throw new ArgumentNullException(nameof(options));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             // TODO: use DI
-            hub = new NotificationHubClient(options.Value.AzureNotificationHub.ConnectionString, options.Value.AzureNotificationHub.HubName);
+            hub = new NotificationHubClient(
+                options.Value.AzureNotificationHub.ConnectionString,
+                options.Value.AzureNotificationHub.HubName);
         }
 
         /// <summary>
@@ -40,13 +42,12 @@ namespace Nudelsieb.WebApi.Notifications
         public async Task UpdateInstallation(DeviceInstallationDto installationRequest)
         {
             var userId = "ANY";
-            var tags = new[] { $"user:{userId}" };
 
             var installation = new Installation
             {
                 InstallationId = installationRequest.Id,
                 PushChannel = installationRequest.PnsHandle,
-                Tags = tags,
+                Tags = new[] { $"user:{userId}" },
                 Platform = NotificationPlatform.Fcm,
             };
 
@@ -66,7 +67,7 @@ namespace Nudelsieb.WebApi.Notifications
         /// <param name="receiver" example="ANY"></param>
         /// <param name="message" example="This is an example notification sent via the REST API"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("~/[area]")]
         [AllowAnonymous]
         public async Task Notify([FromQuery] string receiver, [FromQuery] string message)
         {

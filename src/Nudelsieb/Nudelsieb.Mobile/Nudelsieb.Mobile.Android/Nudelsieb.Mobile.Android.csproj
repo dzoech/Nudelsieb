@@ -56,9 +56,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Azure.NotificationHubs.Android">
-      <Version>1.1.4.1</Version>
-    </PackageReference>
     <PackageReference Include="Xamarin.Firebase.Messaging">
       <Version>121.0.1</Version>
     </PackageReference>
@@ -100,6 +97,10 @@
     <AndroidResource Include="Resources\drawable\icon_feed.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Nudelsieb.Shared.Clients\Nudelsieb.Shared.Clients.csproj">
+      <Project>{B881EE0C-8BC8-4DA7-8510-14FB71E08065}</Project>
+      <Name>Nudelsieb.Shared.Clients</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nudelsieb.Mobile\Nudelsieb.Mobile.csproj">
       <Project>{58A6B52E-0331-467E-8CA4-F8D157BA4296}</Project>
       <Name>Nudelsieb.Mobile</Name>
