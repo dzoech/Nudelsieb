@@ -5,6 +5,13 @@ using System.Threading.Tasks;
 
 namespace Nudelsieb.WebApi.Notifications
 {
+    public class NotificationsOptions
+    {
+        public const string SectionName = "Notifications";
+
+        public AzureNotificationHubOptions AzureNotificationHub { get; set; } = new();
+    }
+
     public class AzureNotificationHubOptions
     {
         public const string SectionName = "AzureNotificationHub";

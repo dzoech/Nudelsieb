@@ -39,8 +39,8 @@ namespace Nudelsieb.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             // TODO doesn't work!
-            services.AddOptions<AzureNotificationHubOptions>().Bind(
-                Configuration.GetSection(AzureNotificationHubOptions.SectionName));
+            services.AddOptions<NotificationsOptions>().Bind(
+                Configuration.GetSection(NotificationsOptions.SectionName));
 
             // TODO implement cosmos db persistence 
             //var cosmosDbContainer = InitializeCosmosDbContainerAsync(
