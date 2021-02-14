@@ -7,8 +7,10 @@ using Android.OS;
 using Android.Util;
 using AndroidX.Core.App;
 using Firebase.Messaging;
+using Nudelsieb.Mobile.Services;
 using Nudelsieb.Mobile.Views;
 using Nudelsieb.Shared.Clients.Notifications;
+using Xamarin.Forms;
 using static Android.Provider.Settings;
 
 namespace Nudelsieb.Mobile.Droid
@@ -17,6 +19,13 @@ namespace Nudelsieb.Mobile.Droid
     [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
     public class FirebaseService : FirebaseMessagingService
     {
+        private readonly IDeviceService deviceService;
+
+        public FirebaseService()
+        {
+            deviceService = DependencyService.Resolve<IDeviceService>();
+        }
+
         public override void OnMessageReceived(RemoteMessage message)
         {
             base.OnMessageReceived(message);
@@ -53,6 +62,8 @@ namespace Nudelsieb.Mobile.Droid
 
         void SendLocalNotification(string body)
         {
+            // TODO do this in a platform specific service implementation
+
             var intent = new Intent(this, typeof(MainActivity));
             intent.AddFlags(ActivityFlags.ClearTop);
             intent.PutExtra("message", body);
@@ -88,15 +99,13 @@ namespace Nudelsieb.Mobile.Droid
         {
             try
             {
-                // just persist token here for later use after user has logged in
-                
+                // just persist the token here for later use after the user has logged in
+                deviceService.SavePnsHandle(token);
             }
             catch (Exception ex)
             {
                 Log.Error(AppSettings.Settings.DebugTag, $"Error registering device: {ex.Message}");
             }
         }
-
-        private string GetDeviceId() => Secure.GetString(Application.Context.ContentResolver, Secure.AndroidId);
     }
 }

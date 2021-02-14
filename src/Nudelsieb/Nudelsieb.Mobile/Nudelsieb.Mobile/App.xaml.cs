@@ -44,35 +44,20 @@ namespace Nudelsieb.Mobile
             var logger = new DebugLogger<AuthenticationService>();
             AuthenticationService = new AuthenticationService(logger, authenticationClient, new SimpleOptions<AuthOptions>(auth));
 
-            BraindumpRestClient = RestService.For<IBraindumpRestClient>(
-                "https://nudelsieb.zoechbauer.dev/braindump/",
-                //endpointsOptions.Value.Braindump?.Value ?? throw new ArgumentNullException(),
-                new RefitSettings
-                {
-                    AuthorizationHeaderValueGetter = async () =>
-                    {
-                        (var success, var token) = await AuthenticationService.GetCachedAccessTokenAsync();
+            var restClientFactory = new AuthorizedRestClientFactory(
+                AuthenticationService,
+                new DebugLogger<AuthorizedRestClientFactory>());
 
-                        if (success)
-                        {
-                            return token!.RawData;
-                        }
-
-                        return string.Empty;
-                    }
-                });
-
-            var fact = new NotificationRestClientFactory(AuthenticationService, new DebugLogger<NotificationRestClientFactory>());
-            var uri = new Uri("https://192.168.8.201:5001/notifications");
-            NotificationsRestClient = fact.Create(uri);
+            var braindumpUri = new Uri("https://192.168.8.201:5001/braindump/");
+            BraindumpRestClient = restClientFactory.Create<IBraindumpRestClient>(
+                braindumpUri, // endpointsOptions.Value.Braindump?.Value
+                allowSelfSignedCertificates: true);
 
             
-            //App.NotificationsRestClient.RegisterDeviceAsync(new DeviceInstallation
-            //{
-            //    Id = "devid",
-            //    Platfrom = "FCM",
-            //    PnsHandle = "token",
-            //}).GetAwaiter().GetResult();
+            var notificationsUri = new Uri("https://192.168.8.201:5001/notifications/");
+            NotificationsRestClient = restClientFactory.Create<INotificationsRestClient>(
+                notificationsUri,
+                allowSelfSignedCertificates: true);
 
             DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();

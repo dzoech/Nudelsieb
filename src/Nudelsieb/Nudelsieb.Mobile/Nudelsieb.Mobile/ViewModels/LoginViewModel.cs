@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Nudelsieb.Mobile.Services;
 using Nudelsieb.Mobile.Views;
+using Nudelsieb.Shared.Clients.Notifications;
 using Xamarin.Forms;
 
 namespace Nudelsieb.Mobile.ViewModels
@@ -46,7 +48,7 @@ namespace Nudelsieb.Mobile.ViewModels
         public async Task<bool> Refresh()
         {
             (var success, var token) = await App.AuthenticationService.GetCachedAccessTokenAsync();
-            
+
             if (success)
             {
                 IsLoggedIn = true;
@@ -60,6 +62,18 @@ namespace Nudelsieb.Mobile.ViewModels
         private async Task OnLoginCommand()
         {
             await App.AuthenticationService.LoginAsync();
+
+            // todo handle this elsewhere
+            var deviceService = DependencyService.Resolve<IDeviceService>();
+            var deviceId = deviceService.GetDeviceId();
+            var handle = await deviceService.GetHandleAsync();
+
+            await App.NotificationsRestClient.RegisterDeviceAsync(new DeviceInstallation
+            {
+                Id = deviceId,
+                Platfrom = "fcm",
+                PnsHandle = handle,
+            });
         }
     }
 }
