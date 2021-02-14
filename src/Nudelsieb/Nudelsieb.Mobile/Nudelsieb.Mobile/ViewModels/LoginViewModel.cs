@@ -1,79 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Nudelsieb.Mobile.Services;
-using Nudelsieb.Mobile.Views;
+using Nudelsieb.Shared.Clients.Authentication;
 using Nudelsieb.Shared.Clients.Notifications;
 using Xamarin.Forms;
 
 namespace Nudelsieb.Mobile.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public class LoginViewModel
     {
-        private bool _isLoggedIn;
-        private string _name;
-        private string _email;
+        private IAuthenticationService _authenticationService;
 
-        public Command LoginCommand { get; }
-
-        //public Command CheckLoggedInCommand { get; }
+        public Command LoginCommand { get; set; }
 
         public LoginViewModel()
+            : this(App.AuthenticationService)
         {
-            LoginCommand = new Command(async () => await OnLoginCommand());
         }
 
-        public bool IsLoggedIn
+        public LoginViewModel(IAuthenticationService authenticationService)
         {
-            get => _isLoggedIn;
-            set { SetProperty(ref _isLoggedIn, value); }
+            LoginCommand = new Command(async () => await LoginAsync());
+            _authenticationService = authenticationService;
         }
 
-        public string Name
+        private async Task LoginAsync()
         {
-            get => _name;
-            set { SetProperty(ref _name, value); }
-
-        }
-
-        public string Email
-        {
-            get => _email;
-            set { SetProperty(ref _email, value); }
-
-        }
-
-        public async Task<bool> Refresh()
-        {
-            (var success, var token) = await App.AuthenticationService.GetCachedAccessTokenAsync();
-
-            if (success)
+            try
             {
-                IsLoggedIn = true;
-                Name = token.Claims.SingleOrDefault(c => c.Type == "given_name")?.Value;
-                Email = token.Claims.SingleOrDefault(c => c.Type == "email")?.Value;
+                await _authenticationService.LoginAsync();
+
+                var deviceService = DependencyService.Resolve<IDeviceService>();
+                var deviceId = deviceService.GetDeviceId();
+                var handle = await deviceService.GetHandleAsync();
+
+                var thisDevice = new DeviceInstallation
+                {
+                    Id = deviceId,
+                    Platfrom = "fcm",
+                    PnsHandle = handle,
+                };
+
+                await App.NotificationsRestClient.RegisterDeviceAsync(thisDevice);
+
+                await Shell.Current.GoToAsync(@"//main");
             }
-
-            return IsLoggedIn;
-        }
-
-        private async Task OnLoginCommand()
-        {
-            await App.AuthenticationService.LoginAsync();
-
-            // todo handle this elsewhere
-            var deviceService = DependencyService.Resolve<IDeviceService>();
-            var deviceId = deviceService.GetDeviceId();
-            var handle = await deviceService.GetHandleAsync();
-
-            await App.NotificationsRestClient.RegisterDeviceAsync(new DeviceInstallation
+            catch (Exception ex)
             {
-                Id = deviceId,
-                Platfrom = "fcm",
-                PnsHandle = handle,
-            });
+                var alerter = DependencyService.Resolve<IAlerter>();
+                alerter.Alert($"Login failed. {ex.Message}");
+            }
         }
     }
 }

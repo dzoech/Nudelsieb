@@ -1,23 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
+             xmlns:local="clr-namespace:Nudelsieb.Mobile.ViewModels"
              x:Class="Nudelsieb.Mobile.Views.LoginPage"
-             BackgroundColor="{StaticResource Primary}">
+             Shell.FlyoutBehavior="Disabled"
+             Shell.PresentationMode="ModalAnimated">
     <ContentPage.Content>
-        <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            <StackLayout IsVisible="{Binding IsLoggedIn}">
-                <Label Text="{Binding Name}" />
-                <Label Text="{Binding Email}" />
-            </StackLayout>
-            
+        <StackLayout>
+            <Label Text="Hello! Please sign in"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
 
-            <Button VerticalOptions="Center" 
-                    IsVisible="{Binding IsLoggedIn, Converter={StaticResource BoolInverter}}" 
-                    Text="Login (command binding)" 
-                    Command="{Binding LoginCommand}"/>
+            <Button Text="Sign in"
+                VerticalOptions="Center" 
+                Command="{Binding LoginCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

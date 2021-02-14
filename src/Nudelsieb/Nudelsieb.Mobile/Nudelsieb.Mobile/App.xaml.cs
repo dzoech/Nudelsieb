@@ -4,6 +4,7 @@ using Nudelsieb.Mobile.Configuration;
 using Nudelsieb.Mobile.RestClients;
 using Nudelsieb.Mobile.Services;
 using Nudelsieb.Mobile.Utils;
+using Nudelsieb.Mobile.ViewModels;
 using Nudelsieb.Mobile.Views;
 using Nudelsieb.Shared.Clients;
 using Nudelsieb.Shared.Clients.Authentication;
@@ -59,7 +60,9 @@ namespace Nudelsieb.Mobile
                 notificationsUri,
                 allowSelfSignedCertificates: true);
 
+            DependencyService.Register<LoadingViewModel>();
             DependencyService.Register<MockDataStore>();
+
             MainPage = new AppShell();
         }
 

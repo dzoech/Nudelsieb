@@ -29,20 +29,20 @@
         </ResourceDictionary>
     </Shell.Resources>
 
+    <ShellItem Route="loading">
+        <ShellContent ContentTemplate="{DataTemplate local:LoadingPage}" />
+    </ShellItem>
+
     <TabBar>
-        <ShellContent Title="About" Icon="icon_about.png" Route="MainPage" ContentTemplate="{DataTemplate local:MainPage}" />
-        <ShellContent Title="Browse" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:RemindersPage}" />
-        <ShellContent Title="Login" Icon="icon_about.png" ContentTemplate="{DataTemplate local:LoginPage}" />
-        <ShellContent Title="Logout" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:LogoutPage}" />
+        <ShellContent Route="main" Title="Home" Icon="icon_about.png" ContentTemplate="{DataTemplate local:MainPage}" />
+        <ShellContent Route="reminders" Title="Reminders" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:RemindersPage}" />
+        <ShellContent Route="profile" Title="Profile" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:ProfilePage}" />        
     </TabBar>
 
     <!--
         If you would like to navigate to this content you can do so by calling
-        await Shell.Current.GoToAsync("//LoginPage");
+        await Shell.Current.GoToAsync("//login");
     -->
-    <TabBar>
-        <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
-    </TabBar>
-
+    <ShellContent Route="login" ContentTemplate="{DataTemplate local:LoginPage}" />
 
 </Shell>

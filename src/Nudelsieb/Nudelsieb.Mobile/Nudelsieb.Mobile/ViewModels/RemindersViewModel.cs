@@ -22,7 +22,7 @@ namespace Nudelsieb.Mobile.ViewModels
 
         public RemindersViewModel()
         {
-            Title = "Browse";
+            Title = "Reminders";
             Reminders = new ObservableCollection<Reminder>();
             LoadRemindersCommand = new Command(async () => await ExecuteLoadItemsCommand());
             ItemTapped = new Command<Reminder>(OnItemSelected);
