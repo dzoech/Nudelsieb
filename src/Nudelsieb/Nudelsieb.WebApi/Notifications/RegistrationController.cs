@@ -69,17 +69,21 @@ namespace Nudelsieb.WebApi.Notifications
         /// <returns></returns>
         [HttpPost("~/[area]")]
         [AllowAnonymous]
-        public async Task Notify([FromQuery] string receiver, [FromQuery] string message)
+        public async Task<string> Notify([FromQuery] string receiver, [FromQuery] string message)
         {
             if (string.IsNullOrWhiteSpace(receiver))
             {
                 receiver = "ANY";
             }
 
+            var x = await hub.GetAllRegistrationsAsync(10);
+
             var payload = "{\"data\": {\"action\": \"Movement\"}, \"notification\": {\"title\": \"This is a title\", \"body\": \"" + message + "\"}}";
 
             var outcome = await hub.SendFcmNativeNotificationAsync(payload, tagExpression: $"user:{receiver}");
-            logger.LogInformation($"Notified {outcome.Success} clients");
+            logger.LogInformation($"Notified clients, tracking ID: {outcome.TrackingId}");
+
+            return $"Tracking ID: {outcome.TrackingId}";
         }
     }
 }
