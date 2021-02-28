@@ -17,21 +17,15 @@ namespace Nudelsieb.WebApi.Notifications
     [AllowAnonymous]
     public class RegistrationController : ControllerBase
     {
-        private readonly IOptions<NotificationsOptions> hubOptions;
         private readonly ILogger<RegistrationController> logger;
-        private readonly NotificationHubClient hub;
+        private readonly IPushNotifyer pushNotifyer;
 
         public RegistrationController(
-            IOptions<NotificationsOptions> options,
-            ILogger<RegistrationController> logger)
+            ILogger<RegistrationController> logger, 
+            IPushNotifyer notificationSender)
         {
-            this.hubOptions = options ?? throw new ArgumentNullException(nameof(options));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
-            // TODO: use DI
-            hub = new NotificationHubClient(
-                options.Value.AzureNotificationHub.ConnectionString,
-                options.Value.AzureNotificationHub.HubName);
+            this.pushNotifyer = notificationSender ?? throw new ArgumentNullException(nameof(notificationSender));
         }
 
         /// <summary>
@@ -39,26 +33,15 @@ namespace Nudelsieb.WebApi.Notifications
         /// is responsible for storing the installation id.
         /// </summary>
         [HttpPut]
-        public async Task UpdateInstallation(DeviceInstallationDto installationRequest)
+        public async Task UpdateInstallationAsync(DeviceInstallationDto installationRequest)
         {
-            var userId = "ANY";
-
-            var installation = new Installation
-            {
-                InstallationId = installationRequest.Id,
-                PushChannel = installationRequest.PnsHandle,
-                Tags = new[] { $"user:{userId}" },
-                Platform = NotificationPlatform.Fcm,
-            };
-
-            // call notification hubs to create a new registration ID, and then return the ID back to the device.
-            await hub.CreateOrUpdateInstallationAsync(installation);
+            await pushNotifyer.SubscribeAsync(installationRequest);
         }
 
         [HttpDelete("{id}")]
-        public async Task DeleteInstallation(string id)
+        public async Task DeleteInstallationAsync(string id)
         {
-            await hub.DeleteInstallationAsync(id);
+            await pushNotifyer.UnsubscribeAsync(id);
         }
 
         /// <summary>
@@ -76,14 +59,9 @@ namespace Nudelsieb.WebApi.Notifications
                 receiver = "ANY";
             }
 
-            var x = await hub.GetAllRegistrationsAsync(10);
+            var trackingId = pushNotifyer.SendAsync(message, receiver);
 
-            var payload = "{\"data\": {\"action\": \"Movement\"}, \"notification\": {\"title\": \"This is a title\", \"body\": \"" + message + "\"}}";
-
-            var outcome = await hub.SendFcmNativeNotificationAsync(payload, tagExpression: $"user:{receiver}");
-            logger.LogInformation($"Notified clients, tracking ID: {outcome.TrackingId}");
-
-            return $"Tracking ID: {outcome.TrackingId}";
+            return $"Tracking ID: {trackingId}";
         }
     }
 }

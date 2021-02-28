@@ -53,6 +53,8 @@ namespace Nudelsieb.WebApi
             services.AddTransient<INeuronRepository, RelationalDbNeuronRepository>();
             //services.AddSingleton<Container>(_ => cosmosDbContainer);
 
+            services.AddNotificationServices();
+
             services
                 .AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
                 .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));

@@ -69,6 +69,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FcmDataNotification.cs" />
     <Compile Include="FirebaseService.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />

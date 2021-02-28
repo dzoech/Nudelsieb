@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Android.App;
@@ -20,6 +21,7 @@ namespace Nudelsieb.Mobile.Droid
     public class FirebaseService : FirebaseMessagingService
     {
         private readonly IDeviceService deviceService;
+        private readonly Random random = new Random();
 
         public FirebaseService()
         {
@@ -29,24 +31,13 @@ namespace Nudelsieb.Mobile.Droid
         public override void OnMessageReceived(RemoteMessage message)
         {
             base.OnMessageReceived(message);
-            string messageBody = string.Empty;
-
-            if (message.GetNotification() != null)
-            {
-                messageBody = message.GetNotification().Body;
-            }
-
             // NOTE: test messages sent via the Azure portal will be received here
-            else
-            {
-                messageBody = message.Data.Values.First();
-            }
 
-            // convert the incoming message to a local notification
-            SendLocalNotification(messageBody);
+            var dataNotification = new FcmDataNotification(message.Data);
+            SendLocalNotification(dataNotification);
 
             // send the incoming message directly to the MainPage
-            SendMessageToMainPage(messageBody);
+            SendMessageToMainPage("Notification directly to MainPage");
         }
 
         /// <summary>
@@ -60,18 +51,22 @@ namespace Nudelsieb.Mobile.Droid
             SendRegistrationToServer(token);
         }
 
-        void SendLocalNotification(string body)
+        void SendLocalNotification(FcmDataNotification dataNotification)
         {
             // TODO do this in a platform specific service implementation
 
             var intent = new Intent(this, typeof(MainActivity));
             intent.AddFlags(ActivityFlags.ClearTop);
-            intent.PutExtra("message", body);
+            intent.PutExtra("message", "TODO: Set via PutExtra('message')");
             var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
 
+            // prepend groups with a # sign
+            var groups = string.Join(' ', dataNotification.Groups.Select(g => $"#{g}"));
+
             var notificationBuilder = new NotificationCompat.Builder(this, AppSettings.Settings.Notifications.NotificationChannelName)
-                .SetContentTitle("ContentTitle: Nudelsieb")
-                .SetContentText("ContentText: " + body)
+                .SetContentTitle($"Reminder: {groups}")
+                .SetContentText(dataNotification.NeuronInformation)
+                .SetStyle(new NotificationCompat.BigTextStyle())
                 //.SetContentInfo("ContentInfo")
                 .SetSmallIcon(Resource.Drawable.icon)
                 .SetAutoCancel(true)
@@ -87,7 +82,7 @@ namespace Nudelsieb.Mobile.Droid
             }
 
             var notificationManager = NotificationManager.FromContext(this);
-            notificationManager.Notify(0, notificationBuilder.Build());
+            notificationManager.Notify(random.Next(), notificationBuilder.Build());
         }
         
         void SendMessageToMainPage(string body)
