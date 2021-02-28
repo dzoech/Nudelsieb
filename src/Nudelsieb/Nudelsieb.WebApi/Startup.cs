@@ -19,6 +19,9 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.IdentityModel.Logging;
 using Nudelsieb.Persistence.Relational;
 using Microsoft.EntityFrameworkCore;
+using Nudelsieb.WebApi.Notifications;
+using System.IO;
+using System.Reflection;
 
 namespace Nudelsieb.WebApi
 {
@@ -37,6 +40,10 @@ namespace Nudelsieb.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // TODO doesn't work!
+            services.AddOptions<NotificationsOptions>().Bind(
+                Configuration.GetSection(NotificationsOptions.SectionName));
+
             // TODO implement cosmos db persistence 
             //var cosmosDbContainer = InitializeCosmosDbContainerAsync(
             //    Configuration.GetSection("Persistence").GetSection("CosmosDb"))
@@ -45,6 +52,8 @@ namespace Nudelsieb.WebApi
             // add as singleton to enable in-memory data for dummy repository
             services.AddTransient<INeuronRepository, RelationalDbNeuronRepository>();
             //services.AddSingleton<Container>(_ => cosmosDbContainer);
+
+            services.AddNotificationServices();
 
             services
                 .AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
@@ -56,6 +65,12 @@ namespace Nudelsieb.WebApi
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = ApiName, Version = ApiVersion });
+
+                var xmlDocPath = Path.Combine(
+                    AppContext.BaseDirectory,
+                    $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
+
+                c.IncludeXmlComments(xmlDocPath);
 
                 // TODO directly integrate Azure AD B2c into Swagger UI or use alternative UI
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

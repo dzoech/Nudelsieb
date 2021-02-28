@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:Nudelsieb.Mobile.Views"
+       Title="Nudelsieb.Mobile"
+       x:Class="Nudelsieb.Mobile.AppShell">
+
+    <!--
+        The overall app visual hierarchy is defined here, along with navigation.
+    
+        https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/
+    -->
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.ForegroundColor" Value="{StaticResource Secondary}" />
+                <Setter Property="Shell.TitleColor" Value="{StaticResource Secondary}" />
+                <Setter Property="Shell.DisabledColor" Value="{StaticResource Disabled}" />
+                <Setter Property="Shell.UnselectedColor" Value="Brown" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="YellowGreen"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#FFFFFF"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource Secondary}"/>
+            </Style>
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <ShellItem Route="loading">
+        <ShellContent ContentTemplate="{DataTemplate local:LoadingPage}" />
+    </ShellItem>
+
+    <TabBar>
+        <ShellContent Route="main" Title="Home" Icon="icon_about.png" ContentTemplate="{DataTemplate local:MainPage}" />
+        <ShellContent Route="reminders" Title="Reminders" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:RemindersPage}" />
+        <ShellContent Route="profile" Title="Profile" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:ProfilePage}" />        
+    </TabBar>
+
+    <!--
+        If you would like to navigate to this content you can do so by calling
+        await Shell.Current.GoToAsync("//login");
+    -->
+    <ShellContent Route="login" ContentTemplate="{DataTemplate local:LoginPage}" />
+
+</Shell>

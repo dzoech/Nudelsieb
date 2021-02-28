@@ -1,0 +1,18 @@
+﻿<!-- Source: https://ncarandini.github.io/2020/06/17/UserSecrets-With-XF.html -->
+<Project>
+    <Target Name="AddUserSecrets"
+            BeforeTargets="PrepareForBuild"
+            Condition=" '$(Configuration)' == 'Debug' And '$(UserSecretsId)' != '' ">
+        <PropertyGroup>
+            <UserSecretsFilePath Condition=" '$(OS)' == 'Windows_NT' ">
+                $([System.Environment]::GetFolderPath(SpecialFolder.UserProfile))\AppData\Roaming\Microsoft\UserSecrets\$(UserSecretsId)\secrets.json
+            </UserSecretsFilePath>
+            <UserSecretsFilePath Condition=" '$(OS)' == 'Unix' ">
+                $([System.Environment]::GetFolderPath(SpecialFolder.UserProfile))/.microsoft/usersecrets/$(UserSecretsId)/secrets.json
+            </UserSecretsFilePath>
+        </PropertyGroup>
+        <ItemGroup>
+            <EmbeddedResource Include="$(UserSecretsFilePath)" Condition="Exists($(UserSecretsFilePath))"/>
+        </ItemGroup>
+    </Target>
+</Project>

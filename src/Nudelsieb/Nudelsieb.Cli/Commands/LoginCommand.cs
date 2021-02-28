@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Client;
-using Nudelsieb.Cli.Options;
-using Nudelsieb.Cli.Services;
+using Nudelsieb.Shared.Clients.Authentication;
 
 namespace Nudelsieb.Cli.Commands
 {
@@ -33,6 +27,10 @@ namespace Nudelsieb.Cli.Commands
             try
             {
                 var (idToken, _) = await authService.LoginAsync();
+
+                if (idToken is null)
+                    throw new Exception("Could not retrieve login user and retrieve their id token.");
+
                 var user = authService.GetUserFromIdToken(idToken);
                 this.console.WriteLine($"Hello {user.GivenName}! You are logged in as '{user.Email ?? ""}'.");
             }

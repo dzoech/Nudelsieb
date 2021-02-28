@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
-using Nudelsieb.Cli.Models;
-using Nudelsieb.Cli.Options;
+using Nudelsieb.Shared.Clients.Models;
 
-namespace Nudelsieb.Cli.Services
+namespace Nudelsieb.Shared.Clients.Authentication
 {
-    class AuthenticationService : IAuthenticationService
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly ILogger<AuthenticationService> logger;
         private readonly IPublicClientApplication clientApplication;
@@ -57,7 +56,7 @@ namespace Nudelsieb.Cli.Services
             }
             catch (MsalUiRequiredException ex)
             {
-                this.logger.LogInformation($"{nameof(MsalUiRequiredException)}: {ex}");
+                this.logger.LogInformation(ex, "Could not retrieve cached access token");
                 return (Success: false, AccessToken: null);
             }
         }
@@ -65,20 +64,22 @@ namespace Nudelsieb.Cli.Services
         public async Task<(JwtSecurityToken IdToken, JwtSecurityToken AccessToken)> LoginAsync()
         {
             if (this.authOptions.Value.PolicySignUpSignIn is null)
-            {
                 throw new ArgumentNullException(nameof(authOptions.Value.PolicySignUpSignIn));
-            }
-                
+
             var accounts = await this.clientApplication.GetAccountsAsync();
+
+            // TODO: Handle unsuccessful authentication
+            // ex.ErrorCode == "authentication_canceled" TODO
+            // AADB2C90118: TODO
 
             var result = await this.clientApplication
                 .AcquireTokenInteractive(authOptions.Value.RequiredScopes)
                 .WithAccount(GetAccountByPolicy(accounts, authOptions.Value.PolicySignUpSignIn))
                 .ExecuteAsync();
 
-            var token = ExtractTokens(result);
+            var tokens = ExtractTokens(result);
 
-            return token;
+            return tokens;
         }
 
         public User GetUserFromIdToken(JwtSecurityToken idToken)
@@ -95,12 +96,20 @@ namespace Nudelsieb.Cli.Services
         }
 
         private (JwtSecurityToken IdToken, JwtSecurityToken AccessToken) ExtractTokens(
-            AuthenticationResult result)
+            AuthenticationResult authResult)
         {
-            // todo - remove after testing
+            if (authResult is null)
+                throw new ArgumentNullException(nameof(authResult));
+
+            if (authResult.IdToken is null)
+                throw new AuthenticationException("No id token provided.");
+
+            if (authResult.AccessToken is null)
+                throw new AuthorizationException("No access token token provided. This might be due to missing permissions or consent for scopes.");
+
             var tokenHandler = new JwtSecurityTokenHandler();
-            var idToken = tokenHandler.ReadJwtToken(result.IdToken);
-            var accessToken = tokenHandler.ReadJwtToken(result.AccessToken);
+            var idToken = tokenHandler.ReadJwtToken(authResult.IdToken);
+            var accessToken = tokenHandler.ReadJwtToken(authResult.AccessToken);
 
             return (idToken, accessToken);
         }

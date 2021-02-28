@@ -1,11 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Nudelsieb.Cli.Options;
-using Nudelsieb.Cli.Services;
 using Refit;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using Nudelsieb.Shared.Clients.Authentication;
+using System.Threading.Tasks;
 
 namespace Nudelsieb.Cli.RestClients
 {
@@ -15,24 +14,26 @@ namespace Nudelsieb.Cli.RestClients
         {
             services.AddTransient<IBraindumpRestClient>(sp =>
             {
+                Func<Task<string>> accessTokenRetriever = async () =>
+                {
+                    var authService = sp.GetRequiredService<IAuthenticationService>();
+                    (var success, var accessToken) = await authService.GetCachedAccessTokenAsync();
+
+                    if (success)
+                    {
+                        return accessToken!.RawData;
+                    }
+
+                    return string.Empty;
+                };
+
                 var endpointsOptions = sp.GetRequiredService<IOptions<EndpointsOptions>>();
 
                 return RestService.For<IBraindumpRestClient>(
                     endpointsOptions.Value.Braindump?.Value ?? throw new ArgumentNullException(),
                     new RefitSettings
                     {
-                        AuthorizationHeaderValueGetter = async () =>
-                        {
-                            var authService = sp.GetRequiredService<IAuthenticationService>();
-                            (var success, var token) = await authService.GetCachedAccessTokenAsync();
-
-                            if (success)
-                            {
-                                return token!.RawData;
-                            }
-
-                            return string.Empty;
-                        }
+                        AuthorizationHeaderValueGetter = accessTokenRetriever
                     });
             });
 

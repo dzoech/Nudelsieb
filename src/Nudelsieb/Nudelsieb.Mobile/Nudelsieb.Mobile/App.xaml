@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:utils="clr-namespace:Nudelsieb.Mobile.Utils"
+             x:Class="Nudelsieb.Mobile.App">
+    <!--
+        Define global resources and styles here, that apply to all pages in your app.
+    -->
+    <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Primary">#000000</Color>
+            <Color x:Key="Secondary">#FF00D9</Color>
+            <Color x:Key="PrimaryText">#FFFFFF</Color>
+            <Color x:Key="Disabled">#BBBBBB</Color>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource PrimaryText}" />
+                <Setter Property="FontSize" Value="Large" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="TextColor" Value="{StaticResource PrimaryText}"></Setter>
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Secondary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Disabled}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+            <utils:BoolInverter x:Key="BoolInverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
