@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Nudelsieb.WebApi.Notifications
+namespace Nudelsieb.WebApi.Notifications.Notifyer
 {
     public interface IPushNotifyer
     {

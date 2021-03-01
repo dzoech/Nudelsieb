@@ -6,7 +6,7 @@ using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Nudelsieb.WebApi.Notifications
+namespace Nudelsieb.WebApi.Notifications.Notifyer
 {
     public class AndroidNotifyer : IPushNotifyer
     {

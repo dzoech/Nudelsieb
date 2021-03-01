@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Nudelsieb.WebApi.Notifications.Notifyer;
 
 namespace Nudelsieb.WebApi.Notifications
 {

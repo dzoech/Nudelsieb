@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
+using Nudelsieb.WebApi.Notifications.Notifyer;
 
 namespace Nudelsieb.WebApi.Notifications
 {
@@ -19,8 +17,8 @@ namespace Nudelsieb.WebApi.Notifications
             // register the configured options for DI
             services.AddOptions<NotificationsOptions>().Configure(o => o = options);           
 
-            services.AddScoped<IPushNotifyer, AndroidNotifyer>();
             services.AddSingleton(new ServiceBusClient(options.Scheduler.AzureServiceBus.ConnectionString));
+            services.AddScoped<IPushNotifyer, AndroidNotifyer>();
 
             return services;
         }

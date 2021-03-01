@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Nudelsieb.WebApi.Notifications
+namespace Nudelsieb.WebApi.Notifications.Notifyer
 {
     public class DeviceInstallationDto
     {
