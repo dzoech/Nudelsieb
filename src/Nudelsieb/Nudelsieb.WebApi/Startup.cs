@@ -55,6 +55,7 @@ namespace Nudelsieb.WebApi
                 .AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
                 .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
 
+            services.AddHttpClient();
             services.AddControllers();
             services.AddHealthChecks();
 

@@ -34,13 +34,13 @@ namespace Nudelsieb.WebApi.Notifications
         [HttpPut]
         public async Task UpdateInstallationAsync(DeviceInstallationDto installationRequest)
         {
-            await pushNotifyer.SubscribeAsync(installationRequest);
+            await pushNotifyer.SubscribeAsync(installationRequest, "dominik");
         }
 
         [HttpDelete("{id}")]
         public async Task DeleteInstallationAsync(string id)
         {
-            await pushNotifyer.UnsubscribeAsync(id);
+            await pushNotifyer.UnsubscribeAsync(id, "dominik");
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Nudelsieb.WebApi.Notifications
                 receiver = "ANY";
             }
 
-            var trackingId = pushNotifyer.SendAsync(message, receiver);
+            var trackingId = await pushNotifyer.SendAsync(message, receiver);
 
             return $"Tracking ID: {trackingId}";
         }
