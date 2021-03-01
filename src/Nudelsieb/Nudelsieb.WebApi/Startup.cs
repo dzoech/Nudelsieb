@@ -40,10 +40,6 @@ namespace Nudelsieb.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // TODO doesn't work!
-            services.AddOptions<NotificationsOptions>().Bind(
-                Configuration.GetSection(NotificationsOptions.SectionName));
-
             // TODO implement cosmos db persistence 
             //var cosmosDbContainer = InitializeCosmosDbContainerAsync(
             //    Configuration.GetSection("Persistence").GetSection("CosmosDb"))
@@ -53,7 +49,7 @@ namespace Nudelsieb.WebApi
             services.AddTransient<INeuronRepository, RelationalDbNeuronRepository>();
             //services.AddSingleton<Container>(_ => cosmosDbContainer);
 
-            services.AddNotificationServices();
+            services.AddNotificationServices(options => Configuration.Bind(NotificationsOptions.SectionName, options));
 
             services
                 .AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
@@ -62,18 +58,18 @@ namespace Nudelsieb.WebApi
             services.AddControllers();
             services.AddHealthChecks();
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = ApiName, Version = ApiVersion });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = ApiName, Version = ApiVersion });
 
                 var xmlDocPath = Path.Combine(
                     AppContext.BaseDirectory,
                     $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
 
-                c.IncludeXmlComments(xmlDocPath);
+                options.IncludeXmlComments(xmlDocPath);
 
                 // TODO directly integrate Azure AD B2c into Swagger UI or use alternative UI
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
@@ -81,7 +77,7 @@ namespace Nudelsieb.WebApi
                     Type = SecuritySchemeType.ApiKey
                 });
 
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme
