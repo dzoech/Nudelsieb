@@ -8,11 +8,7 @@ namespace Nudelsieb.WebApi.Notifications
     public class NotificationsOptions
     {
         public const string SectionName = "Notifications";
-
-        public string BindTest { get; set; } = string.Empty;
-
         public AzureNotificationHubOptions AzureNotificationHub { get; set; } = new();
-
         public SchedulerOptions Scheduler { get; set; } = new();
     }
 
