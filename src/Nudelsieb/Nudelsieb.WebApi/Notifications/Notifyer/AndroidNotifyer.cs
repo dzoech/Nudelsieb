@@ -60,8 +60,6 @@ namespace Nudelsieb.WebApi.Notifications.Notifyer
                 .WithGroups("demo-group", "work", "project-nudelsieb")
                 .Build();
 
-            var x = await hub.GetAllRegistrationsAsync(10);
-
             var outcome = await hub.SendFcmNativeNotificationAsync(notification, tagExpression: $"user:{receiver}");
             logger.LogInformation($"Notified clients, tracking ID: {outcome.TrackingId}");
 

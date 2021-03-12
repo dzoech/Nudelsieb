@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Nudelsieb.WebApi.Notifications.Notifyer;
+using Nudelsieb.WebApi.Notifications.Scheduler;
 
 namespace Nudelsieb.WebApi.Notifications
 {
@@ -18,13 +19,16 @@ namespace Nudelsieb.WebApi.Notifications
     {
         private readonly ILogger<RegistrationController> logger;
         private readonly IPushNotifyer pushNotifyer;
+        private readonly INotificationScheduler notificationScheduler;
 
         public RegistrationController(
             ILogger<RegistrationController> logger, 
-            IPushNotifyer notificationSender)
+            IPushNotifyer notificationSender,
+            INotificationScheduler notificationScheduler)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.pushNotifyer = notificationSender ?? throw new ArgumentNullException(nameof(notificationSender));
+            this.notificationScheduler = notificationScheduler ?? throw new ArgumentNullException(nameof(notificationScheduler));
         }
 
         /// <summary>
@@ -48,19 +52,24 @@ namespace Nudelsieb.WebApi.Notifications
         /// </summary>
         /// <param name="receiver" example="ANY"></param>
         /// <param name="message" example="This is an example notification sent via the REST API"></param>
+        /// <param name="scheduleAt">Specifies when to push the notification to the receiving devices.</param>
         /// <returns></returns>
         [HttpPost("~/[area]")]
         [AllowAnonymous]
-        public async Task<string> Notify([FromQuery] string receiver, [FromQuery] string message)
+        public async Task Notify([FromQuery] string receiver, [FromQuery] string message, [FromQuery] DateTimeOffset? scheduleAt)
         {
             if (string.IsNullOrWhiteSpace(receiver))
             {
                 receiver = "ANY";
             }
 
-            var trackingId = await pushNotifyer.SendAsync(message, receiver);
+            scheduleAt ??= DateTimeOffset.Now;
 
-            return $"Tracking ID: {trackingId}";
+            await notificationScheduler.ScheduleAsync(message, scheduleAt.Value);
+
+            //var trackingId = await pushNotifyer.SendAsync(message, receiver);
+
+            //return $"Tracking ID: {trackingId}";
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Nudelsieb.WebApi.Notifications.Scheduler
 {
-    interface INotificationScheduler
+    public interface INotificationScheduler
     {
         Task ScheduleAsync(string notification, DateTimeOffset at);
     }

@@ -4,6 +4,7 @@ using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.DependencyInjection;
 using Nudelsieb.WebApi.Notifications.Notifyer;
+using Nudelsieb.WebApi.Notifications.Scheduler;
 
 namespace Nudelsieb.WebApi.Notifications
 {
@@ -19,7 +20,6 @@ namespace Nudelsieb.WebApi.Notifications
             // register the configured options for DI
             services.AddOptions<NotificationsOptions>().Configure(o => o = options);
 
-            services.AddSingleton(new ServiceBusClient(options.Scheduler.AzureServiceBus.ConnectionString));
             services.AddScoped<IPushNotifyer, AndroidNotifyer>();
 
             services.AddScoped<INotificationHubClient>(provider =>
@@ -36,6 +36,9 @@ namespace Nudelsieb.WebApi.Notifications
                     options.AzureNotificationHub.HubName,
                     hubSettings);
             });
+
+            services.AddSingleton(new ServiceBusClient(options.Scheduler.AzureServiceBus.ConnectionString));
+            services.AddScoped<INotificationScheduler, ServiceBusNotificationScheduler>();
 
             return services;
         }

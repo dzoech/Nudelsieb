@@ -9,7 +9,7 @@ namespace Nudelsieb.WebApi.Notifications.Scheduler
     public class ServiceBusNotificationScheduler : INotificationScheduler
     {
         private readonly ServiceBusClient serviceBusClient;
-        private readonly string queueName = "push-notifications";
+        private readonly string queueName = "reminder-push-notifications";
 
         public ServiceBusNotificationScheduler(ServiceBusClient serviceBusClient)
         {
