@@ -2,6 +2,7 @@
 using System.Net.Http;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.NotificationHubs;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Nudelsieb.WebApi.Notifications.Notifyer;
 using Nudelsieb.WebApi.Notifications.Scheduler;
@@ -37,8 +38,10 @@ namespace Nudelsieb.WebApi.Notifications
                     hubSettings);
             });
 
+            // docs: https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/servicebus/Azure.Messaging.ServiceBus
             services.AddSingleton(new ServiceBusClient(options.Scheduler.AzureServiceBus.ConnectionString));
             services.AddScoped<INotificationScheduler, ServiceBusNotificationScheduler>();
+            services.AddHostedService<NotificationDispatcher>();
 
             return services;
         }

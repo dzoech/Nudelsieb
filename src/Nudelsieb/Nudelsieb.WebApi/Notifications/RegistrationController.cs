@@ -48,28 +48,27 @@ namespace Nudelsieb.WebApi.Notifications
         }
 
         /// <summary>
-        /// Sends test notifications to registered receivers.
+        /// Sends test notifications to registered receivers. This is used for developing.
         /// </summary>
         /// <param name="receiver" example="ANY"></param>
         /// <param name="message" example="This is an example notification sent via the REST API"></param>
-        /// <param name="scheduleAt">Specifies when to push the notification to the receiving devices.</param>
+        /// <param name="delayInSeconds">Specifies how many seconds to wait before pushing the notification to the receiving devices.</param>
+        /// <param name="delayInMinutes">Specifies additional minutes to wait before pushing the notification to the receiving devices.</param>
         /// <returns></returns>
         [HttpPost("~/[area]")]
         [AllowAnonymous]
-        public async Task Notify([FromQuery] string receiver, [FromQuery] string message, [FromQuery] DateTimeOffset? scheduleAt)
+        public async Task Notify([FromQuery] string receiver, [FromQuery] string message, [FromQuery] int delayInSeconds, [FromQuery] int delayInMinutes)
         {
             if (string.IsNullOrWhiteSpace(receiver))
             {
                 receiver = "ANY";
             }
 
-            scheduleAt ??= DateTimeOffset.Now;
+            var scheduleAt = DateTimeOffset.Now
+                .AddSeconds(delayInSeconds)
+                .AddMinutes(delayInMinutes);
 
-            await notificationScheduler.ScheduleAsync(message, scheduleAt.Value);
-
-            //var trackingId = await pushNotifyer.SendAsync(message, receiver);
-
-            //return $"Tracking ID: {trackingId}";
+            await notificationScheduler.ScheduleAsync(message, scheduleAt);
         }
     }
 }
