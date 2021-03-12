@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Nudelsieb.WebApi.Notifications
+namespace Nudelsieb.Notifications
 {
     public class NotificationsOptions
     {
         public const string SectionName = "Notifications";
-        public AzureNotificationHubOptions AzureNotificationHub { get; set; } = new();
-        public SchedulerOptions Scheduler { get; set; } = new();
+        public AzureNotificationHubOptions AzureNotificationHub { get; set; } = new AzureNotificationHubOptions();
+        public SchedulerOptions Scheduler { get; set; } = new SchedulerOptions();
     }
 
     public class AzureNotificationHubOptions
@@ -20,7 +20,7 @@ namespace Nudelsieb.WebApi.Notifications
 
     public class SchedulerOptions
     {
-        public AzureServiceBusOptions AzureServiceBus { get; set; } = new();
+        public AzureServiceBusOptions AzureServiceBus { get; set; } = new AzureServiceBusOptions();
     }
 
     public class AzureServiceBusOptions

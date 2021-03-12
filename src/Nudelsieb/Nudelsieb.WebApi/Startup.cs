@@ -1,27 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureADB2C.UI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Nudelsieb.Domain;
-using Nudelsieb.Persistence;
 using Microsoft.Azure.Cosmos;
 using Microsoft.IdentityModel.Logging;
 using Nudelsieb.Persistence.Relational;
 using Microsoft.EntityFrameworkCore;
-using Nudelsieb.WebApi.Notifications;
 using System.IO;
 using System.Reflection;
+using Nudelsieb.Notifications;
 
 namespace Nudelsieb.WebApi
 {

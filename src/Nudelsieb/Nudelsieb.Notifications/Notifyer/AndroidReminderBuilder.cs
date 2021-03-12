@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Nudelsieb.WebApi.Notifications.Notifyer
+namespace Nudelsieb.Notifications.Notifyer
 {
     public class AndroidReminderBuilder
     {

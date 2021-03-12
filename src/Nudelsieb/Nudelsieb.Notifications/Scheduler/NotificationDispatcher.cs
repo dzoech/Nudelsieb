@@ -8,9 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Nudelsieb.WebApi.Notifications.Notifyer;
+using Nudelsieb.Notifications.Notifyer;
 
-namespace Nudelsieb.WebApi.Notifications.Scheduler
+namespace Nudelsieb.Notifications.Scheduler
 {
     public class NotificationDispatcher : IHostedService
     {

@@ -6,7 +6,7 @@ using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Nudelsieb.WebApi.Notifications.Notifyer
+namespace Nudelsieb.Notifications.Notifyer
 {
     /// <summary>
     /// Sends push notifications to Android devices via the Azure Notifications Hub

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Options;
 
-namespace Nudelsieb.WebApi.Notifications.Scheduler
+namespace Nudelsieb.Notifications.Scheduler
 {
     public class ServiceBusNotificationScheduler : INotificationScheduler
     {

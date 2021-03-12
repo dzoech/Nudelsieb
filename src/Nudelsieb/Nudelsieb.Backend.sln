@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\..\readme.md = ..\..\readme.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nudelsieb.Notifications", "Nudelsieb.Notifications\Nudelsieb.Notifications.csproj", "{DA30D542-700A-48C4-8259-0685216F2062}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{CC308F7A-E9F9-4574-80A2-2D0EC0540DEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC308F7A-E9F9-4574-80A2-2D0EC0540DEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC308F7A-E9F9-4574-80A2-2D0EC0540DEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA30D542-700A-48C4-8259-0685216F2062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA30D542-700A-48C4-8259-0685216F2062}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA30D542-700A-48C4-8259-0685216F2062}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA30D542-700A-48C4-8259-0685216F2062}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,12 +4,12 @@ using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Nudelsieb.WebApi.Notifications.Notifyer;
-using Nudelsieb.WebApi.Notifications.Scheduler;
+using Nudelsieb.Notifications.Notifyer;
+using Nudelsieb.Notifications.Scheduler;
 
-namespace Nudelsieb.WebApi.Notifications
+namespace Nudelsieb.Notifications
 {
-    public static class StartupExtensions
+    public static class DependencyInjectionExtensions
     {
         public static IServiceCollection AddNotificationServices(
             this IServiceCollection services,
