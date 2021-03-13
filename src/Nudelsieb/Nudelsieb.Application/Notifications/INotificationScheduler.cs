@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Nudelsieb.Notifications.Scheduler
+namespace Nudelsieb.Application.Notifications
 {
     public interface INotificationScheduler
     {

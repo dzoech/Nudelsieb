@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Nudelsieb.Application\Nudelsieb.Application.csproj" />
     <ProjectReference Include="..\Nudelsieb.Domain\Nudelsieb.Domain.csproj" />
   </ItemGroup>
 

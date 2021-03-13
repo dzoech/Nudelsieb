@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Nudelsieb.Domain;
+using Nudelsieb.Application.Persistence;
 
 namespace Nudelsieb.WebApi.Braindump
 {

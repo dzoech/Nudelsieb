@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Nudelsieb.Domain;
 
-namespace Nudelsieb.Application
+namespace Nudelsieb.Application.Persistence
 {
     public interface INeuronRepository
     {

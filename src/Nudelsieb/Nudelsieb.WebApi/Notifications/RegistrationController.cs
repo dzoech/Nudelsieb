@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Nudelsieb.Application.Notifications;
 using Nudelsieb.Notifications.Notifyer;
 using Nudelsieb.Notifications.Scheduler;
 

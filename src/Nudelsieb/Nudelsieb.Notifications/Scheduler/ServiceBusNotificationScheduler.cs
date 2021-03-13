@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Options;
+using Nudelsieb.Application.Notifications;
 
 namespace Nudelsieb.Notifications.Scheduler
 {

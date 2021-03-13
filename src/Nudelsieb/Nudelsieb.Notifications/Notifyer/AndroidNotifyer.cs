@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Nudelsieb.Application.Notifications;
 
 namespace Nudelsieb.Notifications.Notifyer
 {

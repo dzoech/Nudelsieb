@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Nudelsieb.Application;
+using Nudelsieb.Application.Persistence;
 
 namespace Nudelsieb.Persistence.Relational
 {

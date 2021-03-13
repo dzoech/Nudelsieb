@@ -4,6 +4,7 @@ using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Nudelsieb.Application.Notifications;
 using Nudelsieb.Notifications.Notifyer;
 using Nudelsieb.Notifications.Scheduler;
 
