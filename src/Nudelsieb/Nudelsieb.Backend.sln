@@ -11,12 +11,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Persistence", "Nu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Persistence.Relational", "Nudelsieb.Persistence.Relational\Nudelsieb.Persistence.Relational.csproj", "{CC308F7A-E9F9-4574-80A2-2D0EC0540DEC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F6048271-55BE-4A08-8B92-8C1831159E11}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{F6048271-55BE-4A08-8B92-8C1831159E11}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\readme.md = ..\..\readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nudelsieb.Notifications", "Nudelsieb.Notifications\Nudelsieb.Notifications.csproj", "{DA30D542-700A-48C4-8259-0685216F2062}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Notifications", "Nudelsieb.Notifications\Nudelsieb.Notifications.csproj", "{DA30D542-700A-48C4-8259-0685216F2062}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{AC50A7A9-21F5-47F0-B61F-1B86D19AE989}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nudelsieb.Application", "Nudelsieb.Application\Nudelsieb.Application.csproj", "{A8181DCA-D2E6-4EBC-AD6F-C5B0079FBA5F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,9 +48,18 @@ Global
 		{DA30D542-700A-48C4-8259-0685216F2062}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA30D542-700A-48C4-8259-0685216F2062}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA30D542-700A-48C4-8259-0685216F2062}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8181DCA-D2E6-4EBC-AD6F-C5B0079FBA5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8181DCA-D2E6-4EBC-AD6F-C5B0079FBA5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8181DCA-D2E6-4EBC-AD6F-C5B0079FBA5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8181DCA-D2E6-4EBC-AD6F-C5B0079FBA5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F6D01AB0-1DEB-40D7-BFB1-C606E505038F} = {AC50A7A9-21F5-47F0-B61F-1B86D19AE989}
+		{CC308F7A-E9F9-4574-80A2-2D0EC0540DEC} = {AC50A7A9-21F5-47F0-B61F-1B86D19AE989}
+		{DA30D542-700A-48C4-8259-0685216F2062} = {AC50A7A9-21F5-47F0-B61F-1B86D19AE989}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4C84B2E6-5F3D-4081-94C6-DDCCD7653605}

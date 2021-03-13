@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Reflection;
 using Nudelsieb.Notifications;
+using Nudelsieb.Application;
 
 namespace Nudelsieb.WebApi
 {

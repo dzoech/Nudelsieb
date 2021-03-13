@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Nudelsieb.Application;
 
 namespace Nudelsieb.Persistence.Relational
 {
-    public class RelationalDbNeuronRepository : Domain.INeuronRepository
+    public class RelationalDbNeuronRepository : INeuronRepository
     {
         private readonly ILogger<RelationalDbNeuronRepository> logger;
         private readonly BraindumpDbContext context;

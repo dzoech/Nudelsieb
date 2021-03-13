@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using Nudelsieb.Domain;
 
-namespace Nudelsieb.Domain
+namespace Nudelsieb.Application
 {
     public interface INeuronRepository
     {
