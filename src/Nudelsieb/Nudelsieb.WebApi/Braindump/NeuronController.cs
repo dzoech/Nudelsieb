@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Nudelsieb.Application.Persistence;
+using Nudelsieb.Application.UseCases;
 using Nudelsieb.Domain;
 
 namespace Nudelsieb.WebApi.Braindump
@@ -19,11 +20,16 @@ namespace Nudelsieb.WebApi.Braindump
     {
         private readonly ILogger<NeuronController> logger;
         private readonly INeuronRepository neuronRepository;
+        private readonly ISetReminderUseCase setReminderUseCase;
 
-        public NeuronController(ILogger<NeuronController> logger, INeuronRepository neuronRepository)
+        public NeuronController(
+            ILogger<NeuronController> logger,
+            INeuronRepository neuronRepository,
+            ISetReminderUseCase setReminderUseCase)
         {
-            this.logger = logger;
-            this.neuronRepository = neuronRepository;
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.neuronRepository = neuronRepository ?? throw new ArgumentNullException(nameof(neuronRepository));
+            this.setReminderUseCase = setReminderUseCase ?? throw new ArgumentNullException(nameof(setReminderUseCase));
         }
 
         [HttpGet]
@@ -79,6 +85,21 @@ namespace Nudelsieb.WebApi.Braindump
         public void Delete(int id)
         {
             this.logger.LogInformation($"DELETE {id}");
+        }
+
+        [HttpPost("{id}/reminder")]
+        public async Task<ActionResult> AddReminderAsync(Guid id, [FromBody] DateTimeOffset remindAt)
+        {
+            var success = await setReminderUseCase.ExecuteAsync(id, remindAt);
+
+            if (success)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

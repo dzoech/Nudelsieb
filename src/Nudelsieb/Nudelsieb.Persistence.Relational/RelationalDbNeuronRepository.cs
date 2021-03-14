@@ -50,6 +50,22 @@ namespace Nudelsieb.Persistence.Relational
             await context.SaveChangesAsync();
         }
 
+        public async Task UpdateAsync(Domain.Neuron neuron)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Domain.Neuron> GetByIdAsync(Guid id)
+        {
+            var dbNeuron = await context.Neurons
+                .Include(n => n.Groups)
+                .Include(n => n.Reminders)
+                .ToSql(logger)
+                .FirstOrDefaultAsync(n => n.Id == id);
+
+            return MapNeuron(dbNeuron);
+        }
+
         public async Task<List<Domain.Neuron>> GetAllAsync()
         {
             var neurons = await context.Neurons

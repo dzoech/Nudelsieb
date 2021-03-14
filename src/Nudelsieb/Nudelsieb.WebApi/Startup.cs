@@ -18,6 +18,7 @@ using System.IO;
 using System.Reflection;
 using Nudelsieb.Notifications;
 using Nudelsieb.Application.Persistence;
+using Nudelsieb.Application;
 
 namespace Nudelsieb.WebApi
 {
@@ -45,6 +46,7 @@ namespace Nudelsieb.WebApi
             services.AddTransient<INeuronRepository, RelationalDbNeuronRepository>();
             //services.AddSingleton<Container>(_ => cosmosDbContainer);
 
+            services.AddApplicationLayer();
             services.AddNotificationServices(options => Configuration.Bind(NotificationsOptions.SectionName, options));
 
             services

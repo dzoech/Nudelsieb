@@ -50,12 +50,23 @@ namespace Nudelsieb.Persistence
                     .Contains(group))
                     .ToList());
         }
+
+        public Task<Neuron> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<List<Reminder>> GetRemindersAsync(DateTimeOffset until)
         {
             throw new NotImplementedException();
         }
 
         public Task<List<Reminder>> GetRemindersAsync(DateTimeOffset until, ReminderState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAsync(Neuron neuron)
         {
             throw new NotImplementedException();
         }

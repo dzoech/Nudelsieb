@@ -24,7 +24,7 @@ namespace Nudelsieb.Domain
                 {
                     if (r.Subject != this)
                     {
-                        throw new InvalidOperationException($"{nameof(Reminder)} is already assinged to anothr {nameof(Neuron)}");
+                        throw new InvalidOperationException($"{nameof(Reminder)} is already assinged to another {nameof(Neuron)}");
                     }
                 }
 
