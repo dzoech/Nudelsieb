@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Nudelsieb.Application.Persistence;
 using Nudelsieb.Domain;
 
 namespace Nudelsieb.Persistence
 {
-    public class DummyNeuronRepository : INeuronRepository
+    public class DummyNeuronRepository
     {
         private readonly List<Neuron> neuronInMemoryStore = new List<Neuron>
         {
@@ -49,12 +50,33 @@ namespace Nudelsieb.Persistence
                     .Contains(group))
                     .ToList());
         }
+
+        public Task<Neuron> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<List<Reminder>> GetRemindersAsync(DateTimeOffset until)
         {
             throw new NotImplementedException();
         }
 
         public Task<List<Reminder>> GetRemindersAsync(DateTimeOffset until, ReminderState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddRemindersAsync(Neuron neuron)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateRemindersAsync(Neuron neuron)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateRemindersAsync(Guid neuronId, List<Reminder> reminders)
         {
             throw new NotImplementedException();
         }

@@ -15,7 +15,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureADB2C.UI" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Azure.NotificationHubs" Version="4.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -27,7 +26,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.4.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nudelsieb.Application\Nudelsieb.Application.csproj" />
     <ProjectReference Include="..\Nudelsieb.Domain\Nudelsieb.Domain.csproj" />
+    <ProjectReference Include="..\Nudelsieb.Notifications\Nudelsieb.Notifications.csproj" />
     <ProjectReference Include="..\Nudelsieb.Persistence.Relational\Nudelsieb.Persistence.Relational.csproj" />
     <ProjectReference Include="..\Nudelsieb.Persistence\Nudelsieb.Persistence.csproj" />
   </ItemGroup>

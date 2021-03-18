@@ -6,14 +6,14 @@ using Nudelsieb.Shared.Clients.Authentication;
 
 namespace Nudelsieb.Cli.Commands
 {
-    [Subcommand(typeof(LoginTokenCommand))]
-    class LoginCommand : CommandBase
+    [Command(names: new[] { "token", "authtoken" })]
+    class LoginTokenCommand : CommandBase
     {
         private readonly ILogger<LoginCommand> logger;
         private readonly IConsole console;
         private readonly IAuthenticationService authService;
 
-        public LoginCommand(
+        public LoginTokenCommand(
             ILogger<LoginCommand> logger,
             IConsole console,
             IAuthenticationService authService)
@@ -27,13 +27,15 @@ namespace Nudelsieb.Cli.Commands
         {
             try
             {
-                var (idToken, _) = await authService.LoginAsync();
+                var (success, accessToken) = await authService.GetCachedAccessTokenAsync();
 
-                if (idToken is null)
-                    throw new Exception("Could not retrieve login user and retrieve their id token.");
-
-                var user = authService.GetUserFromIdToken(idToken);
-                this.console.WriteLine($"Hello {user.GivenName}! You are logged in as '{user.Email ?? ""}'.");
+                if (success)
+                {
+                    this.console.WriteLine(accessToken!.RawData);
+                } else
+                {
+                    this.console.Error.WriteLine("Please login before requesting the cached access token.");
+                }
             }
             catch (Exception ex)
             {

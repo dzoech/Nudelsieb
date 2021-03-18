@@ -17,14 +17,14 @@ namespace Nudelsieb.Domain
 
         public List<Reminder> Reminders
         {
-            get => reminders; 
+            get => reminders;
             set
             {
                 foreach (var r in value)
                 {
                     if (r.Subject != this)
                     {
-                        throw new InvalidOperationException($"{nameof(Reminder)} is already assinged to anothr {nameof(Neuron)}");
+                        throw new InvalidOperationException($"{nameof(Reminder)} is already assinged to another {nameof(Neuron)}");
                     }
                 }
 
@@ -32,7 +32,7 @@ namespace Nudelsieb.Domain
             }
         }
 
-        public DateTimeOffset CreatedAt { get; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         public Neuron(string information)
             : this(information, DateTimeOffset.UtcNow)
@@ -51,19 +51,19 @@ namespace Nudelsieb.Domain
             CreatedAt = createdAt;
         }
 
-        public bool SetReminders(DateTimeOffset[] reminderTimes, out List<int> errorIndices)
+        public bool SetReminders(
+            DateTimeOffset[] reminderTimes, 
+            out List<Reminder> successfulReminders, 
+            out List<DateTimeOffset> faultyReminders)
         {
-            var allRemindersSuccessful = true;
-            errorIndices = new List<int>();
+            faultyReminders = new List<DateTimeOffset>();
+            successfulReminders = new List<Reminder>();
 
-            for (int i = 0; i < reminderTimes.Length; i++)
+            foreach (DateTimeOffset time in reminderTimes)
             {
-                var time = reminderTimes[i];
-
                 if (time < DateTimeOffset.Now)
                 {
-                    allRemindersSuccessful = false;
-                    errorIndices.Add(i);
+                    faultyReminders.Add(time);
                     continue;
                 }
 
@@ -73,10 +73,11 @@ namespace Nudelsieb.Domain
                     State = ReminderState.Waiting
                 };
 
+                successfulReminders.Add(reminder);
                 this.Reminders.Add(reminder);
             }
 
-            return allRemindersSuccessful;
+            return faultyReminders.Count == 0;
         }
     }
 }

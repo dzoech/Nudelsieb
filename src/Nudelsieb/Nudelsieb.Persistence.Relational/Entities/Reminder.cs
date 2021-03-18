@@ -8,6 +8,8 @@ namespace Nudelsieb.Persistence.Relational.Entities
     {
         public Guid Id { get; set; }
 
+        public Guid SubjectId { get; set; }
+
         public Neuron Subject { get; set; }
 
         public DateTimeOffset At { get; set; }

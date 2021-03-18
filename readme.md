@@ -41,5 +41,9 @@ The following architecture sketch illustrates the big picture:
 
 See the Swagger specification of our REST API at https://nudelsieb.zoechbauer.dev/swagger.
 
+# Setup instructions for Azure environments
+Azure Service Bus requires a connection string with *Listen* and *Send* permissions, and a queue named `reminder-push-notifications`.
+
 # Setup instructions for local development
 Install [Azure Cosmos Emulator](https://aka.ms/cosmosdb-emulator) (currently, no Docker image for Linux is available). Per default the emulator is listening on localhost:8081.
+

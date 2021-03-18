@@ -5,36 +5,32 @@ using System.Threading.Tasks;
 using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Nudelsieb.Application.Notifications;
 
-namespace Nudelsieb.WebApi.Notifications
+namespace Nudelsieb.Notifications.Notifyer
 {
+    /// <summary>
+    /// Sends push notifications to Android devices via the Azure Notifications Hub
+    /// </summary>
     public class AndroidNotifyer : IPushNotifyer
     {
         private readonly ILogger<AndroidNotifyer> logger;
         private readonly INotificationHubClient hub;
-        private readonly IOptions<NotificationsOptions> hubOptions;
-
-
-        public AndroidNotifyer(ILogger<AndroidNotifyer> logger, IOptions<NotificationsOptions> hubOptions)
+        
+        public AndroidNotifyer(ILogger<AndroidNotifyer> logger, INotificationHubClient hub)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
-            // TODO: use DI
-            this.hubOptions = hubOptions ?? throw new ArgumentNullException(nameof(hubOptions));
-            this.hub = new NotificationHubClient(
-                hubOptions.Value.AzureNotificationHub.ConnectionString,
-                hubOptions.Value.AzureNotificationHub.HubName);
-
-            this.hubOptions = hubOptions;
+            this.hub = hub;
         }
 
-        public async Task SubscribeAsync(DeviceInstallationDto installationRequest)
+        public async Task SubscribeAsync(DeviceInstallationDto installationRequest, string user)
         {
             var userId = "ANY";
 
             var installation = new Installation
             {
                 InstallationId = installationRequest.Id,
+                UserId = user,
                 PushChannel = installationRequest.PnsHandle,
                 Tags = new[] { $"user:{userId}" },
                 Platform = NotificationPlatform.Fcm,
@@ -44,9 +40,18 @@ namespace Nudelsieb.WebApi.Notifications
             await hub.CreateOrUpdateInstallationAsync(installation);
         }
 
-        public async Task UnsubscribeAsync(string id)
+        public async Task UnsubscribeAsync(string id, string user)
         {
-            await hub.DeleteInstallationAsync(id);
+            var installation = await hub.GetInstallationAsync(id);
+
+            if (installation.UserId == user)
+            {
+                await hub.DeleteInstallationAsync(id);
+            }
+            else
+            {
+                throw new NotifyerException($"Installation id '{id}' does not belong user '{user}'");
+            }
         }
 
         public async Task<string> SendAsync(string message, string receiver)
@@ -55,8 +60,6 @@ namespace Nudelsieb.WebApi.Notifications
                 .WithNeuron(Guid.NewGuid(), message)
                 .WithGroups("demo-group", "work", "project-nudelsieb")
                 .Build();
-
-            var x = await hub.GetAllRegistrationsAsync(10);
 
             var outcome = await hub.SendFcmNativeNotificationAsync(notification, tagExpression: $"user:{receiver}");
             logger.LogInformation($"Notified clients, tracking ID: {outcome.TrackingId}");

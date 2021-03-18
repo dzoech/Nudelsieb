@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Nudelsieb.WebApi.Notifications
+namespace Nudelsieb.Notifications.Notifyer
 {
     [Serializable]
     internal class ReminderBuilderException : Exception
