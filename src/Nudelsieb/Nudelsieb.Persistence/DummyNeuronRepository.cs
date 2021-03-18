@@ -8,7 +8,7 @@ using Nudelsieb.Domain;
 
 namespace Nudelsieb.Persistence
 {
-    public class DummyNeuronRepository : INeuronRepository
+    public class DummyNeuronRepository
     {
         private readonly List<Neuron> neuronInMemoryStore = new List<Neuron>
         {
@@ -66,7 +66,17 @@ namespace Nudelsieb.Persistence
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(Neuron neuron)
+        public Task AddRemindersAsync(Neuron neuron)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateRemindersAsync(Neuron neuron)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateRemindersAsync(Guid neuronId, List<Reminder> reminders)
         {
             throw new NotImplementedException();
         }

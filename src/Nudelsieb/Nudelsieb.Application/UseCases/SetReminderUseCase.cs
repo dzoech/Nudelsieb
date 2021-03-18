@@ -20,11 +20,11 @@ namespace Nudelsieb.Application.UseCases
         public async Task<bool> ExecuteAsync(Guid neuronId, DateTimeOffset remindAt)
         {
             var neuron = await neuronRepository.GetByIdAsync(neuronId);
-            var success = neuron.SetReminders(new[] { remindAt }, out _);
+            var success = neuron.SetReminders(new[] { remindAt }, out var newReminders, out _);
             
             if (success)
             {
-                await neuronRepository.UpdateAsync(neuron);
+                await neuronRepository.AddRemindersAsync(newReminders);
                 await scheduler.ScheduleAsync(neuron.Information, remindAt);
             }
 

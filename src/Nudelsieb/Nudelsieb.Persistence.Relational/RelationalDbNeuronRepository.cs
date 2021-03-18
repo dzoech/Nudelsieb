@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Nudelsieb.Application.Persistence;
 
+
 namespace Nudelsieb.Persistence.Relational
 {
     public class RelationalDbNeuronRepository : INeuronRepository
@@ -50,14 +51,18 @@ namespace Nudelsieb.Persistence.Relational
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Domain.Neuron neuron)
+        public async Task AddRemindersAsync(List<Domain.Reminder> reminders)
         {
-            throw new NotImplementedException();
+            var dbReminders = MapRemindersWithSubjectIdOnly(reminders);
+            context.Reminders.AddRange(dbReminders);
+            var e = context.ChangeTracker.Entries();
+            await context.SaveChangesAsync();
         }
 
         public async Task<Domain.Neuron> GetByIdAsync(Guid id)
         {
             var dbNeuron = await context.Neurons
+                .AsNoTracking()
                 .Include(n => n.Groups)
                 .Include(n => n.Reminders)
                 .ToSql(logger)
@@ -69,6 +74,7 @@ namespace Nudelsieb.Persistence.Relational
         public async Task<List<Domain.Neuron>> GetAllAsync()
         {
             var neurons = await context.Neurons
+                .AsNoTracking()
                 .Include(n => n.Groups)
                 .Include(n => n.Reminders)
                 .OrderByDescending(n => n.CreatedAt)
@@ -78,22 +84,10 @@ namespace Nudelsieb.Persistence.Relational
             return neurons;
         }
 
-        private static List<Domain.Reminder> MapReminders(Entities.Neuron n, Domain.Neuron subject)
-        {
-            var reminders = n.Reminders.Select(r => new Domain.Reminder(subject)
-            {
-                Id = r.Id,
-                At = r.At,
-                State = MapReminderState(r.State)
-            })
-            .ToList();
-
-            return reminders;
-        }
-
         public async Task<List<Domain.Neuron>> GetByGroupAsync(string groupName)
         {
             var neurons = await context.Groups
+                .AsNoTracking()
                 .Where(g => g.Name == groupName)
                 .OrderByDescending(g => g.Neuron.CreatedAt)
                 .Select(g => MapNeuron(g.Neuron))
@@ -106,6 +100,7 @@ namespace Nudelsieb.Persistence.Relational
         public async Task<List<Domain.Reminder>> GetRemindersAsync(DateTimeOffset until)
         {
             return await context.Reminders
+                .AsNoTracking()
                 .Include(r => r.Subject).ThenInclude(n => n.Groups)
                 .Where(r => r.At <= until)
                 .Select(r => new Domain.Reminder(MapNeuron(r.Subject))
@@ -121,6 +116,7 @@ namespace Nudelsieb.Persistence.Relational
         public async Task<List<Domain.Reminder>> GetRemindersAsync(DateTimeOffset until, Domain.ReminderState state)
         {
             return await context.Reminders
+                .AsNoTracking()
                 .Include(r => r.Subject).ThenInclude(n => n.Groups)
                 .Where(r => r.At <= until && r.State == MapReminderState(state))
                 .Select(r => new Domain.Reminder(MapNeuron(r.Subject))
@@ -133,29 +129,100 @@ namespace Nudelsieb.Persistence.Relational
                 .ToListAsync();
         }
 
-        private static Domain.Neuron MapNeuron(Entities.Neuron neuron)
+        private static List<Domain.Reminder> MapReminders(IEnumerable<Entities.Reminder> dbReminders, Domain.Neuron subject)
         {
-            var n = new Domain.Neuron(neuron.Information)
+            var reminders = dbReminders
+                .Select(r => new Domain.Reminder(subject)
+                {
+                    Id = r.Id,
+                    At = r.At,
+                    State = MapReminderState(r.State)
+                })
+                .ToList();
+
+            return reminders;
+        }
+
+        private static List<Entities.Reminder> MapRemindersWithSubjectIdOnly(IEnumerable<Domain.Reminder> reminders)
+        {
+            var dbReminders = reminders
+                .Select(r => new Entities.Reminder
+                {
+                    Id = r.Id,
+                    SubjectId = r.Subject.Id,
+                    At = r.At,
+                    State = MapReminderState(r.State)
+                })
+                .ToList();
+
+            return dbReminders;
+        }
+
+        private static Entities.Neuron MapNeuronWithIdOnly(Domain.Neuron neuron)
+        {
+            return new Entities.Neuron
             {
-                Id = neuron.Id,
-                Groups = neuron.Groups.Select(g => g.Name).ToList()
+                Id = neuron.Id
+            };
+        }
+
+        private static List<Entities.Reminder> MapReminders(IEnumerable<Domain.Reminder> reminders, Entities.Neuron subject)
+        {
+            var dbReminders = reminders
+                .Select(r => new Entities.Reminder
+                {
+                    Id = r.Id,
+                    Subject = subject,
+                    At = r.At,
+                    State = MapReminderState(r.State)
+                })
+                .ToList();
+
+            return dbReminders;
+        }
+
+        private static Domain.Neuron MapNeuron(Entities.Neuron dbNeuron)
+        {
+            var n = new Domain.Neuron(dbNeuron.Information)
+            {
+                Id = dbNeuron.Id,
+                Groups = dbNeuron.Groups.Select(g => g.Name).ToList(),
+                CreatedAt = dbNeuron.CreatedAt
             };
 
-            n.Reminders = MapReminders(neuron, n);
+            n.Reminders = MapReminders(dbNeuron.Reminders, n);
 
             return n;
         }
 
-        private static Domain.ReminderState MapReminderState(Entities.ReminderState state)
+        private static Entities.Neuron MapNeuron(Domain.Neuron neuron)
         {
-            return state switch
+            var dbNeuron = new Entities.Neuron
+            {
+                Id = neuron.Id,
+                Information = neuron.Information,
+                Groups = neuron.Groups.Select(g => new Entities.Group
+                {
+                    Name = g,
+                    NeuronId = neuron.Id
+                }).ToList()
+            };
+
+            dbNeuron.Reminders = MapReminders(neuron.Reminders, dbNeuron);
+
+            return dbNeuron;
+        }
+
+        private static Domain.ReminderState MapReminderState(Entities.ReminderState dbState)
+        {
+            return dbState switch
             {
                 Entities.ReminderState.Waiting => Domain.ReminderState.Waiting,
                 Entities.ReminderState.Active => Domain.ReminderState.Active,
                 Entities.ReminderState.Disabled => Domain.ReminderState.Disabled,
                 _ => throw new ArgumentException(
-                        $"Cannot map {nameof(Entities.ReminderState)} {state} to {nameof(Domain.ReminderState)}.",
-                        nameof(state)),
+                        $"Cannot map {nameof(Entities.ReminderState)} {dbState} to {nameof(Domain.ReminderState)}.",
+                        nameof(dbState)),
             };
         }
 

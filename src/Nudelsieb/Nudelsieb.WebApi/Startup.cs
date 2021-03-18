@@ -97,6 +97,7 @@ namespace Nudelsieb.WebApi
                     .Value;
 
                 options.UseSqlServer(connStr);
+                options.EnableSensitiveDataLogging();
             });
         }
 

@@ -55,7 +55,7 @@ namespace Nudelsieb.WebApi.Braindump
             };
 
             var reminders = neuronDto.Reminders.ToArray();
-            var success = neuron.SetReminders(reminders, out List<int> errors);
+            var success = neuron.SetReminders(reminders, out _, out List<DateTimeOffset> errors);
 
             await this.neuronRepository.AddAsync(neuron);
 

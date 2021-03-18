@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Nudelsieb.Persistence
 {
-    public class CosmosDbNeuronRepository : INeuronRepository
+    public class CosmosDbNeuronRepository
     {
         private readonly Container container;
 
@@ -47,7 +47,22 @@ namespace Nudelsieb.Persistence
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(Neuron neuron)
+        public Task AddRemindersAsync(Neuron neuron)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateRemindersAsync(Neuron neuron)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateRemindersAsync(Guid neuronId, List<Reminder> reminders)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddRemindersAsync(List<Reminder> reminders)
         {
             throw new NotImplementedException();
         }
