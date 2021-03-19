@@ -1,6 +1,12 @@
 [![Build Status](https://dev.azure.com/zoechbauer/Nudelsieb/_apis/build/status/dzoech.Nudelsieb?branchName=master)](https://dev.azure.com/zoechbauer/Nudelsieb/_build/latest?definitionId=2&branchName=master)
 
-*Nudelsieb* is a service that enables one to quickly write down thoughts and ideas before having forgotten them already.
+*Nudelsieb* is a service that enables one to quickly write down thoughts and ideas before having 
+forgotten them already. It focuses on supporting developers managing their tasks by providing a 
+simple command line interface to add new records called *Neurons*. Neurons can be organized into 
+groups, and allow to schedule reminders. 
+Reminders are pushed as notifications to the mobile 
+app. The main goal of the mobile app to facilitate easy rescheduling of reminders. Currently, only
+Android is supported.
 
 *Nudelsieb* is work in progress.
 
@@ -15,8 +21,26 @@ You can install the CLI via the Windows package manager [Chocolatey](https://cho
 
 # Usage
 
-
 After the installation with Chocolatey you can use the CLI with the these aliases: `nudelsieb` or the short version `nds`.
+
+```
+Usage: nudelsieb [command] [options]
+
+Options:
+  -v|--version  Show version information.
+  -?|-h|--help  Show help information.
+
+Commands:
+  add
+  config
+  list
+  login
+  reminder
+
+Run 'nudelsieb [command] -?|-h|--help' for more information about a command.
+```
+
+## Getting started
 
 A random thought that occurred to you is called a *neuron*. To add a new neuron, simply run
 
@@ -43,7 +67,3 @@ See the Swagger specification of our REST API at https://nudelsieb.zoechbauer.de
 
 # Setup instructions for Azure environments
 Azure Service Bus requires a connection string with *Listen* and *Send* permissions, and a queue named `reminder-push-notifications`.
-
-# Setup instructions for local development
-Install [Azure Cosmos Emulator](https://aka.ms/cosmosdb-emulator) (currently, no Docker image for Linux is available). Per default the emulator is listening on localhost:8081.
-
