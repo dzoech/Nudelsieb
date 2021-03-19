@@ -17,7 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nudelsieb.Mobile.Android", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Mobile", "Nudelsieb.Mobile\Nudelsieb.Mobile\Nudelsieb.Mobile.csproj", "{0B93D89D-B005-45C9-B7C4-2E38529AFD35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nudelsieb.Shared.Clients", "Nudelsieb.Shared.Clients\Nudelsieb.Shared.Clients.csproj", "{B881EE0C-8BC8-4DA7-8510-14FB71E08065}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Shared.Clients", "Nudelsieb.Shared.Clients\Nudelsieb.Shared.Clients.csproj", "{B881EE0C-8BC8-4DA7-8510-14FB71E08065}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{89D63D0D-A409-478C-A620-9760FAE6465F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

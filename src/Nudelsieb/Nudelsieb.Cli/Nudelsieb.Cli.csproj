@@ -8,7 +8,6 @@
         <VersionPrefix>0.0.1</VersionPrefix>
         <VersionSuffix>dev</VersionSuffix>
         <UserSecretsId>Nudelsieb.Cli-bfb854f1-47ab-48b9-aabf-8b91e62d8dbd</UserSecretsId>
-        <CodeAnalysisRuleSet>../NudelsiebCodeAnalysisRules.ruleset</CodeAnalysisRuleSet>
         <NoWin32Manifest>true</NoWin32Manifest>
         <AssemblyName>nudelsieb</AssemblyName>
         <RootNamespace>Nudelsieb.Cli</RootNamespace>

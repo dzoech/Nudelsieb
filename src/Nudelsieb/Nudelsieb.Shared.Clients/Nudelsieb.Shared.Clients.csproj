@@ -5,7 +5,6 @@
         <LangVersion>8.0</LangVersion>
         <Nullable>enable</Nullable>
         <WarningsAsErrors>nullable</WarningsAsErrors>
-        <CodeAnalysisRuleSet>../NudelsiebCodeAnalysisRules.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>

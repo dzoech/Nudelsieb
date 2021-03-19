@@ -8,7 +8,6 @@
         <UserSecretsId>Nudelsieb.WebApi-D6BF8BE4-F800-4715-AB18-0BC8F84E3629</UserSecretsId>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>1591;1701;1702</NoWarn>
-        <CodeAnalysisRuleSet>../NudelsiebCodeAnalysisRules.ruleset</CodeAnalysisRuleSet>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 

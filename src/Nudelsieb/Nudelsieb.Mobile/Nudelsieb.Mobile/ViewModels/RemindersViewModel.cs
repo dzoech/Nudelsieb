@@ -29,7 +29,23 @@ namespace Nudelsieb.Mobile.ViewModels
             AddReminderCommand = new Command(OnAddItem);
         }
 
-        async Task ExecuteLoadItemsCommand()
+        public void OnAppearing()
+        {
+            IsBusy = true;
+            SelectedItem = null;
+        }
+
+        public Reminder SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                SetProperty(ref _selectedItem, value);
+                OnItemSelected(value);
+            }
+        }
+
+        private async Task ExecuteLoadItemsCommand()
         {
             IsBusy = true;
 
@@ -51,28 +67,12 @@ namespace Nudelsieb.Mobile.ViewModels
             }
         }
 
-        public void OnAppearing()
-        {
-            IsBusy = true;
-            SelectedItem = null;
-        }
-
-        public Reminder SelectedItem
-        {
-            get => _selectedItem;
-            set
-            {
-                SetProperty(ref _selectedItem, value);
-                OnItemSelected(value);
-            }
-        }
-
         private async void OnAddItem(object obj)
         {
             await Shell.Current.GoToAsync(nameof(NewItemPage));
         }
 
-        async void OnItemSelected(Reminder item)
+        private async void OnItemSelected(Reminder item)
         {
             if (item == null)
                 return;
