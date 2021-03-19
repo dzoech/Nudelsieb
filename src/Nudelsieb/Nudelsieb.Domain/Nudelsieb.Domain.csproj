@@ -5,6 +5,9 @@
         <WarningsAsErrors>nullable</WarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
+        <AdditionalFiles Include="../stylecop.json" Link="stylecop.json" />
+    </ItemGroup>
+    <ItemGroup>
       <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.333">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

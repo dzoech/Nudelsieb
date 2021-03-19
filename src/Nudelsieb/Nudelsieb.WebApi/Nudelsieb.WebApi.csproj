@@ -9,8 +9,13 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>1591;1701;1702</NoWarn>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+        <EnableNETAnalyzers>false</EnableNETAnalyzers>
     </PropertyGroup>
-
+    
+    <ItemGroup>
+        <AdditionalFiles Include="../stylecop.json" Link="stylecop.json" />
+    </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureADB2C.UI" Version="3.1.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6">
