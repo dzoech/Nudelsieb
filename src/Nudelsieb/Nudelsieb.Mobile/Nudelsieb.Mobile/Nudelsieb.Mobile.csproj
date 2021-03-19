@@ -1,58 +1,63 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-    <UserSecretsId>f9194e5f-8ef5-4895-a178-2f82bf77d01f</UserSecretsId>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+        <UserSecretsId>f9194e5f-8ef5-4895-a178-2f82bf77d01f</UserSecretsId>
+        <CodeAnalysisRuleSet>../NudelsiebCodeAnalysisRules.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="appsettings.json" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Remove="appsettings.json" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="appsettings.json" />
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="appsettings.json" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.25.0" />
-    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.16.8" />
-    <PackageReference Include="Refit" Version="5.2.4" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
-    <PackageReference Include="System.Text.Json" Version="5.0.1" />
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1821" />  
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+        <PackageReference Include="Microsoft.Identity.Client" Version="4.25.0" />
+        <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.16.8" />
+        <PackageReference Include="Refit" Version="5.2.4" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.333">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+        <PackageReference Include="System.Text.Json" Version="5.0.1" />
+        <PackageReference Include="Xamarin.Forms" Version="4.8.0.1821" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Nudelsieb.Shared.Clients\Nudelsieb.Shared.Clients.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Nudelsieb.Shared.Clients\Nudelsieb.Shared.Clients.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Views\ProfilePage.xaml.cs">
-      <DependentUpon>ProfilePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\RemindersPage.xaml.cs">
-      <DependentUpon>RemindersPage.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Views\ProfilePage.xaml.cs">
+            <DependentUpon>ProfilePage.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\RemindersPage.xaml.cs">
+            <DependentUpon>RemindersPage.xaml</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Views\LoadingPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\LoginPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\MainPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Views\LoadingPage.xaml">
+            <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Views\LoginPage.xaml">
+            <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Views\MainPage.xaml">
+            <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+        </EmbeddedResource>
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Views\LogoutPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
+    <ItemGroup>
+        <None Update="Views\LogoutPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </None>
+    </ItemGroup>
 </Project>

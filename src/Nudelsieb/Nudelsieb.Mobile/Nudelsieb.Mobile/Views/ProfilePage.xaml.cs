@@ -52,7 +52,5 @@ namespace Nudelsieb.Mobile.Views
                 }
             }
         }
-
-
     }
 }

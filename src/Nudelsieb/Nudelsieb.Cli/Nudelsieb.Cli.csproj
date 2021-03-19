@@ -8,6 +8,7 @@
         <VersionPrefix>0.0.1</VersionPrefix>
         <VersionSuffix>dev</VersionSuffix>
         <UserSecretsId>Nudelsieb.Cli-bfb854f1-47ab-48b9-aabf-8b91e62d8dbd</UserSecretsId>
+        <CodeAnalysisRuleSet>../NudelsiebCodeAnalysisRules.ruleset</CodeAnalysisRuleSet>
         <NoWin32Manifest>true</NoWin32Manifest>
         <AssemblyName>nudelsieb</AssemblyName>
         <RootNamespace>Nudelsieb.Cli</RootNamespace>
@@ -28,6 +29,10 @@
         <PackageReference Include="Microsoft.Identity.Client" Version="4.24.0" />
         <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.16.7" />
         <PackageReference Include="refit" Version="5.2.4" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.333">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
     </ItemGroup>
     <ItemGroup>
