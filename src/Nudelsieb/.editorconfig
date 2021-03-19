@@ -1,3 +1,5 @@
+# Maybe cosider reusing this config: https://github.com/SonarSource/sonar-dotnet/blob/master/.editorconfig
+
 # To learn more about .editorconfig see https://aka.ms/editorconfigdocs
 ###############################
 # Core EditorConfig Options   #
@@ -14,6 +16,16 @@ charset = utf-8-bom
 # .NET Coding Conventions     #
 ###############################
 [*.{cs,vb}]
+# Nudelsieb customization
+
+dotnet_diagnostic.SA1101.severity = none # disable 'this.' prefix
+
+# configure braces for if/else conditions
+dotnet_diagnostic.SA1503.severity = none
+dotnet_diagnostic.SA1519.severity = error
+dotnet_diagnostic.SA1520.severity = error
+dotnet_diagnostic.SA1633.severity = none # no file headers
+
 # Organize usings
 dotnet_sort_system_directives_first = true
 # this. preferences
@@ -115,9 +127,3 @@ csharp_space_between_method_call_empty_parameter_list_parentheses = false
 # Wrapping preferences
 csharp_preserve_single_line_statements = true
 csharp_preserve_single_line_blocks = true
-###############################
-# VB Coding Conventions       #
-###############################
-[*.vb]
-# Modifier preferences
-visual_basic_preferred_modifier_order = Partial,Default,Private,Protected,Public,Friend,NotOverridable,Overridable,MustOverride,Overloads,Overrides,MustInherit,NotInheritable,Static,Shared,Shadows,ReadOnly,WriteOnly,Dim,Const,WithEvents,Widening,Narrowing,Custom,Async:suggestion
