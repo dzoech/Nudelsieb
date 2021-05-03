@@ -50,6 +50,7 @@ namespace Nudelsieb.WebApi
                 .AddDefaultPolicy(p => p
                     .WithOrigins("http://localhost:4200", "https://localhost:4200")
                     .AllowAnyMethod()
+                    .AllowAnyHeader()
                     .AllowCredentials()));
 
             services.AddSwaggerGen(options =>
