@@ -29,6 +29,8 @@ import {
 } from '@azure/msal-browser';
 
 import { aadb2cPolicies, apiConfig } from './aadb2c-config';
+import { AppRoutingModule } from './app-routing.module';
+import { NeuronsComponent } from './neurons/neurons.component';
 
 const isInternetExplorer =
   window.navigator.userAgent.indexOf('MSIE ') > -1 ||
@@ -41,7 +43,7 @@ export function loggerCallback(logLevel: LogLevel, message: string) {
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
     auth: {
-      clientId: '9067c884-9fa6-414f-9aa4-a565b1cb46be', //5203f7ad-950c-4751-ab5c-98392e9d770a
+      clientId: '5203f7ad-950c-4751-ab5c-98392e9d770a',
       authority: aadb2cPolicies.authorities.signUpSignIn.authority,
       redirectUri: '/',
       postLogoutRedirectUri: '/',
@@ -81,8 +83,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 }
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule, MsalModule],
+  declarations: [AppComponent, NeuronsComponent],
+  imports: [BrowserModule, HttpClientModule, MsalModule, AppRoutingModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

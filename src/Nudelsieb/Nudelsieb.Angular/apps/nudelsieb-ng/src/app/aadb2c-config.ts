@@ -3,27 +3,26 @@
  * To learn more about user flows, visit https://docs.microsoft.com/en-us/azure/active-directory-b2c/user-flow-overview
  * To learn more about custom policies, visit https://docs.microsoft.com/en-us/azure/active-directory-b2c/custom-policy-overview
  */
+const tenantName = 'dzoech';
+const aadTenant = `${tenantName}.onmicrosoft.com`;
+const authorityDomain = `${tenantName}.b2clogin.com`;
+const names = {
+  policySignUpSignIn: 'B2C_1_email-user-flow',
+  policyPasswordReset: 'B2C_1_passwort-reset-flow',
+};
+
 export const aadb2cPolicies = {
-  names: {
-    signUpSignIn: 'b2c_1_susi',
-    forgotPassword: 'b2c_1_reset',
-    editProfile: 'b2c_1_edit_profile',
-  },
+  names,
   authorities: {
     signUpSignIn: {
-      authority:
-        'https://fabrikamb2c.b2clogin.com/fabrikamb2c.onmicrosoft.com/b2c_1_susi',
+      authority: `https://${authorityDomain}/${aadTenant}/${names.policySignUpSignIn}`,
     },
     forgotPassword: {
-      authority:
-        'https://fabrikamb2c.b2clogin.com/fabrikamb2c.onmicrosoft.com/b2c_1_reset',
-    },
-    editProfile: {
-      authority:
-        'https://fabrikamb2c.b2clogin.com/fabrikamb2c.onmicrosoft.com/b2c_1_edit_profile',
+      authority: `https://${authorityDomain}/${aadTenant}/${names.policyPasswordReset}`,
     },
   },
-  authorityDomain: 'fabrikamb2c.b2clogin.com',
+  aadTenant,
+  authorityDomain,
 };
 
 /**
@@ -32,9 +31,8 @@ export const aadb2cPolicies = {
  */
 export const apiConfig: { scopes: string[]; uri: string } = {
   scopes: [
-    'braindump.read',
-    'braindump.write',
-    // 'https://fabrikamb2c.onmicrosoft.com/helloapi/demo.read',
+    `https://${aadTenant}/nudelsieb/braindump.read`,
+    `https://${aadTenant}/nudelsieb/braindump.write`,
   ],
-  uri: 'https://nudelsieb.zoechbauer.dev/braindump/neuron',
+  uri: 'https://localhost:5001/braindump/neuron',
 };
