@@ -46,6 +46,11 @@ namespace Nudelsieb.WebApi
             services.AddHttpClient();
             services.AddControllers();
             services.AddHealthChecks();
+            services.AddCors(o => o
+                .AddDefaultPolicy(p => p
+                    .WithOrigins("http://localhost:4200", "https://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowCredentials()));
 
             services.AddSwaggerGen(options =>
             {
@@ -91,7 +96,14 @@ namespace Nudelsieb.WebApi
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <remarks>
+        /// <see href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-3.1#middleware-order">
+        /// See the documentation for the correct order of middlewares.
+        /// </see>
+        /// </remarks>
         public void Configure(
             IApplicationBuilder app,
             IWebHostEnvironment env,
@@ -107,6 +119,7 @@ namespace Nudelsieb.WebApi
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
 
