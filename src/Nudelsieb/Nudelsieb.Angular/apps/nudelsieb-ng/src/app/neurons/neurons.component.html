@@ -1,1 +1,9 @@
-<p>neurons works!</p>
+<h1>Neurons</h1>
+
+<ul>
+  <li *ngFor="let n of neurons" class="neuron">{{ n.name }}</li>
+</ul>
+
+<a routerLink="/">Home</a>
+
+<button id="add-todo" (click)="addTodo()">Add Todo</button>

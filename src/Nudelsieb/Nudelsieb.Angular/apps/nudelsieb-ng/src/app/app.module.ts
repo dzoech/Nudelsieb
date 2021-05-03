@@ -31,6 +31,8 @@ import {
 import { aadb2cPolicies, apiConfig } from './aadb2c-config';
 import { AppRoutingModule } from './app-routing.module';
 import { NeuronsComponent } from './neurons/neurons.component';
+import { HomeComponent } from './home/home.component';
+import { RouterModule } from '@angular/router';
 
 const isInternetExplorer =
   window.navigator.userAgent.indexOf('MSIE ') > -1 ||
@@ -51,7 +53,7 @@ export function MSALInstanceFactory(): IPublicClientApplication {
     },
     cache: {
       cacheLocation: BrowserCacheLocation.LocalStorage,
-      storeAuthStateInCookie: isInternetExplorer, // set to true for IE 11
+      storeAuthStateInCookie: isInternetExplorer,
     },
     system: {
       loggerOptions: {
@@ -83,7 +85,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 }
 
 @NgModule({
-  declarations: [AppComponent, NeuronsComponent],
+  declarations: [AppComponent, NeuronsComponent, HomeComponent],
   imports: [BrowserModule, HttpClientModule, MsalModule, AppRoutingModule],
   providers: [
     {
