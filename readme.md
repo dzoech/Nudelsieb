@@ -70,4 +70,5 @@ Azure Service Bus requires a connection string with *Listen* and *Send* permissi
 
 ## Recommended extensions for Visual Studio
 
+[CodeMaid](https://marketplace.visualstudio.com/items?itemName=SteveCadwallader.CodeMaid) for consistent code formatting (press `CTRL + M`, `CTRL + SPACE`)
 [Editor Guidelines](https://marketplace.visualstudio.com/items?itemName=PaulHarrington.EditorGuidelines) for visual guidance on the maximum line length
