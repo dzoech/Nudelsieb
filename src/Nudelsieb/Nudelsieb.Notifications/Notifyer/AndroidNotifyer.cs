@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Nudelsieb.Application.Notifications;
 
 namespace Nudelsieb.Notifications.Notifyer
@@ -16,7 +13,7 @@ namespace Nudelsieb.Notifications.Notifyer
     {
         private readonly ILogger<AndroidNotifyer> logger;
         private readonly INotificationHubClient hub;
-        
+
         public AndroidNotifyer(ILogger<AndroidNotifyer> logger, INotificationHubClient hub)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -36,7 +33,8 @@ namespace Nudelsieb.Notifications.Notifyer
                 Platform = NotificationPlatform.Fcm,
             };
 
-            // call notification hubs to create a new registration ID, and then return the ID back to the device.
+            // call notification hubs to create a new registration ID, and then return the ID back
+            // to the device.
             await hub.CreateOrUpdateInstallationAsync(installation);
         }
 

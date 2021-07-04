@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
@@ -9,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Nudelsieb.Application.Notifications;
-using Nudelsieb.Notifications.Notifyer;
 
 namespace Nudelsieb.Notifications.Scheduler
 {
@@ -21,7 +18,6 @@ namespace Nudelsieb.Notifications.Scheduler
         private readonly ILogger<NotificationDispatcher> logger;
         private readonly ServiceBusProcessor serviceBusProcessor;
         private readonly string queueName;
-
 
         public NotificationDispatcher(
             IServiceScopeFactory serviceScopeFactory,
@@ -44,6 +40,16 @@ namespace Nudelsieb.Notifications.Scheduler
             serviceBusProcessor.ProcessErrorAsync += ProcessErrorAsync;
         }
 
+        public async Task StartAsync(CancellationToken cancellationToken)
+        {
+            await serviceBusProcessor.StartProcessingAsync(cancellationToken);
+        }
+
+        public async Task StopAsync(CancellationToken cancellationToken)
+        {
+            await serviceBusProcessor.StopProcessingAsync(cancellationToken);
+        }
+
         private async Task ProcessMessageAsync(ProcessMessageEventArgs args)
         {
             logger.LogDebug("Processing message received by Service Bus");
@@ -59,16 +65,6 @@ namespace Nudelsieb.Notifications.Scheduler
             logger.LogWarning(args.Exception, "Received an error by Service Bus");
 
             return Task.CompletedTask;
-        }
-
-        public async Task StartAsync(CancellationToken cancellationToken)
-        {
-            await serviceBusProcessor.StartProcessingAsync(cancellationToken);
-        }
-
-        public async Task StopAsync(CancellationToken cancellationToken)
-        {
-            await serviceBusProcessor.StopProcessingAsync(cancellationToken);
         }
     }
 }

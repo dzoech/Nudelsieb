@@ -1,13 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Nudelsieb.Domain
 {
     public class Neuron
     {
         private List<Reminder> reminders = new List<Reminder>();
+
+        public Neuron(string information)
+            : this(information, DateTimeOffset.UtcNow)
+        {
+        }
+
+        public Neuron(string information, DateTimeOffset createdAt)
+        {
+            if (createdAt > DateTimeOffset.UtcNow)
+            {
+                throw new ArgumentException("Creation date must not be in the future.", nameof(createdAt));
+            }
+
+            Information = information;
+            Groups = new List<string>();
+            CreatedAt = createdAt;
+        }
 
         public Guid Id { get; set; }
 
@@ -33,27 +48,9 @@ namespace Nudelsieb.Domain
         }
 
         public DateTimeOffset CreatedAt { get; set; }
-
-        public Neuron(string information)
-            : this(information, DateTimeOffset.UtcNow)
-        {
-        }
-
-        public Neuron(string information, DateTimeOffset createdAt)
-        {
-            if (createdAt > DateTimeOffset.UtcNow)
-            {
-                throw new ArgumentException("Creation date must not be in the future.", nameof(createdAt));
-            }
-
-            Information = information;
-            Groups = new List<string>();
-            CreatedAt = createdAt;
-        }
-
         public bool SetReminders(
-            DateTimeOffset[] reminderTimes, 
-            out List<Reminder> successfulReminders, 
+            DateTimeOffset[] reminderTimes,
+            out List<Reminder> successfulReminders,
             out List<DateTimeOffset> faultyReminders)
         {
             faultyReminders = new List<DateTimeOffset>();

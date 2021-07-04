@@ -1,30 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureADB2C.UI;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using Nudelsieb.Domain;
 using Microsoft.IdentityModel.Logging;
-using Nudelsieb.Persistence.Relational;
-using Microsoft.EntityFrameworkCore;
-using System.IO;
-using System.Reflection;
-using Nudelsieb.Notifications;
-using Nudelsieb.Application.Persistence;
+using Microsoft.OpenApi.Models;
 using Nudelsieb.Application;
+using Nudelsieb.Application.Persistence;
+using Nudelsieb.Notifications;
+using Nudelsieb.Persistence.Relational;
 
 namespace Nudelsieb.WebApi
 {
     public class Startup
     {
-        const string ApiName = "Nudelsieb";
-        const string ApiVersion = "V1";
+        private const string ApiName = "Nudelsieb";
+        private const string ApiVersion = "V1";
 
         public Startup(IConfiguration configuration)
         {
@@ -91,7 +89,8 @@ namespace Nudelsieb.WebApi
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime. Use this method to configure the HTTP request
+        // pipeline.
         public void Configure(
             IApplicationBuilder app,
             IWebHostEnvironment env,

@@ -8,8 +8,7 @@
         Waiting,
 
         /// <summary>
-        /// The reminder has been sent to the user but the user hasn't 
-        /// interacted with it.
+        /// The reminder has been sent to the user but the user hasn't interacted with it.
         /// </summary>
         Active,
 

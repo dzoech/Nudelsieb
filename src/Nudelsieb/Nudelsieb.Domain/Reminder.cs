@@ -1,11 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Nudelsieb.Domain
 {
     public class Reminder
     {
+        public Reminder(Neuron subject)
+        {
+            Subject = subject;
+            Id = Guid.NewGuid();
+        }
+
         public Guid Id { get; set; }
 
         public Neuron Subject { get; }
@@ -15,11 +19,5 @@ namespace Nudelsieb.Domain
 
         // TODO business logic
         public ReminderState State { get; set; }
-
-        public Reminder(Neuron subject)
-        {
-            Subject = subject;
-            Id = Guid.NewGuid();
-        }
     }
 }

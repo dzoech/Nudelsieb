@@ -40,7 +40,6 @@ namespace Nudelsieb.WebApi.Braindump
             return dtos;
         }
 
-
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<int>))]
