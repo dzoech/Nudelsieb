@@ -10,15 +10,18 @@ namespace Nudelsieb.Notifications.Notifyer
         {
         }
 
-        public ReminderBuilderException(string? message) : base(message)
+        public ReminderBuilderException(string? message)
+            : base(message)
         {
         }
 
-        public ReminderBuilderException(string? message, Exception? innerException) : base(message, innerException)
+        public ReminderBuilderException(string? message, Exception? innerException)
+            : base(message, innerException)
         {
         }
 
-        protected ReminderBuilderException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected ReminderBuilderException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }

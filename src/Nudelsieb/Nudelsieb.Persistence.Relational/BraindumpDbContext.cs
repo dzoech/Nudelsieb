@@ -8,7 +8,8 @@ namespace Nudelsieb.Persistence.Relational
     {
         public BraindumpDbContext(DbContextOptions<BraindumpDbContext> options)
             : base(options)
-        { }
+        {
+        }
 
         public DbSet<Neuron> Neurons { get; set; }
         public DbSet<Group> Groups { get; set; }

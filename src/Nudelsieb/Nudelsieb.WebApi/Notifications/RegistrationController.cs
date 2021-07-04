@@ -56,7 +56,6 @@ namespace Nudelsieb.WebApi.Notifications
         /// Specifies additional minutes to wait before pushing the notification to the receiving
         /// devices.
         /// </param>
-        /// <returns></returns>
         [HttpPost("~/[area]")]
         [AllowAnonymous]
         public async Task Notify([FromQuery] string receiver, [FromQuery] string message, [FromQuery] int delayInSeconds, [FromQuery] int delayInMinutes)
