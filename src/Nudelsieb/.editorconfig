@@ -280,6 +280,9 @@ dotnet_diagnostic.SA1611.severity = suggestion
 # SA1615: Element return value should be documented
 dotnet_diagnostic.SA1615.severity = suggestion
 
+# SA1309: Field names should not begin with underscore
+dotnet_diagnostic.SA1309.severity = none
+
 [*Controller.cs]
 # methods don't have to end with Async
 dotnet_diagnostic.IDE1006.severity = none

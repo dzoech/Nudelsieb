@@ -9,7 +9,6 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>1591;1701;1702</NoWarn>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
         <EnableNETAnalyzers>false</EnableNETAnalyzers>
     </PropertyGroup>
 
