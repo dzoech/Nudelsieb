@@ -67,3 +67,7 @@ See the Swagger specification of our REST API at https://nudelsieb.zoechbauer.de
 
 # Setup instructions for Azure environments
 Azure Service Bus requires a connection string with *Listen* and *Send* permissions, and a queue named `reminder-push-notifications`.
+
+## Recommended extensions for Visual Studio
+
+[Editor Guidelines](https://marketplace.visualstudio.com/items?itemName=PaulHarrington.EditorGuidelines) for visual guidance on the maximum line length
