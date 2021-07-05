@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Options;
@@ -26,9 +24,9 @@ namespace Nudelsieb.Notifications.Scheduler
 
         public async Task ScheduleAsync(string notification, DateTimeOffset schedulingTime)
         {
-            // TODO: use sender as singleton 
+            // TODO: use sender as singleton
             // https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-performance-improvements?tabs=net-standard-sdk-2#reusing-factories-and-clients
-                       
+
             await using var sender = serviceBusClient.CreateSender(queueName);
 
             var message = new ServiceBusMessage(notification)

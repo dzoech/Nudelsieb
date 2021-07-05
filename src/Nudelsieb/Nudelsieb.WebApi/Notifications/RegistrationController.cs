@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Nudelsieb.Application.Notifications;
-using Nudelsieb.Notifications.Notifyer;
-using Nudelsieb.Notifications.Scheduler;
 
 namespace Nudelsieb.WebApi.Notifications
 {
@@ -23,7 +18,7 @@ namespace Nudelsieb.WebApi.Notifications
         private readonly INotificationScheduler notificationScheduler;
 
         public RegistrationController(
-            ILogger<RegistrationController> logger, 
+            ILogger<RegistrationController> logger,
             IPushNotifyer notificationSender,
             INotificationScheduler notificationScheduler)
         {
@@ -33,8 +28,8 @@ namespace Nudelsieb.WebApi.Notifications
         }
 
         /// <summary>
-        /// Creates or updates an installation for the authorized user. The consumer
-        /// is responsible for storing the installation id.
+        /// Creates or updates an installation for the authorized user. The consumer is responsible
+        /// for storing the installation id.
         /// </summary>
         [HttpPut]
         public async Task UpdateInstallationAsync(DeviceInstallationDto installationRequest)
@@ -53,9 +48,14 @@ namespace Nudelsieb.WebApi.Notifications
         /// </summary>
         /// <param name="receiver" example="ANY"></param>
         /// <param name="message" example="This is an example notification sent via the REST API"></param>
-        /// <param name="delayInSeconds">Specifies how many seconds to wait before pushing the notification to the receiving devices.</param>
-        /// <param name="delayInMinutes">Specifies additional minutes to wait before pushing the notification to the receiving devices.</param>
-        /// <returns></returns>
+        /// <param name="delayInSeconds">
+        /// Specifies how many seconds to wait before pushing the notification to the receiving
+        /// devices.
+        /// </param>
+        /// <param name="delayInMinutes">
+        /// Specifies additional minutes to wait before pushing the notification to the receiving
+        /// devices.
+        /// </param>
         [HttpPost("~/[area]")]
         [AllowAnonymous]
         public async Task Notify([FromQuery] string receiver, [FromQuery] string message, [FromQuery] int delayInSeconds, [FromQuery] int delayInMinutes)

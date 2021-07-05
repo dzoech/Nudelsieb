@@ -1,9 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Nudelsieb.Persistence.Relational.Entities
 {
+    public enum ReminderState
+    {
+        Waiting,
+        Active,
+        Disabled
+    }
+
     public class Reminder
     {
         public Guid Id { get; set; }
@@ -15,12 +20,5 @@ namespace Nudelsieb.Persistence.Relational.Entities
         public DateTimeOffset At { get; set; }
 
         public ReminderState State { get; set; }
-    }
-
-    public enum ReminderState
-    {
-        Waiting,
-        Active,
-        Disabled
     }
 }

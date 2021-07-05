@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Nudelsieb.Application.Notifications;
 using Nudelsieb.Application.Persistence;
-using Nudelsieb.Domain;
 
 namespace Nudelsieb.Application.UseCases
 {
@@ -21,7 +20,7 @@ namespace Nudelsieb.Application.UseCases
         {
             var neuron = await neuronRepository.GetByIdAsync(neuronId);
             var success = neuron.SetReminders(new[] { remindAt }, out var newReminders, out _);
-            
+
             if (success)
             {
                 await neuronRepository.AddRemindersAsync(newReminders);

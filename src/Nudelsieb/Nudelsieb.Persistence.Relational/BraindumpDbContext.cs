@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Nudelsieb.Persistence.Relational.Entities;
 
 namespace Nudelsieb.Persistence.Relational
@@ -11,7 +8,8 @@ namespace Nudelsieb.Persistence.Relational
     {
         public BraindumpDbContext(DbContextOptions<BraindumpDbContext> options)
             : base(options)
-        { }
+        {
+        }
 
         public DbSet<Neuron> Neurons { get; set; }
         public DbSet<Group> Groups { get; set; }

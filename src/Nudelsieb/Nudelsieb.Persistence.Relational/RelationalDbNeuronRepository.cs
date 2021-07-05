@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Nudelsieb.Application.Persistence;
 
-
 namespace Nudelsieb.Persistence.Relational
 {
     public class RelationalDbNeuronRepository : INeuronRepository
@@ -31,7 +30,6 @@ namespace Nudelsieb.Persistence.Relational
                     .ToList(),
                 CreatedAt = neuron.CreatedAt
             };
-
 
             context.Neurons.Add(neuronEntity);
 

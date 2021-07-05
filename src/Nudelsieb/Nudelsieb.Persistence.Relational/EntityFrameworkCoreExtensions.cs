@@ -1,8 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Extensions.Logging;
 
 namespace Nudelsieb.Persistence.Relational
@@ -10,7 +10,8 @@ namespace Nudelsieb.Persistence.Relational
     public static class EntityFrameworkCoreExtensions
     {
         /// <summary>
-        /// Returns the SQL query that will be executed by the <see cref="IQueryable{TEntity}"/> object.
+        /// Returns the SQL query that will be executed by the <see cref="IQueryable{TEntity}"/>
+        /// object.
         /// Source: https://stackoverflow.com/a/51583047/2549398
         /// </summary>
         public static string ToSql<TEntity>(this IQueryable<TEntity> query) where TEntity : class
@@ -43,7 +44,7 @@ namespace Nudelsieb.Persistence.Relational
         }
 
         private static object Private(this object obj, string privateField) => obj?.GetType().GetField(privateField, BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(obj);
-        private static T Private<T>(this object obj, string privateField) => (T)obj?.GetType().GetField(privateField, BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(obj);
 
+        private static T Private<T>(this object obj, string privateField) => (T)obj?.GetType().GetField(privateField, BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(obj);
     }
 }

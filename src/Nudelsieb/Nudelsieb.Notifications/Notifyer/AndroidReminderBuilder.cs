@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Nudelsieb.Notifications.Notifyer
 {
     public class AndroidReminderBuilder
     {
+        private readonly List<string> _groups = new List<string>();
         private string _neuronInformation = string.Empty;
         private Guid _neuronId = default;
-        private List<string> _groups = new List<string>();
 
         public AndroidReminderBuilder WithNeuron(Guid id, string neuronInformation)
         {

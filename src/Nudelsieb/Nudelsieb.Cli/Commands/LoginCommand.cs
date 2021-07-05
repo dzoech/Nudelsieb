@@ -43,6 +43,5 @@ namespace Nudelsieb.Cli.Commands
 
             return await base.OnExecuteAsync(app);
         }
-
     }
 }

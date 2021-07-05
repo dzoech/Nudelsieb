@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Nudelsieb.Notifications
+﻿namespace Nudelsieb.Notifications
 {
     public class NotificationsOptions
     {
@@ -27,6 +22,5 @@ namespace Nudelsieb.Notifications
     {
         public string ConnectionString { get; set; } = string.Empty;
         public string QueueName { get; set; } = string.Empty;
-
     }
 }

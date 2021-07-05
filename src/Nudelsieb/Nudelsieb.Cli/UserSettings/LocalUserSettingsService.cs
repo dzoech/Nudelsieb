@@ -18,6 +18,7 @@ namespace Nudelsieb.Cli.UserSettings
         private readonly IOptions<EndpointsOptions> endpointOptions;
 
         private static string RelativeLocation => Path.Combine("nudelsieb", "settings.json");
+
         /// <summary>
         /// Returns the absolute path of the user settings file.
         /// </summary>

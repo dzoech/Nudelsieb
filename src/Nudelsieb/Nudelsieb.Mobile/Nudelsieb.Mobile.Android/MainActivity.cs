@@ -1,16 +1,15 @@
 ﻿using System;
-
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
+using Android.Gms.Common;
+using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Android.OS;
-using Android.Content;
-using Android.Gms.Common;
-using Android.Util;
-using Nudelsieb.Mobile.Views;
 using Microsoft.Identity.Client;
+using Nudelsieb.Mobile.Views;
 
 namespace Nudelsieb.Mobile.Droid
 {
