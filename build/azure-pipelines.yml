@@ -112,9 +112,11 @@ stages:
           command: 'restore'
           restoreSolution: '**/Nudelsieb.Mobile.sln'
       - task: DownloadSecureFile@1
+        name: googleServicesFile
         inputs:
           secureFile: 'google-services.json'
       - task: XamarinAndroid@1
         inputs:
           projectFile: '**/Nudelsieb.Mobile/**/*.csproj'
+          msbuildArguments: '/p:GoogleServicesJsonFilePath=$(googleServicesFile.secureFilePath)'
           jdkOption: 'JDKVersion'
