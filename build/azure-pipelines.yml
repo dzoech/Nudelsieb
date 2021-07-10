@@ -103,6 +103,8 @@ stages:
   dependsOn: []
   jobs:
     - job: BuildXamarin
+      pool:
+        vmImage: 'windows-2019'
       steps:
       - task: NuGetToolInstaller@1
       - task: NuGetCommand@2
