@@ -104,6 +104,11 @@ stages:
   jobs:
     - job: BuildXamarin
       steps:
+      - task: NuGetToolInstaller@1
+      - task: NuGetCommand@2
+        inputs:
+          command: 'restore'
+          restoreSolution: '**/Nudelsieb.Mobile.sln'
       - task: XamarinAndroid@1
         inputs:
           projectFile: '**/Nudelsieb.Mobile/**/*.csproj'
