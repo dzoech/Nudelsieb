@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <GoogleServicesJsonFilePath Condition=" '$(GoogleServicesJsonFilePath)' == '' ">google-services.json</GoogleServicesJsonFilePath>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{08ABC336-4A55-4186-A9E7-4E0FB66826F8}</ProjectGuid>
@@ -91,7 +92,7 @@
     <Compile Include="Services\ToastAlerter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <GoogleServicesJson Include="google-services.json" />
+    <GoogleServicesJson Include="$(GoogleServicesJsonFilePath)" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
