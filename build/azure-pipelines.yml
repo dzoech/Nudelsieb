@@ -118,5 +118,6 @@ stages:
       - task: XamarinAndroid@1
         inputs:
           projectFile: '**/Nudelsieb.Mobile/**/*.csproj'
+          configuration: 'Release'
           msbuildArguments: '/p:GoogleServicesJsonFilePath=$(googleServicesFile.secureFilePath)'
           jdkOption: 'JDKVersion'
