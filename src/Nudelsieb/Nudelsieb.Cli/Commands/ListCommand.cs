@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
@@ -11,14 +10,11 @@ using Nudelsieb.Cli.Utils;
 namespace Nudelsieb.Cli.Commands
 {
     [Command(names: new[] { "list", "get" })]
-    class ListCommand : CommandBase
+    internal class ListCommand : CommandBase
     {
         private readonly IBraindumpService braindumpService;
         private readonly IConsole console;
         private readonly IGroupParser groupParser;
-
-        [Option(Description = "The name of the group for which all neurons are listed.")]
-        public string Group { get; set; } = string.Empty;
 
         public ListCommand(
             IBraindumpService braindumpService,
@@ -30,6 +26,9 @@ namespace Nudelsieb.Cli.Commands
             this.groupParser = groupParser;
         }
 
+        [Option(Description = "The name of the group for which all neurons are listed.")]
+        public string Group { get; set; } = string.Empty;
+
         protected override async Task<int> OnExecuteAsync(CommandLineApplication app)
         {
             List<Models.Neuron> neurons;
@@ -38,50 +37,24 @@ namespace Nudelsieb.Cli.Commands
             {
                 neurons = await this.braindumpService.GetAllAsync();
             }
+            else if (groupParser.TryParse(Group, out var groupName))
+            {
+                neurons = await this.braindumpService.GetNeuronsByGroupAsync(groupName);
+            }
             else
             {
-                if (groupParser.TryParse(Group, out var groupName))
-                {
-                    neurons = await this.braindumpService.GetNeuronsByGroupAsync(groupName);
-                }
-                else
-                {
-                    throw new ArgumentException(groupParser.ErrorMessage, nameof(Group));
-                }
+                throw new ArgumentException(groupParser.ErrorMessage, nameof(Group));
             }
 
-            foreach (var n in neurons)
-            {
-                console.WriteLine(n.Information);
-                if (n.Groups.Count > 0)
+            console.WriteTable(
+                neurons,
+                n => new
                 {
-                    console.WriteLine($"  Groups: {string.Join(", ", n.Groups)}");
-                }
-
-                if (n.Reminders.Count > 0)
-                {
-                    // display the reminders in ascending order
-                    n.Reminders.Sort();
-
-                    var reminderTimeSpans = new string[n.Reminders.Count];
-
-                    for (int i = 0; i < n.Reminders.Count; i++)
-                    {
-                        var timeSpan = n.Reminders[i] - DateTimeOffset.Now;
-                        reminderTimeSpans[i] = FormatTimeSpan(timeSpan);
-                    }
-
-                    console.WriteLine($"  Reminders: {string.Join(", ", reminderTimeSpans)}");
-                }
-            }
-
-            console.WriteTable(neurons, 
-                n => new {
                     n.Id,
                     n.Information,
                     Groups = string.Join(", ", n.Groups),
                     Reminders = string.Join(", ", n.Reminders.Select(r => FormatTimeSpan(r - DateTimeOffset.Now)))
-            });
+                });
 
             return await base.OnExecuteAsync(app);
         }
