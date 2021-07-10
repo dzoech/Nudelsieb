@@ -119,5 +119,6 @@ stages:
         inputs:
           projectFile: '**/Nudelsieb.Mobile/**/*.csproj'
           configuration: 'Release'
+          msbuildVersionOption: '16.0'
           msbuildArguments: '/p:GoogleServicesJsonFilePath=$(googleServicesFile.secureFilePath)'
           jdkOption: 'JDKVersion'
