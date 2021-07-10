@@ -111,6 +111,9 @@ stages:
         inputs:
           command: 'restore'
           restoreSolution: '**/Nudelsieb.Mobile.sln'
+      - task: DownloadSecureFile@1
+        inputs:
+          secureFile: 'google-services.json'
       - task: XamarinAndroid@1
         inputs:
           projectFile: '**/Nudelsieb.Mobile/**/*.csproj'
