@@ -98,3 +98,12 @@ stages:
                 choco push "$(Pipeline.Workspace)/$(chocolateyArtifactName)/nudelsieb-cli.$(version).nupkg"
                 --source https://push.chocolatey.org 
                 --apikey  $(ChocolateyApiKey)
+- stage: AndroidApp
+  displayName: 'Build the Android app'
+  jobs:
+    - job: BuildXamarin
+      steps:
+      - task: XamarinAndroid@1
+        inputs:
+          projectFile: '**/Nudelsieb.Mobile/**/*.csproj'
+          jdkOption: 'JDKVersion'
