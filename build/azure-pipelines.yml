@@ -16,6 +16,7 @@ variables:
   dockerfilePath: '$(Build.SourcesDirectory)/src/Nudelsieb/Nudelsieb.WebApi/Dockerfile'
   version: '0.0.2.$(Build.BuildId)'
   chocolateyArtifactName: 'choco-nupkg-drop'
+  androidArtifactName: 'android-apk-drop'
   braindumpEndpoint: 'https://nudelsieb.zoechbauer.dev/braindump'
   
   # Agent VM image name
@@ -79,10 +80,11 @@ stages:
       inputs:
         filePath: '$(System.DefaultWorkingDirectory)/build/cli/build-self-contained.ps1'
         arguments: '-Version $(version) -OutputPath $(Build.ArtifactStagingDirectory)'
-    - task: PublishBuildArtifacts@1
+    - task: PublishPipelineArtifact@1
       inputs:
-        ArtifactName: $(chocolateyArtifactName)
-        PathtoPublish: $(Build.ArtifactStagingDirectory)
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: '$(chocolateyArtifactName)'
+        publishLocation: 'pipeline'
   - deployment: PushCliPackageToChocolatey
     environment: Production
     dependsOn: CreatePackage
@@ -124,9 +126,8 @@ stages:
           msbuildVersionOption: '16.0'
           msbuildArguments: '/p:GoogleServicesJsonFilePath=$(googleServicesFile.secureFilePath)'
           jdkOption: 'JDKVersion'
-      - task: PublishBuildArtifacts@1
+      - task: PublishPipelineArtifact@1
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/android'
-          ArtifactName: 'android-apk'
-          publishLocation: 'Container'
-      
+          targetPath: '$(Build.ArtifactStagingDirectory)/android'
+          artifact: '$(androidArtifactName)'
+          publishLocation: 'pipeline'
