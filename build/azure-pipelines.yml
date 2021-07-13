@@ -103,8 +103,9 @@ stages:
   dependsOn: []
   jobs:
     - job: BuildXamarin
-      pool:
-        vmImage: 'windows-2019'
+      displayName: Build Xamarin for Android
+      # pool:
+      #   vmImage: 'windows-2019'
       steps:
       - task: NuGetToolInstaller@1
       - task: NuGetCommand@2
@@ -118,7 +119,14 @@ stages:
       - task: XamarinAndroid@1
         inputs:
           projectFile: '**/Nudelsieb.Mobile.Android.csproj'
+          outputDirectory: '$(Build.ArtifactStagingDirectory)/android'
           configuration: 'Release'
           msbuildVersionOption: '16.0'
           msbuildArguments: '/p:GoogleServicesJsonFilePath=$(googleServicesFile.secureFilePath)'
           jdkOption: 'JDKVersion'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/android'
+          ArtifactName: 'android-apk'
+          publishLocation: 'Container'
+      
