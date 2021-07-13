@@ -128,6 +128,7 @@ stages:
           artifact: '$(androidArtifactName)'
           publishLocation: 'pipeline'
       - task: GitHubRelease@1
+        condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
         inputs:
           gitHubConnection: 'dzoech GitHub'
           repositoryName: 'dzoech/Nudelsieb'
