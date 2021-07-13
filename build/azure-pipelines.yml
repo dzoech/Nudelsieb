@@ -53,8 +53,8 @@ stages:
         azureSubscription: 'nudelsieb-service-connection'
         appName: 'nudelsieb'
         containers: '$(containerRegistry)/$(imageRepository):$(version)'
-- stage: ReleaseCliToChocolatey
-  displayName: 'CLI: Release to Chocolatey'
+- stage: Cli
+  displayName: 'Command Line Interface (Chocolatey)'
   dependsOn: []
   pool:
     vmImage: $(windowsVmImageName)
@@ -131,3 +131,15 @@ stages:
           targetPath: '$(Build.ArtifactStagingDirectory)/android'
           artifact: '$(androidArtifactName)'
           publishLocation: 'pipeline'
+      - task: GitHubRelease@1
+        displayName: 'Create GitHub release'
+        inputs:
+          gitHubConnection: 'dzoech GitHub'
+          repositoryName: 'dzoech/Nudelsieb'
+          action: 'create'
+          target: '$(Build.SourceVersion)'
+          tagSource: 'gitTag'
+          assets: '$(Build.ArtifactStagingDirectory)/android/*.apk'
+          isDraft: true
+          changeLogCompareToRelease: 'lastFullRelease'
+          changeLogType: 'commitBased'
