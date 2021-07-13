@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using McMaster.Extensions.CommandLineUtils;
 
 namespace Nudelsieb.Cli.Utils
@@ -24,6 +23,7 @@ namespace Nudelsieb.Cli.Utils
             Write(console, highlighting, value);
             console.WriteLine();
         }
+
         internal static void Write(this IConsole console, Highlighting highlighting, object value)
         {
             var fgColor = console.ForegroundColor;
@@ -34,12 +34,15 @@ namespace Nudelsieb.Cli.Utils
                 case Highlighting.None:
                     console.ResetColor();
                     break;
+
                 case Highlighting.Emphasize:
                     console.ForegroundColor = ConsoleColor.DarkYellow;
                     break;
+
                 case Highlighting.Warn:
                     console.ForegroundColor = ConsoleColor.Red;
                     break;
+
                 default:
                     break;
             }
@@ -54,7 +57,6 @@ namespace Nudelsieb.Cli.Utils
         {
             WriteTable(console, data, _ => Highlighting.None);
         }
-
 
         internal static void WriteTable<T>(this IConsole console, IEnumerable<T> data, Func<T, Highlighting> highlight)
             where T : class
@@ -92,8 +94,7 @@ namespace Nudelsieb.Cli.Utils
             var content = new string[data.Count(), propertyColumns.Length];
             var tableSize = (Rows: data.Count(), Columns: propertyColumns.Length);
 
-            // Calculate padding
-            // iterate columns = properties
+            // Calculate padding iterate columns = properties
             for (int c = 0; c < tableSize.Columns; c++)
             {
                 PropertyInfo prop = propertyColumns[c];
@@ -142,7 +143,7 @@ namespace Nudelsieb.Cli.Utils
             }
         }
 
-        static string AdjustToWidth(string value, int width)
+        private static string AdjustToWidth(string value, int width)
         {
             if (value.Length < width)
             {
