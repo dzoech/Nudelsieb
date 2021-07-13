@@ -132,13 +132,14 @@ stages:
           artifact: '$(androidArtifactName)'
           publishLocation: 'pipeline'
       - task: GitHubRelease@1
-        displayName: 'Create GitHub release'
         inputs:
           gitHubConnection: 'dzoech GitHub'
           repositoryName: 'dzoech/Nudelsieb'
           action: 'create'
           target: '$(Build.SourceVersion)'
-          tagSource: 'gitTag'
+          tagSource: 'userSpecifiedTag'
+          tag: 'v$(version)'
+          title: 'Nudelsieb Android v$(version)'
           assets: '$(Build.ArtifactStagingDirectory)/android/*.apk'
           isDraft: true
           changeLogCompareToRelease: 'lastFullRelease'
