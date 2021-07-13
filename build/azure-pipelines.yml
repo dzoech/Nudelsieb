@@ -117,7 +117,7 @@ stages:
           secureFile: 'google-services.json'
       - task: XamarinAndroid@1
         inputs:
-          projectFile: '**/Nudelsieb.Mobile/**/*.csproj'
+          projectFile: '**/Nudelsieb.Mobile.Android.csproj'
           configuration: 'Release'
           msbuildVersionOption: '16.0'
           msbuildArguments: '/p:GoogleServicesJsonFilePath=$(googleServicesFile.secureFilePath)'
