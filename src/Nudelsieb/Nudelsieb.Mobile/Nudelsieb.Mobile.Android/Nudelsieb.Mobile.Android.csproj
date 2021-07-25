@@ -23,6 +23,8 @@
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <AndroidManifestPlaceholders>identityClientId=6ea4a837-1b3b-483f-aaeb-e7a96d56d4d9</AndroidManifestPlaceholders>
+    <!-- IntermediateOutputPath fixes MAX_PATH length issue when building an archive locally: -->
+    <IntermediateOutputPath>C:/nds</IntermediateOutputPath>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -37,7 +39,6 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <MandroidI18n />
     <AndroidSupportedAbis />
-    <AndroidKeyStore>false</AndroidKeyStore>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -50,6 +51,7 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidLinkTool>r8</AndroidLinkTool>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidKeyStore>false</AndroidKeyStore>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />

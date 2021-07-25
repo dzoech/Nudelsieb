@@ -98,6 +98,8 @@ stages:
                 --apikey  $(ChocolateyApiKey)
 - stage: AndroidApp
   displayName: 'Build the Android app'
+  variables: 
+    - group: 'android-variables'
   dependsOn: []
   jobs:
     - job: BuildXamarin
@@ -122,6 +124,12 @@ stages:
           msbuildVersionOption: '16.0'
           msbuildArguments: '/p:GoogleServicesJsonFilePath=$(googleServicesFile.secureFilePath)'
           jdkOption: 'JDKVersion'
+      - task: AndroidSigning@3
+        inputs:
+          apkFiles: '$(Build.ArtifactStagingDirectory)/android/*.apk'
+          apksignerKeystoreFile: 'nudelsieb.keystore'
+          apksignerKeystorePassword: '$(keystore-password)'
+          apksignerKeystoreAlias: 'nudelsieb'
       - task: PublishPipelineArtifact@1
         inputs:
           targetPath: '$(Build.ArtifactStagingDirectory)/android'
