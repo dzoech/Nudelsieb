@@ -102,50 +102,57 @@ stages:
     - group: 'android-variables'
   dependsOn: []
   jobs:
-    - job: BuildXamarin
-      displayName: Build Xamarin for Android
-      pool:
-        vmImage: 'windows-2019'
-      steps:
-      - task: NuGetToolInstaller@1
-      - task: NuGetCommand@2
-        inputs:
-          command: 'restore'
-          restoreSolution: '**/Nudelsieb.Mobile.sln'
-      - task: DownloadSecureFile@1
-        name: googleServicesFile
-        inputs:
-          secureFile: 'google-services.json'
-      - task: XamarinAndroid@1
-        inputs:
-          projectFile: '**/Nudelsieb.Mobile.Android.csproj'
-          outputDirectory: '$(Build.ArtifactStagingDirectory)/android'
-          configuration: 'Release'
-          msbuildVersionOption: '16.0'
-          msbuildArguments: '/p:GoogleServicesJsonFilePath=$(googleServicesFile.secureFilePath)'
-          jdkOption: 'JDKVersion'
-      - task: AndroidSigning@3
-        inputs:
-          apkFiles: '$(Build.ArtifactStagingDirectory)/android/*.apk'
-          apksignerKeystoreFile: 'nudelsieb.keystore'
-          apksignerKeystorePassword: '$(keystore-password)'
-          apksignerKeystoreAlias: 'nudelsieb'
-      - task: PublishPipelineArtifact@1
-        inputs:
-          targetPath: '$(Build.ArtifactStagingDirectory)/android'
-          artifact: '$(androidArtifactName)'
-          publishLocation: 'pipeline'
-      - task: GitHubRelease@1
-        condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
-        inputs:
-          gitHubConnection: 'dzoech GitHub'
-          repositoryName: 'dzoech/Nudelsieb'
-          action: 'create'
-          target: '$(Build.SourceVersion)'
-          tagSource: 'userSpecifiedTag'
-          tag: 'v$(version)'
-          title: 'Nudelsieb Android v$(version)'
-          assets: '$(Build.ArtifactStagingDirectory)/android/*.apk'
-          isDraft: true
-          changeLogCompareToRelease: 'lastFullRelease'
-          changeLogType: 'commitBased'
+  - job: BuildXamarin
+    displayName: Build Xamarin for Android
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+    - task: NuGetToolInstaller@1
+    - task: NuGetCommand@2
+      inputs:
+        command: 'restore'
+        restoreSolution: '**/Nudelsieb.Mobile.sln'
+    - task: DownloadSecureFile@1
+      name: googleServicesFile
+      inputs:
+        secureFile: 'google-services.json'
+    - task: FileTransform@2
+      displayName: 'Inject secrets from android-variables group into appsettings.json'
+      inputs:
+        folderPath: '$(System.DefaultWorkingDirectory)/src/Nudelsieb/Nudelsieb.Mobile/Nudelsieb.Mobile'
+        xmlTransformationRules: '' # disables xml transformation, fixes https://github.com/MicrosoftDocs/azure-devops-docs/issues/7413
+        jsonTargetFiles: |
+          appsettings.json
+    - task: XamarinAndroid@1
+      inputs:
+        projectFile: '**/Nudelsieb.Mobile.Android.csproj'
+        outputDirectory: '$(Build.ArtifactStagingDirectory)/android'
+        configuration: 'Release'
+        msbuildVersionOption: '16.0'
+        msbuildArguments: '/p:GoogleServicesJsonFilePath=$(googleServicesFile.secureFilePath)'
+        jdkOption: 'JDKVersion'
+    - task: AndroidSigning@3
+      inputs:
+        apkFiles: '$(Build.ArtifactStagingDirectory)/android/*.apk'
+        apksignerKeystoreFile: 'nudelsieb.keystore'
+        apksignerKeystorePassword: '$(keystore-password)'
+        apksignerKeystoreAlias: 'nudelsieb'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)/android'
+        artifact: '$(androidArtifactName)'
+        publishLocation: 'pipeline'
+    - task: GitHubRelease@1
+      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
+      inputs:
+        gitHubConnection: 'dzoech GitHub'
+        repositoryName: 'dzoech/Nudelsieb'
+        action: 'create'
+        target: '$(Build.SourceVersion)'
+        tagSource: 'userSpecifiedTag'
+        tag: 'v$(version)'
+        title: 'Nudelsieb Android v$(version)'
+        assets: '$(Build.ArtifactStagingDirectory)/android/*.apk'
+        isDraft: true
+        changeLogCompareToRelease: 'lastFullRelease'
+        changeLogType: 'commitBased'
