@@ -31,18 +31,36 @@ namespace Nudelsieb.Mobile
             string appSettingsContent = ReadSettingsFile(AppSettingsFileName);
             var appSettings = JsonSerializer.Deserialize<AppSettings>(appSettingsContent, options);
 
-            string secretContent = ReadSettingsFile(SecretFileName);
-            var secretSettings = JsonSerializer.Deserialize<AppSettings>(secretContent, options);
+            try
+            {
+                string secretContent = ReadSettingsFile(SecretFileName);
+                var secretSettings = JsonSerializer.Deserialize<AppSettings>(secretContent, options);
+                OverrideSettings(source: secretSettings, target: appSettings);
 
-            OverrideSettings(source: secretSettings, target: appSettings);
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(
+                    $"Error, could not apply {nameof(AppSettings)} from {SecretFileName} " +
+                    $"({ex.Message})");
+            }
 
             return appSettings;
+
         }
 
         private static string ReadSettingsFile(string fileName)
         {
             var assembly = Assembly.GetAssembly(typeof(AppSettings));
-            var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.{fileName}");
+            var resourceName = $"{assembly.GetName().Name}.{fileName}";
+            var stream = assembly.GetManifestResourceStream(resourceName);
+
+            if (stream is null)
+            {
+                throw new FileNotFoundException(
+                    $"Could not find manifest resource '{resourceName}'", resourceName);
+            }
+
             using var reader = new StreamReader(stream);
             return reader.ReadToEnd();
         }
