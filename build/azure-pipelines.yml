@@ -100,8 +100,6 @@ stages:
   displayName: 'Build the Android app'
   variables: 
     - group: 'android-variables'
-    - name: 'keystore-file' # see Secure Files in Pipelines Libary
-      value: 'nudelsieb.keystore'
   dependsOn: []
   jobs:
     - job: BuildXamarin
@@ -129,7 +127,7 @@ stages:
       - task: AndroidSigning@3
         inputs:
           apkFiles: '$(Build.ArtifactStagingDirectory)/android/*.apk'
-          apksignerKeystoreFile: '$(keystore-file)'
+          apksignerKeystoreFile: 'nudelsieb.keystore'
           apksignerKeystorePassword: '$(keystore-password)'
           apksignerKeystoreAlias: 'nudelsieb'
       - task: PublishPipelineArtifact@1
