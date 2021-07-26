@@ -5,24 +5,14 @@ using Nudelsieb.Mobile.RestClients;
 using Nudelsieb.Mobile.Services;
 using Nudelsieb.Mobile.Utils;
 using Nudelsieb.Mobile.ViewModels;
-using Nudelsieb.Mobile.Views;
-using Nudelsieb.Shared.Clients;
 using Nudelsieb.Shared.Clients.Authentication;
 using Nudelsieb.Shared.Clients.Notifications;
-using Refit;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Nudelsieb.Mobile
 {
     public partial class App : Application
     {
-        public static IAuthenticationService AuthenticationService { get; private set; }
-        public static IBraindumpRestClient BraindumpRestClient { get; set; }
-        public static INotificationsRestClient NotificationsRestClient { get; set; }
-
-        public static object UiParent { get; set; } = null;
-
         public App()
         {
             InitializeComponent();
@@ -49,13 +39,12 @@ namespace Nudelsieb.Mobile
                 AuthenticationService,
                 new DebugLogger<AuthorizedRestClientFactory>());
 
-            var braindumpUri = new Uri("https://192.168.8.201:5001/braindump/");
+            var braindumpUri = new Uri(AppSettings.Settings.Endpoints.Braindump.Value);
             BraindumpRestClient = restClientFactory.Create<IBraindumpRestClient>(
-                braindumpUri, // endpointsOptions.Value.Braindump?.Value
+                braindumpUri,
                 allowSelfSignedCertificates: true);
 
-            
-            var notificationsUri = new Uri("https://192.168.8.201:5001/notifications/");
+            var notificationsUri = new Uri(AppSettings.Settings.Endpoints.Notifications.Value);
             NotificationsRestClient = restClientFactory.Create<INotificationsRestClient>(
                 notificationsUri,
                 allowSelfSignedCertificates: true);
@@ -66,6 +55,11 @@ namespace Nudelsieb.Mobile
             MainPage = new AppShell();
         }
 
+        public static IAuthenticationService AuthenticationService { get; private set; }
+        public static IBraindumpRestClient BraindumpRestClient { get; set; }
+        public static INotificationsRestClient NotificationsRestClient { get; set; }
+
+        public static object UiParent { get; set; } = null;
         protected override void OnStart()
         {
         }

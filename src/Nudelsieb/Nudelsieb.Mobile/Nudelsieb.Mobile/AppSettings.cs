@@ -18,7 +18,8 @@ namespace Nudelsieb.Mobile
 
         public static AppSettings Settings => instance ??= Initialize();
         public AuthOptions Auth { get; set; } = new AuthOptions();
-        public NotificationOptions Notifications { get; set; } = new NotificationOptions();
+        public EndpointsOptions Endpoints { get; set; } = new EndpointsOptions();
+        public NotificationsOptions Notifications { get; set; } = new NotificationsOptions();
 
         /// <summary>
         /// Tag used in log messages to easily filter the device log during development.
