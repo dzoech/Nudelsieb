@@ -8,12 +8,24 @@
 
     <ItemGroup>
         <None Remove="appsettings.json" />
+        <None Remove="Data\chat.json" />
+        <None Remove="Resources\Fonts\Montserrat-Bold.ttf" />
+        <None Remove="Resources\Fonts\Montserrat-Medium.ttf" />
+        <None Remove="Resources\Fonts\Montserrat-Regular.ttf" />
+        <None Remove="Resources\Fonts\Montserrat-SemiBold.ttf" />
+        <None Remove="Resources\Fonts\UIFontIcons.ttf" />
     </ItemGroup>
     <ItemGroup>
         <AdditionalFiles Include="../../stylecop.json" Link="stylecop.json" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="appsettings.json" />
+        <EmbeddedResource Include="Data\chat.json" />
+        <EmbeddedResource Include="Resources\Fonts\Montserrat-Bold.ttf" />
+        <EmbeddedResource Include="Resources\Fonts\Montserrat-Medium.ttf" />
+        <EmbeddedResource Include="Resources\Fonts\Montserrat-Regular.ttf" />
+        <EmbeddedResource Include="Resources\Fonts\Montserrat-SemiBold.ttf" />
+        <EmbeddedResource Include="Resources\Fonts\UIFontIcons.ttf" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,6 +41,12 @@
         <PackageReference Include="Microsoft.Identity.Client" Version="4.35.1" />
         <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.18.8" />
         <PackageReference Include="Refit" Version="5.2.4" />
+        <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="19.2.0.51" />
+        <PackageReference Include="Syncfusion.Xamarin.Core" Version="19.2.0.51" />
+        <PackageReference Include="Syncfusion.Xamarin.SfBadgeView" Version="19.2.0.51" />
+        <PackageReference Include="Syncfusion.Xamarin.SfComboBox" Version="19.2.0.51" />
+        <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="19.2.0.51" />
+        <PackageReference Include="Syncfusion.Xamarin.SfRating" Version="19.2.0.51" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
         <PackageReference Include="System.Text.Json" Version="5.0.1" />
         <PackageReference Include="Xamarin.Forms" Version="4.8.0.1821" />
@@ -49,6 +67,66 @@
     </ItemGroup>
 
     <ItemGroup>
+        <EmbeddedResource Update="Styles\AvatarViewStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\BorderStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\BoxViewStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\ButtonStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\CheckBoxStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\Colors.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\ComboBoxStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\EditorStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\EntryStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\FontIcons.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\FrameStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\GradientViewStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\LabelStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\ListViewStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\RadioButtonStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\RatingStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\SegmentedControlStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Styles\TextInputLayoutStyles.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Themes\DarkTheme.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Themes\LightTheme.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
         <EmbeddedResource Update="Views\LoadingPage.xaml">
             <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
         </EmbeddedResource>
@@ -57,6 +135,12 @@
         </EmbeddedResource>
         <EmbeddedResource Update="Views\MainPage.xaml">
             <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Views\MyReminders.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Views\Templates\RecentChatTemplate.xaml">
+          <Generator>MSBuild:Compile</Generator>
         </EmbeddedResource>
     </ItemGroup>
 
