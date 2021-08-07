@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
+using System.Text.Json;
 using Nudelsieb.Mobile.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -143,18 +143,38 @@ namespace Nudelsieb.Mobile.ViewModels
         private static T PopulateData<T>(string fileName)
         {
             var file = "Nudelsieb.Mobile.Data." + fileName;
-
             var assembly = typeof(App).GetTypeInfo().Assembly;
-
             T data;
 
-            using (var stream = assembly.GetManifestResourceStream(file))
+            try
             {
-                var serializer = new DataContractJsonSerializer(typeof(T));
-                data = (T)serializer.ReadObject(stream);
-            }
+                using (var stream = assembly.GetManifestResourceStream(file))
+                {
+                    if (stream is null)
+                    {
+                        throw new System.Exception(
+                            $"Could not find manifest resource");
+                    }
 
-            return data;
+                    using var reader = new System.IO.StreamReader(stream);
+                    var dataString = reader.ReadToEnd();
+
+                    var options = new JsonSerializerOptions
+                    {
+                        ReadCommentHandling = JsonCommentHandling.Skip,
+                        AllowTrailingCommas = true,
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    data = JsonSerializer.Deserialize<T>(dataString, options);
+                    return data;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                System.Console.WriteLine(ex);
+                throw;
+            }
         }
 
         /// <summary>

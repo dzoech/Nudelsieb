@@ -9,12 +9,12 @@ namespace Nudelsieb.Mobile.Views
     /// </summary>
     [Preserve(AllMembers = true)]
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MyReminders
+    public partial class MyRemindersPage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MyReminders" /> class.
+        /// Initializes a new instance of the <see cref="MyRemindersPage" /> class.
         /// </summary>
-        public MyReminders()
+        public MyRemindersPage()
         {
             this.InitializeComponent();
             this.BindingContext = MyRemindersViewModel.BindingContext;

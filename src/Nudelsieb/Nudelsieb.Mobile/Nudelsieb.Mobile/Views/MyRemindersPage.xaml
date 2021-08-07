@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="Nudelsieb.Mobile.Views.MyReminders"
+    x:Class="Nudelsieb.Mobile.Views.MyRemindersPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviors="clr-namespace:Nudelsieb.Mobile.Behaviors"
@@ -69,7 +69,7 @@
                         Style="{StaticResource IconButtonStyle}"
                         Text="{StaticResource Back}">
                         <buttons:SfButton.Behaviors>
-                            <behaviors:SearchBarAnimationBehavior AnimationType="shrink" />
+                            <behaviors:SearchBarAnimationBehavior AnimationType="Shrink" />
                         </buttons:SfButton.Behaviors>
                     </buttons:SfButton>
 
@@ -98,7 +98,7 @@
                     Style="{StaticResource IconButtonStyle}"
                     Text="{StaticResource Search}">
                     <buttons:SfButton.Behaviors>
-                        <behaviors:SearchBarAnimationBehavior AnimationType="expand" />
+                        <behaviors:SearchBarAnimationBehavior AnimationType="Expand" />
                     </buttons:SfButton.Behaviors>
                 </buttons:SfButton>
 
