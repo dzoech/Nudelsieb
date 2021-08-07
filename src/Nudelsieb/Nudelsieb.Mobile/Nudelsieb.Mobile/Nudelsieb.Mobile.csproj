@@ -58,6 +58,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Update="Views\MyRemindersPage.xaml.cs">
+          <DependentUpon>MyRemindersPage.xaml</DependentUpon>
+        </Compile>
         <Compile Update="Views\ProfilePage.xaml.cs">
             <DependentUpon>ProfilePage.xaml</DependentUpon>
         </Compile>
@@ -136,7 +139,7 @@
         <EmbeddedResource Update="Views\MainPage.xaml">
             <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
         </EmbeddedResource>
-        <EmbeddedResource Update="Views\MyReminders.xaml">
+        <EmbeddedResource Update="Views\MyRemindersPage.xaml">
           <Generator>MSBuild:Compile</Generator>
         </EmbeddedResource>
         <EmbeddedResource Update="Views\Templates\RecentChatTemplate.xaml">
