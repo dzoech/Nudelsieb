@@ -4,7 +4,10 @@
       "type": "secrets.user"
     },
     "appInsights1": {
-      "type": "appInsights.sdk"
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Insights/components/nudelsieb-appinsights",
+      "type": "appInsights.azure",
+      "connectionId": "APPINSIGHTS_CONNECTIONSTRING",
+      "secretStore": "LocalSecretsFile"
     }
   }
 }

@@ -10,6 +10,7 @@
         <NoWarn>1591;1701;1702</NoWarn>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <EnableNETAnalyzers>false</EnableNETAnalyzers>
+        <ApplicationInsightsResourceId>/subscriptions/c82af33e-d706-46fc-af9d-96e2d14d5c74/resourcegroups/nudelsieb/providers/Microsoft.Insights/components/nudelsieb-appinsights</ApplicationInsightsResourceId>
     </PropertyGroup>
 
     <ItemGroup>
