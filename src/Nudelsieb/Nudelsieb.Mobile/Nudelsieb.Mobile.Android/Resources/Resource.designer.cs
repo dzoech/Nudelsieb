@@ -153,6 +153,7 @@ namespace Nudelsieb.Mobile.Droid
 			global::Xamarin.Essentials.Resource.Id.text2 = global::Nudelsieb.Mobile.Droid.Resource.Id.text2;
 			global::Xamarin.Essentials.Resource.Id.time = global::Nudelsieb.Mobile.Droid.Resource.Id.time;
 			global::Xamarin.Essentials.Resource.Id.title = global::Nudelsieb.Mobile.Droid.Resource.Id.title;
+			global::Xamarin.Essentials.Resource.Id.view_tree_lifecycle_owner = global::Nudelsieb.Mobile.Droid.Resource.Id.view_tree_lifecycle_owner;
 			global::Xamarin.Essentials.Resource.Integer.status_bar_notification_info_maxnum = global::Nudelsieb.Mobile.Droid.Resource.Integer.status_bar_notification_info_maxnum;
 			global::Xamarin.Essentials.Resource.Layout.browser_actions_context_menu_page = global::Nudelsieb.Mobile.Droid.Resource.Layout.browser_actions_context_menu_page;
 			global::Xamarin.Essentials.Resource.Layout.browser_actions_context_menu_row = global::Nudelsieb.Mobile.Droid.Resource.Layout.browser_actions_context_menu_row;
@@ -9632,16 +9633,22 @@ namespace Nudelsieb.Mobile.Droid
 			public const int view_offset_helper = 2131230972;
 			
 			// aapt resource value: 0x7F0800FD
-			public const int visible = 2131230973;
+			public const int view_tree_lifecycle_owner = 2131230973;
 			
 			// aapt resource value: 0x7F0800FE
-			public const int wide = 2131230974;
+			public const int view_tree_view_model_store_owner = 2131230974;
 			
 			// aapt resource value: 0x7F0800FF
-			public const int withText = 2131230975;
+			public const int visible = 2131230975;
 			
 			// aapt resource value: 0x7F080100
-			public const int wrap_content = 2131230976;
+			public const int wide = 2131230976;
+			
+			// aapt resource value: 0x7F080101
+			public const int withText = 2131230977;
+			
+			// aapt resource value: 0x7F080102
+			public const int wrap_content = 2131230978;
 			
 			static Id()
 			{
