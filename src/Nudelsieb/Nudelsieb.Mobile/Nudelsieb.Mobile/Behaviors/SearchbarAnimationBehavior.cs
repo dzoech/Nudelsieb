@@ -11,27 +11,21 @@ namespace Nudelsieb.Mobile.Behaviors
         /// <summary>
         /// expand animation.
         /// </summary>
-        expand,
+        Expand,
 
         /// <summary>
         /// shrink animation.
         /// </summary>
-        shrink,
+        Shrink,
     }
 
     public class SearchBarAnimationBehavior : Behavior<SfButton>
     {
-        #region fileds
-
         /// <summary>
         /// Gets or sets the AnimationTypeProperty, and it is a bindable property.
         /// </summary>
         public static readonly BindableProperty AnimationTypeProperty =
-           BindableProperty.Create(nameof(AnimationType), typeof(AnimationType), typeof(SearchBarAnimationBehavior), AnimationType.expand);
-
-        #endregion
-
-        #region Properties
+           BindableProperty.Create(nameof(AnimationType), typeof(AnimationType), typeof(SearchBarAnimationBehavior), AnimationType.Expand);
 
         /// <summary>
         /// Gets or sets the Animation type.
@@ -46,10 +40,6 @@ namespace Nudelsieb.Mobile.Behaviors
         /// Gets the sfButton.
         /// </summary>
         public SfButton SfButton { get; private set; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Invoked when adding the sfbutton to view.
@@ -108,7 +98,7 @@ namespace Nudelsieb.Mobile.Behaviors
 
             if (button != null)
             {
-                if (this.AnimationType == AnimationType.expand)
+                if (this.AnimationType == AnimationType.Expand)
                 {
                     double opacity;
 
@@ -138,7 +128,7 @@ namespace Nudelsieb.Mobile.Behaviors
                         expandAnimation.Commit(searchLayoutChildren, "Expand", 16, 250, Easing.Linear, (p, q) => this.SearchExpandAnimationCompleted(children));
                     }
                 }
-                else if (this.AnimationType == AnimationType.shrink)
+                else if (this.AnimationType == AnimationType.Shrink)
                 {
                     double opacity;
                     var searchLayout = button.Parent as StackLayout;
@@ -150,7 +140,8 @@ namespace Nudelsieb.Mobile.Behaviors
                         searchButton.IsVisible = true;
                     }
 
-                    // Animating Width of the search box, from full width to 0 before it removed from view.
+                    // Animating Width of the search box, from full width to 0 before it removed
+                    // from view.
                     var shrinkAnimation = new Animation(
                         property =>
                         {
@@ -195,7 +186,5 @@ namespace Nudelsieb.Mobile.Behaviors
                 titleLayout.IsVisible = true;
             }
         }
-
-        #endregion
     }
 }

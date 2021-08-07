@@ -5,13 +5,12 @@ using Xamarin.Forms.Internals;
 namespace Nudelsieb.Mobile.Controls
 {
     /// <summary>
-    /// This class extends the behavior of the SfListView control to filter the ListViewItem based on text.
+    /// This class extends the behavior of the SfListView control to filter the ListViewItem based
+    /// on text.
     /// </summary>
     [Preserve(AllMembers = true)]
     public class SearchableListView : SfListView
     {
-        #region Field
-
         /// <summary>
         /// Gets or sets the text value used to search.
         /// </summary>
@@ -23,10 +22,6 @@ namespace Nudelsieb.Mobile.Controls
         /// </summary>
         private string searchText;
 
-        #endregion
-
-        #region Property
-
         /// <summary>
         /// Gets or sets the text value used to search.
         /// </summary>
@@ -35,10 +30,6 @@ namespace Nudelsieb.Mobile.Controls
             get { return (string)this.GetValue(SearchTextProperty); }
             set { this.SetValue(SearchTextProperty, value); }
         }
-
-        #endregion
-
-        #region Method
 
         /// <summary>
         /// Filtering the list view items based on the search text.
@@ -73,7 +64,5 @@ namespace Nudelsieb.Mobile.Controls
 
             listView.RefreshView();
         }
-
-        #endregion
     }
 }

@@ -9,8 +9,6 @@ namespace Nudelsieb.Mobile.Controls
     [Preserve(AllMembers = true)]
     public class TitleView : Grid
     {
-        #region Bindable Properties
-
         /// <summary>
         /// Gets or sets the LeadingViewProperty, and it is a bindable property.
         /// </summary>
@@ -46,18 +44,10 @@ namespace Nudelsieb.Mobile.Controls
         /// </summary>
         public static readonly BindableProperty FontSizeProperty = BindableProperty.Create(nameof(FontSize), typeof(double), typeof(TitleView), 16d, BindingMode.Default, null, OnFontSizePropertyChanged);
 
-        #endregion
-
-        #region variables
-
         /// <summary>
         /// Gets or sets the title label.
         /// </summary>
         private Label titleLabel;
-
-        #endregion
-
-        #region Constructor
 
         public TitleView()
         {
@@ -89,10 +79,6 @@ namespace Nudelsieb.Mobile.Controls
             this.Children.Add(boxView, 0, 1);
             SetColumnSpan(boxView, 5);
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets the LeadingView.
@@ -156,10 +142,6 @@ namespace Nudelsieb.Mobile.Controls
             get { return (double)this.GetValue(FontSizeProperty); }
             set { this.SetValue(FontSizeProperty, value); }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Invoked when the leading view is changed.
@@ -291,7 +273,5 @@ namespace Nudelsieb.Mobile.Controls
                 titleView.titleLabel.FontSize = (double)newValue;
             }
         }
-
-        #endregion
     }
 }

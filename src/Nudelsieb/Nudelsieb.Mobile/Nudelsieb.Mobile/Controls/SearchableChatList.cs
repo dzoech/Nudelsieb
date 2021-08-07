@@ -7,25 +7,20 @@ using Xamarin.Forms.Internals;
 namespace Nudelsieb.Mobile.Controls
 {
     /// <summary>
-    /// This class extends the behavior of the SfListView control to filter the ListViewItem based on text.
+    /// This class extends the behavior of the SfListView control to filter the ListViewItem based
+    /// on text.
     /// </summary>
     [Preserve(AllMembers = true)]
     public class SearchableChatList : SearchableListView
     {
-        #region Contructor
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="SearchableChatList" /> class.
+        /// Initializes a new instance of the <see cref="SearchableChatList"/> class.
         /// </summary>
         public SearchableChatList()
         {
             this.SelectionChanged -= this.CustomListView_SelectionChanged;
             this.SelectionChanged += this.CustomListView_SelectionChanged;
         }
-
-        #endregion
-
-        #region Method
 
         /// <summary>
         /// Filtering the list view items based on the search text.
@@ -68,7 +63,5 @@ namespace Nudelsieb.Mobile.Controls
             this.SelectionBackgroundColor = Color.Transparent;
             this.SelectedItems.Clear();
         }
-
-        #endregion
     }
 }

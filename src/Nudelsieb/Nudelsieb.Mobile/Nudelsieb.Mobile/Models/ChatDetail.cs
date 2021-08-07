@@ -10,13 +10,7 @@ namespace Nudelsieb.Mobile.Models
     [DataContract]
     public class ChatDetail
     {
-        #region fields
-
         private string imagePath;
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets the profile image path.
@@ -70,7 +64,5 @@ namespace Nudelsieb.Mobile.Models
         /// </summary>
         [DataMember(Name = "availableStatus")]
         public string AvailableStatus { get; set; }
-
-        #endregion
     }
 }

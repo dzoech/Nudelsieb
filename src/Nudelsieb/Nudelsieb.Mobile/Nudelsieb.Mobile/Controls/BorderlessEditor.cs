@@ -4,7 +4,8 @@ using Xamarin.Forms.Internals;
 namespace Nudelsieb.Mobile.Controls
 {
     /// <summary>
-    /// This class is extended from Xamarin.Forms.Editor to extend the size and to remove the border for the editor control in the Android and UWP platforms.
+    /// This class is extended from Xamarin.Forms.Editor to extend the size and to remove the border
+    /// for the editor control in the Android and UWP platforms.
     /// </summary>
     [Preserve(AllMembers = true)]
     public class BorderlessEditor : Editor
@@ -17,8 +18,6 @@ namespace Nudelsieb.Mobile.Controls
             this.TextChanged += this.ExtendableEditor_TextChanged;
         }
 
-        #region Methods
-
         /// <summary>
         /// Invoked when editor text is changed.
         /// </summary>
@@ -28,7 +27,5 @@ namespace Nudelsieb.Mobile.Controls
         {
             this.InvalidateMeasure();
         }
-
-        #endregion
     }
 }

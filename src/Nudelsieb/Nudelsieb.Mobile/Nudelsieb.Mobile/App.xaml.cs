@@ -14,11 +14,11 @@ using Xamarin.Forms;
 [assembly: ExportFont("Montserrat-Regular.ttf", Alias = "Montserrat-Regular")]
 [assembly: ExportFont("Montserrat-SemiBold.ttf", Alias = "Montserrat-SemiBold")]
 [assembly: ExportFont("UIFontIcons.ttf", Alias = "FontIcons")]
+
 namespace Nudelsieb.Mobile
 {
     public partial class App : Application
     {
-        public static string ImageServerPath { get; } = "https://cdn.syncfusion.com/essential-ui-kit-for-xamarin.forms/common/uikitimages/";
         public App()
         {
             InitializeComponent();
@@ -61,6 +61,7 @@ namespace Nudelsieb.Mobile
             MainPage = new AppShell();
         }
 
+        public static string ImageServerPath { get; } = "https://cdn.syncfusion.com/essential-ui-kit-for-xamarin.forms/common/uikitimages/";
         public static IAuthenticationService AuthenticationService { get; private set; }
         public static IBraindumpRestClient BraindumpRestClient { get; set; }
         public static INotificationsRestClient NotificationsRestClient { get; set; }

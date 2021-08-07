@@ -9,14 +9,12 @@ using Xamarin.Forms.Internals;
 namespace Nudelsieb.Mobile.ViewModels
 {
     /// <summary>
-    /// View model for recent chat page 
-    /// </summary> 
+    /// View model for recent chat page
+    /// </summary>
     [Preserve(AllMembers = true)]
     [DataContract]
     public class MyRemindersViewModel : BaseViewModel
     {
-        #region Fields
-
         private static MyRemindersViewModel recentChatViewModel;
 
         private ObservableCollection<ChatDetail> chatItems;
@@ -35,20 +33,12 @@ namespace Nudelsieb.Mobile.ViewModels
 
         private Command profileImageCommand;
 
-        #endregion
-
-        #region Constructor
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="MyRemindersViewModel" /> class.
+        /// Initializes a new instance of the <see cref="MyRemindersViewModel"/> class.
         /// </summary>
         public MyRemindersViewModel()
         {
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets the value of recent chat page view model.
@@ -74,7 +64,8 @@ namespace Nudelsieb.Mobile.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets the property that has been bound with a list view, which displays the profile items.
+        /// Gets or sets the property that has been bound with a list view, which displays the
+        /// profile items.
         /// </summary>
         [DataMember(Name = "chatItems")]
         public ObservableCollection<ChatDetail> ChatItems
@@ -94,10 +85,6 @@ namespace Nudelsieb.Mobile.ViewModels
                 this.SetProperty(ref this.chatItems, value);
             }
         }
-
-        #endregion
-
-        #region Commands
 
         /// <summary>
         /// Gets the command that is executed when the voice call button is clicked.
@@ -146,10 +133,6 @@ namespace Nudelsieb.Mobile.ViewModels
         {
             get { return this.profileImageCommand ?? (this.profileImageCommand = new Command(this.ProfileImageClicked)); }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Populates the data for view model from json file.
@@ -225,7 +208,5 @@ namespace Nudelsieb.Mobile.ViewModels
         {
             // Do something
         }
-
-        #endregion
     }
 }
