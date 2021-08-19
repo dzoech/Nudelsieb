@@ -21,6 +21,9 @@ namespace Nudelsieb.Mobile
     {
         public App()
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(
+                AppSettings.Settings.SyncfusionLicenseKey);
+
             InitializeComponent();
 
             var authenticationClient =
