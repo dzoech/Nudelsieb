@@ -12,6 +12,7 @@
 
     <Grid.Resources>
         <ResourceDictionary>
+            <converter:DurationFromNowConverter x:Key="DurationFromNowConverter" />
             <converter:StringToBadgeIconConverter x:Key="BadgeConverter" />
             <converter:StringToGlyphConverter x:Key="GlyphConverter" />
             <converter:StringToMessageTypeConverter x:Key="TextConverter" />
@@ -29,13 +30,12 @@
         <!--  Recent Sender Profile Name  -->
         <Label
             Grid.Column="0"
-            FontFamily="Montserrat-SemiBold"
             FontSize="16"
             HorizontalOptions="Start"
             LineBreakMode="NoWrap"
             LineHeight="{OnPlatform Default=1.5,
                                     iOS=-1}"
-            Text="{Binding SenderName}"
+            Text="{Binding NeuronInformation}"
             TextColor="{DynamicResource Gray-900}" />
 
         <StackLayout
@@ -64,7 +64,7 @@
                 x:Name="MessageLabel"
                 LineBreakMode="TailTruncation"
                 Style="{StaticResource SimpleLabelStyle}"
-                Text="{Binding MessageType, Converter={StaticResource TextConverter}, ConverterParameter={x:Reference MessageLabel}}"
+                Text="{Binding x, Converter={StaticResource TextConverter}, ConverterParameter={x:Reference MessageLabel}}"
                 TextColor="{DynamicResource Gray-800}" />
 
         </StackLayout>
@@ -76,7 +76,7 @@
             HorizontalOptions="Center"
             LineBreakMode="NoWrap"
             Style="{StaticResource SimpleLabelStyle}"
-            Text="{Binding Time}"
+            Text="{Binding At, Converter={StaticResource DurationFromNowConverter}}"
             VerticalOptions="Start"
             VerticalTextAlignment="Start" />
 

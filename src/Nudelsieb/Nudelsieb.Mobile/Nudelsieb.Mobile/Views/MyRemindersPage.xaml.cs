@@ -11,13 +11,21 @@ namespace Nudelsieb.Mobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MyRemindersPage
     {
+        private readonly MyRemindersViewModel _viewModel;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MyRemindersPage" /> class.
         /// </summary>
         public MyRemindersPage()
         {
-            this.InitializeComponent();
-            this.BindingContext = MyRemindersViewModel.BindingContext;
+            InitializeComponent();
+            BindingContext = _viewModel = new MyRemindersViewModel();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            _viewModel.OnAppearing();
         }
     }
 }
