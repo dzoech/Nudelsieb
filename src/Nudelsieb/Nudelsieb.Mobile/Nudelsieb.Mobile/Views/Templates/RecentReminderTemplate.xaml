@@ -16,6 +16,7 @@
             <converter:StringToBadgeIconConverter x:Key="BadgeConverter" />
             <converter:StringToGlyphConverter x:Key="GlyphConverter" />
             <converter:StringToMessageTypeConverter x:Key="TextConverter" />
+            <converter:ReminderTimeToGlyphConverter x:Key="DueTimeToGlyphConverter" />
         </ResourceDictionary>
     </Grid.Resources>
 
@@ -88,7 +89,7 @@
             HorizontalOptions="End"
             HorizontalTextAlignment="End"
             Style="{StaticResource IconLabelStyle}"
-            Text="{Binding NotificationType, Converter={StaticResource GlyphConverter}, ConverterParameter={x:Reference NotificationLabel}}"
+            Text="{Binding At, Converter={StaticResource DueTimeToGlyphConverter}, ConverterParameter={x:Reference NotificationLabel}}"
             VerticalOptions="Start">
             <Label.Resources>
                 <ResourceDictionary>

@@ -40,6 +40,10 @@
     <Color x:Key="Blue">#4acaff</Color>
     <Color x:Key="HyperLink">#567cd7</Color>
 
+    <Color x:Key="Highlight-100">#4AFF89</Color>
+    <Color x:Key="Highlight-500">#FFDC4A</Color>
+    <Color x:Key="Highlight-900">#FF4A4A</Color>
+
     <Color x:Key="Gray-100">#f6f7f8</Color>
     <Color x:Key="Gray-200">#ebecef</Color>
     <Color x:Key="Gray-300">#ced2d9</Color>

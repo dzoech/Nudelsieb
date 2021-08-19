@@ -15,7 +15,7 @@ namespace Nudelsieb.Mobile.Converters
                 return value;
             }
 
-            var timeSpan = dateTime - DateTime.Now;
+            var timeSpan = dateTime - DateTimeOffset.Now;
             var duration = timeSpan >= TimeSpan.Zero ? string.Empty : "-";
 
             if (timeSpan.Days != 0)
