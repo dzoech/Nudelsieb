@@ -67,6 +67,9 @@
         <Compile Update="Views\RemindersPage.xaml.cs">
             <DependentUpon>RemindersPage.xaml</DependentUpon>
         </Compile>
+        <Compile Update="Views\Templates\RecentReminderTemplate.xaml.cs">
+          <DependentUpon>RecentReminderTemplate.xaml</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -142,7 +145,7 @@
         <EmbeddedResource Update="Views\MyRemindersPage.xaml">
           <Generator>MSBuild:Compile</Generator>
         </EmbeddedResource>
-        <EmbeddedResource Update="Views\Templates\RecentChatTemplate.xaml">
+        <EmbeddedResource Update="Views\Templates\RecentReminderTemplate.xaml">
           <Generator>MSBuild:Compile</Generator>
         </EmbeddedResource>
     </ItemGroup>

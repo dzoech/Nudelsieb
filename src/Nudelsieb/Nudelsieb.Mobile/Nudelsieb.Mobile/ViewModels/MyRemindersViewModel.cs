@@ -17,7 +17,7 @@ namespace Nudelsieb.Mobile.ViewModels
     {
         private static MyRemindersViewModel recentChatViewModel;
 
-        private ObservableCollection<ChatDetail> chatItems;
+        private ObservableCollection<ReminderDetail> chatItems;
 
         private string profileImage;
 
@@ -68,7 +68,7 @@ namespace Nudelsieb.Mobile.ViewModels
         /// profile items.
         /// </summary>
         [DataMember(Name = "chatItems")]
-        public ObservableCollection<ChatDetail> ChatItems
+        public ObservableCollection<ReminderDetail> ChatItems
         {
             get
             {

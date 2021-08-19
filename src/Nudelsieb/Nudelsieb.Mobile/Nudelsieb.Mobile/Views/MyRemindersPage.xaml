@@ -30,28 +30,13 @@
                     Spacing="0"
                     VerticalOptions="FillAndExpand">
 
-                    <!--  Rounded Profile Image  -->
-                    <border:SfBorder BackgroundColor="{DynamicResource Gray-200}" Style="{StaticResource ProfileBorderStyle}">
-                        <Image HeightRequest="32" WidthRequest="32">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ProfileImageCommand}" CommandParameter="{Binding .}" />
-                            </Image.GestureRecognizers>
-                            <Image.Source>
-                                <UriImageSource
-                                    CacheValidity="14"
-                                    CachingEnabled="true"
-                                    Uri="{Binding ProfileImage}" />
-                            </Image.Source>
-                        </Image>
-                    </border:SfBorder>
-
                     <!--  Recent Chat page Title  -->
                     <Label
                         Margin="16,0"
                         FontSize="20"
                         HorizontalOptions="Start"
                         Style="{StaticResource TitleLabelStyle}"
-                        Text="Chat"
+                        Text="Reminders"
                         VerticalOptions="Center"
                         VerticalTextAlignment="Center" />
 
@@ -101,19 +86,12 @@
                         <behaviors:SearchBarAnimationBehavior AnimationType="Expand" />
                     </buttons:SfButton.Behaviors>
                 </buttons:SfButton>
-
-                <!--  Menu Button  -->
-                <buttons:SfButton
-                    x:Name="MenuButton"
-                    Command="{Binding MenuCommand}"
-                    Style="{StaticResource IconButtonStyle}"
-                    Text="{StaticResource More}" />
             </StackLayout>
 
             <BoxView BackgroundColor="{DynamicResource Gray-200}" HeightRequest="1" />
 
             <!--  Searchable List view  -->
-            <controls:SearchableChatList
+            <controls:SearchableReminderList
                 x:Name="ListView"
                 AllowSwiping="True"
                 AutoFitMode="Height"
@@ -126,19 +104,19 @@
                 TapCommand="{Binding ItemSelectedCommand}"
                 VerticalOptions="FillAndExpand">
 
-                <controls:SearchableChatList.ItemTemplate>
+                <controls:SearchableReminderList.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.View>
                                 <Grid>
-                                    <template:RecentChatTemplate />
+                                    <template:RecentReminderTemplate />
                                 </Grid>
                             </ViewCell.View>
                         </ViewCell>
                     </DataTemplate>
-                </controls:SearchableChatList.ItemTemplate>
+                </controls:SearchableReminderList.ItemTemplate>
 
-                <controls:SearchableChatList.RightSwipeTemplate>
+                <controls:SearchableReminderList.RightSwipeTemplate>
                     <DataTemplate>
                         <border:SfBorder
                             Margin="0,8"
@@ -212,9 +190,9 @@
                             </Grid>
                         </border:SfBorder>
                     </DataTemplate>
-                </controls:SearchableChatList.RightSwipeTemplate>
+                </controls:SearchableReminderList.RightSwipeTemplate>
 
-            </controls:SearchableChatList>
+            </controls:SearchableReminderList>
 
         </StackLayout>
     </ContentPage.Content>

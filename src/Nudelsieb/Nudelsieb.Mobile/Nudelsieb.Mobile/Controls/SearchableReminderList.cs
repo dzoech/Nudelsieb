@@ -11,12 +11,12 @@ namespace Nudelsieb.Mobile.Controls
     /// on text.
     /// </summary>
     [Preserve(AllMembers = true)]
-    public class SearchableChatList : SearchableListView
+    public class SearchableReminderList : SearchableListView
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SearchableChatList"/> class.
+        /// Initializes a new instance of the <see cref="SearchableReminderList"/> class.
         /// </summary>
-        public SearchableChatList()
+        public SearchableReminderList()
         {
             this.SelectionChanged -= this.CustomListView_SelectionChanged;
             this.SelectionChanged += this.CustomListView_SelectionChanged;
@@ -31,7 +31,7 @@ namespace Nudelsieb.Mobile.Controls
         {
             if (base.FilterContacts(obj))
             {
-                var taskInfo = obj as ChatDetail;
+                var taskInfo = obj as ReminderDetail;
                 if (taskInfo == null || string.IsNullOrEmpty(taskInfo.SenderName) || string.IsNullOrEmpty(taskInfo.Message))
                 {
                     return false;

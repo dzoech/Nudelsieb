@@ -8,7 +8,7 @@ namespace Nudelsieb.Mobile.Models
     /// </summary>
     [Preserve(AllMembers = true)]
     [DataContract]
-    public class ChatDetail
+    public class ReminderDetail
     {
         private string imagePath;
 

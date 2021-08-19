@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Grid
-    x:Class="Nudelsieb.Mobile.Views.Templates.RecentChatTemplate"
+    x:Class="Nudelsieb.Mobile.Views.Templates.RecentReminderTemplate"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
@@ -21,44 +21,14 @@
     <Grid
         x:Name="Grid"
         Padding="16,12"
-        ColumnDefinitions="Auto, *, Auto"
+        ColumnDefinitions="*, Auto"
         ColumnSpacing="16"
         RowDefinitions="*, *"
         RowSpacing="2">
 
-        <!--  Recent Sender Profile image  -->
-        <badge:SfBadgeView x:Name="BadgeView" Grid.RowSpan="2">
-            <badge:SfBadgeView.Content>
-                <border:SfBorder
-                    BackgroundColor="{DynamicResource Gray-200}"
-                    BorderColor="{DynamicResource Gray-Bg}"
-                    Style="{StaticResource ProfileBorderStyle}">
-                    <Image HeightRequest="40" WidthRequest="40">
-                        <Image.Source>
-                            <UriImageSource
-                                CacheValidity="14"
-                                CachingEnabled="true"
-                                Uri="{Binding ImagePath}" />
-                        </Image.Source>
-                    </Image>
-                </border:SfBorder>
-            </badge:SfBadgeView.Content>
-
-            <badge:SfBadgeView.BadgeSettings>
-                <badge:BadgeSetting
-                    BackgroundColor="{DynamicResource Green}"
-                    BadgeAlignment="End"
-                    BadgeIcon="{Binding AvailableStatus, Converter={StaticResource BadgeConverter}}"
-                    BadgePosition="BottomRight"
-                    BadgeType="None"
-                    Stroke="{DynamicResource Gray-Bg}"
-                    StrokeWidth="1" />
-            </badge:SfBadgeView.BadgeSettings>
-        </badge:SfBadgeView>
-
         <!--  Recent Sender Profile Name  -->
         <Label
-            Grid.Column="1"
+            Grid.Column="0"
             FontFamily="Montserrat-SemiBold"
             FontSize="16"
             HorizontalOptions="Start"
@@ -70,7 +40,7 @@
 
         <StackLayout
             Grid.Row="1"
-            Grid.Column="1"
+            Grid.Column="0"
             Orientation="Horizontal">
 
             <!--  Recent Message Type  -->
@@ -101,7 +71,7 @@
 
         <!--  Recent Message Time  -->
         <Label
-            Grid.Column="2"
+            Grid.Column="1"
             FontFamily="Montserrat-Regular"
             HorizontalOptions="Center"
             LineBreakMode="NoWrap"
@@ -114,7 +84,7 @@
         <Label
             x:Name="NotificationLabel"
             Grid.Row="1"
-            Grid.Column="2"
+            Grid.Column="1"
             HorizontalOptions="End"
             HorizontalTextAlignment="End"
             Style="{StaticResource IconLabelStyle}"

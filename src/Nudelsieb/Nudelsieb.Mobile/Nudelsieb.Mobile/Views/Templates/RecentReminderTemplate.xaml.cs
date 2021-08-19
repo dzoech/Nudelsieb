@@ -5,16 +5,16 @@ using Xamarin.Forms.Xaml;
 namespace Nudelsieb.Mobile.Views.Templates
 {
     /// <summary>
-    /// Recent chat page contact's template.
+    /// Recent reminder page item's template.
     /// </summary>
     [Preserve(AllMembers = true)]
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RecentChatTemplate : Grid
+    public partial class RecentReminderTemplate : Grid
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RecentChatTemplate"/> class.
+        /// Initializes a new instance of the <see cref="RecentReminderTemplate"/> class.
         /// </summary>
-        public RecentChatTemplate()
+        public RecentReminderTemplate()
         {
             this.InitializeComponent();
         }
