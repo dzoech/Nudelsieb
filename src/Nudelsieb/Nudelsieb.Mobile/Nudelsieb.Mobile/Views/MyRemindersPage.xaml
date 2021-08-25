@@ -10,38 +10,43 @@
     xmlns:controls="clr-namespace:Nudelsieb.Mobile.Controls"
     xmlns:gradient="clr-namespace:Syncfusion.XForms.Graphics;assembly=Syncfusion.Core.XForms"
     xmlns:template="clr-namespace:Nudelsieb.Mobile.Views.Templates" 
+    x:DataType="local:MyRemindersViewModel"
     
     BackgroundColor="{DynamicResource Gray-Bg}"
     NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Load reminders" Command="{Binding LoadRemindersCommand}" />
+    </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
         <RefreshView Command="{Binding LoadRemindersCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
             <StackLayout Spacing="0">
                 <StackLayout
-                x:Name="TitleBar"
-                Padding="8"
-                BackgroundColor="{StaticResource Transparent}"
-                HorizontalOptions="FillAndExpand"
-                Orientation="Horizontal"
-                Spacing="0">
+                    x:Name="TitleBar"
+                    Padding="8"
+                    BackgroundColor="{StaticResource Transparent}"
+                    HorizontalOptions="FillAndExpand"
+                    Orientation="Horizontal"
+                    Spacing="0">
 
                     <StackLayout
-                    x:Name="ProfileView"
-                    HorizontalOptions="FillAndExpand"
-                    IsVisible="True"
-                    Orientation="Horizontal"
-                    Spacing="0"
-                    VerticalOptions="FillAndExpand">
+                        x:Name="ProfileView"
+                        HorizontalOptions="FillAndExpand"
+                        IsVisible="True"
+                        Orientation="Horizontal"
+                        Spacing="0"
+                        VerticalOptions="FillAndExpand">
 
                         <!--  Recent Chat page Title  -->
                         <Label
-                        Margin="16,0"
-                        FontSize="20"
-                        HorizontalOptions="Start"
-                        Style="{StaticResource TitleLabelStyle}"
-                        Text="Reminders"
-                        VerticalOptions="Center"
-                        VerticalTextAlignment="Center" />
+                            Margin="16,0"
+                            FontSize="20"
+                            HorizontalOptions="Start"
+                            Style="{StaticResource TitleLabelStyle}"
+                            Text="Reminders"
+                            VerticalOptions="Center"
+                            VerticalTextAlignment="Center" />
 
                     </StackLayout>
 
@@ -63,17 +68,18 @@
 
                         <!--  Rounded Search Entry  -->
                         <border:SfBorder
-                        BorderColor="{DynamicResource Gray-Bg}"
-                        CornerRadius="10"
-                        Style="{DynamicResource ThemeBorderStyle}">
+                            BorderColor="{DynamicResource Gray-Bg}"
+                            CornerRadius="10"
+                            Style="{DynamicResource ThemeBorderStyle}">
 
                             <controls:BorderlessEntry
-                            x:Name="SearchEntry"
-                            BindingContext="{x:Reference ListView}"
-                            HorizontalOptions="FillAndExpand"
-                            Placeholder="Search here"
-                            Style="{StaticResource BorderlessEntryStyle}"
-                            Text="{Binding SearchText, Mode=TwoWay}" />
+                                x:Name="SearchEntry"
+                                x:DataType="controls:SearchableListView"
+                                BindingContext="{x:Reference ListView}"
+                                HorizontalOptions="FillAndExpand"
+                                Placeholder="Search here"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding SearchText, Mode=TwoWay}" />
 
                         </border:SfBorder>
                     </StackLayout>
@@ -81,6 +87,7 @@
                     <!--  Search Button  -->
                     <buttons:SfButton
                         x:Name="SearchButton"
+                        x:DataType="StackLayout"
                         BindingContext="{x:Reference ProfileView}"
                         IsVisible="{Binding Path=IsVisible}"
                         Style="{StaticResource IconButtonStyle}"
@@ -101,7 +108,7 @@
                     AutoFitMode="Height"
                     FocusBorderThickness="0"
                     ItemsSource="{Binding ReminderItems}"
-                    SearchText="{Binding SearchText}"
+                    SearchText="{Binding SearchText, Source={x:Reference ListView}}"
                     SelectionGesture="Tap"
                     SelectionMode="Single"
                     SwipeOffset="156"

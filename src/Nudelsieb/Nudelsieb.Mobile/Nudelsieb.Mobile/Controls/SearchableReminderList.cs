@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
-using Nudelsieb.Mobile.Models;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Nudelsieb.Mobile.RestClients.Models;
 using Syncfusion.ListView.XForms;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -31,20 +33,17 @@ namespace Nudelsieb.Mobile.Controls
         {
             if (base.FilterContacts(obj))
             {
-                var taskInfo = obj as ReminderDetail;
-                if (taskInfo == null || string.IsNullOrEmpty(taskInfo.SenderName) || string.IsNullOrEmpty(taskInfo.Message))
+                if (!(obj is Reminder reminder))
                 {
                     return false;
                 }
 
-                var message = taskInfo.Message;
-                if (taskInfo.MessageType != "Text")
-                {
-                    message = string.Empty;
-                }
+                bool groupsContainSearchText = reminder.NeuronGroups
+                    .Any(g => g.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase));
 
-                return taskInfo.SenderName.ToUpperInvariant().Contains(this.SearchText.ToUpperInvariant())
-                       || message.ToUpperInvariant().Contains(this.SearchText.ToUpperInvariant());
+                return
+                    reminder.NeuronInformation.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) ||
+                    groupsContainSearchText;
             }
 
             return false;

@@ -8,6 +8,8 @@
     xmlns:converter="clr-namespace:Nudelsieb.Mobile.Converters"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Nudelsieb.Mobile.RestClients.Models"
+    x:DataType="local:Reminder"
     mc:Ignorable="d">
 
     <Grid.Resources>
@@ -17,6 +19,7 @@
             <converter:StringToGlyphConverter x:Key="GlyphConverter" />
             <converter:StringToMessageTypeConverter x:Key="TextConverter" />
             <converter:ReminderTimeToGlyphConverter x:Key="DueTimeToGlyphConverter" />
+            <converter:GroupArrayToStringConverter x:Key="GroupArrayToStringConverter" />
         </ResourceDictionary>
     </Grid.Resources>
 
@@ -44,28 +47,12 @@
             Grid.Column="0"
             Orientation="Horizontal">
 
-            <!--  Recent Message Type  -->
-            <Label
-                x:Name="MessageIcon"
-                HorizontalOptions="Start"
-                HorizontalTextAlignment="Start"
-                Style="{StaticResource IconLabelStyle}"
-                Text="{Binding MessageType, Converter={StaticResource GlyphConverter}, ConverterParameter={x:Reference MessageIcon}}">
-                <Label.Resources>
-                    <ResourceDictionary>
-                        <ResourceDictionary.MergedDictionaries>
-                            <ResourceDictionary Source="../../Styles/FontIcons.xaml" />
-                        </ResourceDictionary.MergedDictionaries>
-                    </ResourceDictionary>
-                </Label.Resources>
-            </Label>
-
             <!--  Recent Message  -->
             <Label
                 x:Name="MessageLabel"
                 LineBreakMode="TailTruncation"
                 Style="{StaticResource SimpleLabelStyle}"
-                Text="{Binding x, Converter={StaticResource TextConverter}, ConverterParameter={x:Reference MessageLabel}}"
+                Text="{Binding NeuronGroups, Converter={StaticResource GroupArrayToStringConverter}, ConverterParameter={x:Reference MessageLabel}}"
                 TextColor="{DynamicResource Gray-800}" />
 
         </StackLayout>
