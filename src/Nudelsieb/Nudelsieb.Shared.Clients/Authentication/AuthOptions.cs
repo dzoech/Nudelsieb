@@ -5,10 +5,9 @@ namespace Nudelsieb.Shared.Clients.Authentication
 {
     public class AuthOptions
     {
-        public List<string> TestProp { get; set; } = new List<string>();
-
         public const string SectionName = "Auth";
-
+        private List<string> requiredScopes = new List<string>();
+        public List<string> TestProp { get; set; } = new List<string>();
         public string? ClientId { get; set; }
 
         public string? TenantName { get; set; }
@@ -34,9 +33,6 @@ namespace Nudelsieb.Shared.Clients.Authentication
         public string AuthorityPasswordReset => $"https://{TenantName}.b2clogin.com/tfp/{AadTenant}/{PolicyPasswortReset}";
 
         public CacheOptions Cache { get; set; } = new CacheOptions();
-
-        private List<string> requiredScopes = new List<string>();
-
         private string ReplacePlaceholder(string scope)
         {
             return scope.Replace("{AadTenantUri}", $"https://{AadTenant}");
