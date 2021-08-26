@@ -32,6 +32,8 @@ namespace Nudelsieb.Mobile
         /// </summary>
         public string IosKeychainSecurityGroups { get; set; }
 
+        public string SyncfusionLicenseKey { get; set; }
+
         public static AppSettings Initialize()
         {
             var options = new JsonSerializerOptions

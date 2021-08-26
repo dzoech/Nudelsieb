@@ -6,8 +6,6 @@ using Android.Gms.Common;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
-using Android.Views;
-using Android.Widget;
 using Microsoft.Identity.Client;
 using Nudelsieb.Mobile.Views;
 
@@ -17,6 +15,13 @@ namespace Nudelsieb.Mobile.Droid
     [Activity(Label = "1 Nudelsieb", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -39,8 +44,6 @@ namespace Nudelsieb.Mobile.Droid
             CreateNotificationChannel();
         }
 
-
-
         protected override void OnNewIntent(Intent intent)
         {
             Log.Debug(AppSettings.Settings.DebugTag, "OnNewIntent");
@@ -54,7 +57,13 @@ namespace Nudelsieb.Mobile.Droid
             base.OnNewIntent(intent);
         }
 
-        bool IsPlayServiceAvailable()
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            AuthenticationContinuationHelper.SetAuthenticationContinuationEventArgs(requestCode, resultCode, data);
+        }
+
+        private bool IsPlayServiceAvailable()
         {
             int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(this);
             if (resultCode != ConnectionResult.Success)
@@ -67,15 +76,17 @@ namespace Nudelsieb.Mobile.Droid
                 {
                     Log.Debug(AppSettings.Settings.DebugTag, "This device is not supported");
                 }
+
                 return false;
             }
+
             return true;
         }
 
-        void CreateNotificationChannel()
+        private void CreateNotificationChannel()
         {
-            // Notification channels are new as of "Oreo".
-            // There is no need to create a notification channel on older versions of Android.
+            // Notification channels are new as of "Oreo". There is no need to create a notification
+            // channel on older versions of Android.
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
                 var channelName = AppSettings.Settings.Notifications.NotificationChannelName;
@@ -88,19 +99,6 @@ namespace Nudelsieb.Mobile.Droid
                 var notificationManager = (NotificationManager)GetSystemService(NotificationService);
                 notificationManager.CreateNotificationChannel(channel);
             }
-        }
-
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
-        {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-            base.OnActivityResult(requestCode, resultCode, data);
-            AuthenticationContinuationHelper.SetAuthenticationContinuationEventArgs(requestCode, resultCode, data);
         }
     }
 }

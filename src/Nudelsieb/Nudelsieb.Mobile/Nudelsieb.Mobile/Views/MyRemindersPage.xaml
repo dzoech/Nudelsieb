@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Nudelsieb.Mobile.Views.MyRemindersPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Nudelsieb.Mobile.ViewModels"
+    xmlns:behaviors="clr-namespace:Nudelsieb.Mobile.Behaviors"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:controls="clr-namespace:Nudelsieb.Mobile.Controls"
+    xmlns:gradient="clr-namespace:Syncfusion.XForms.Graphics;assembly=Syncfusion.Core.XForms"
+    xmlns:template="clr-namespace:Nudelsieb.Mobile.Views.Templates" 
+    x:DataType="local:MyRemindersViewModel"
+    
+    BackgroundColor="{DynamicResource Gray-Bg}"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Load reminders" Command="{Binding LoadRemindersCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <RefreshView Command="{Binding LoadRemindersCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+            <StackLayout Spacing="0">
+                <StackLayout
+                    x:Name="TitleBar"
+                    Padding="8"
+                    BackgroundColor="{StaticResource Transparent}"
+                    HorizontalOptions="FillAndExpand"
+                    Orientation="Horizontal"
+                    Spacing="0">
+
+                    <StackLayout
+                        x:Name="ProfileView"
+                        HorizontalOptions="FillAndExpand"
+                        IsVisible="True"
+                        Orientation="Horizontal"
+                        Spacing="0"
+                        VerticalOptions="FillAndExpand">
+
+                        <!--  Recent Chat page Title  -->
+                        <Label
+                            Margin="16,0"
+                            FontSize="20"
+                            HorizontalOptions="Start"
+                            Style="{StaticResource TitleLabelStyle}"
+                            Text="Reminders"
+                            VerticalOptions="Center"
+                            VerticalTextAlignment="Center" />
+
+                    </StackLayout>
+
+                    <StackLayout
+                        x:Name="SearchBox"
+                        HorizontalOptions="EndAndExpand"
+                        IsVisible="False"
+                        Orientation="Horizontal"
+                        Spacing="0">
+
+                        <buttons:SfButton
+                            x:Name="BackButton"
+                            Style="{StaticResource IconButtonStyle}"
+                            Text="{StaticResource Back}">
+                            <buttons:SfButton.Behaviors>
+                                <behaviors:SearchBarAnimationBehavior AnimationType="Shrink" />
+                            </buttons:SfButton.Behaviors>
+                        </buttons:SfButton>
+
+                        <!--  Rounded Search Entry  -->
+                        <border:SfBorder
+                            BorderColor="{DynamicResource Gray-Bg}"
+                            CornerRadius="10"
+                            Style="{DynamicResource ThemeBorderStyle}">
+
+                            <controls:BorderlessEntry
+                                x:Name="SearchEntry"
+                                x:DataType="controls:SearchableListView"
+                                BindingContext="{x:Reference ListView}"
+                                HorizontalOptions="FillAndExpand"
+                                Placeholder="Search here"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding SearchText, Mode=TwoWay}" />
+
+                        </border:SfBorder>
+                    </StackLayout>
+
+                    <!--  Search Button  -->
+                    <buttons:SfButton
+                        x:Name="SearchButton"
+                        x:DataType="StackLayout"
+                        BindingContext="{x:Reference ProfileView}"
+                        IsVisible="{Binding Path=IsVisible}"
+                        Style="{StaticResource IconButtonStyle}"
+                        Text="{StaticResource Search}">
+                        
+                        <buttons:SfButton.Behaviors>
+                            <behaviors:SearchBarAnimationBehavior AnimationType="Expand" />
+                        </buttons:SfButton.Behaviors>
+                    </buttons:SfButton>
+                </StackLayout>
+
+                <BoxView BackgroundColor="{DynamicResource Gray-200}" HeightRequest="1" />
+
+                <!--  Searchable List view  -->
+                <controls:SearchableReminderList
+                    x:Name="ListView"
+                    AllowSwiping="True"
+                    AutoFitMode="Height"
+                    FocusBorderThickness="0"
+                    ItemsSource="{Binding ReminderItems}"
+                    SearchText="{Binding SearchText, Source={x:Reference ListView}}"
+                    SelectionGesture="Tap"
+                    SelectionMode="Single"
+                    SwipeOffset="156"
+                    TapCommand="{Binding ItemSelectedCommand}"
+                    VerticalOptions="FillAndExpand">
+
+                    <controls:SearchableReminderList.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.View>
+                                    <Grid>
+                                        <template:RecentReminderTemplate />
+                                    </Grid>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </controls:SearchableReminderList.ItemTemplate>
+
+                    <controls:SearchableReminderList.RightSwipeTemplate>
+                        <DataTemplate>
+                            <border:SfBorder
+                                Margin="0,8"
+                                BackgroundColor="{DynamicResource PrimaryColor}"
+                                BorderColor="{StaticResource Transparent}"
+                                BorderWidth="0"
+                                CornerRadius="30, 0, 0, 30">
+                                <Grid>
+                                    <gradient:SfGradientView Style="{StaticResource PrimaryGradientStyle}" />
+
+                                    <Grid
+                                        Padding="15,0"
+                                        ColumnDefinitions="Auto, Auto, Auto"
+                                        ColumnSpacing="14"
+                                        RowDefinitions="Auto"
+                                        VerticalOptions="Center">
+
+                                        <!--  Voice call button  -->
+                                        <buttons:SfButton
+                                            BackgroundColor="{DynamicResource Gray-Bg}"
+                                            Command="{Binding Path=BindingContext.MakeVoiceCallCommand, Source={x:Reference ListView}}"
+                                            CornerRadius="16"
+                                            HeightRequest="32"
+                                            Style="{StaticResource IconButtonStyle}"
+                                            WidthRequest="32">
+                                            <buttons:SfButton.Content>
+                                                <Label
+                                                    BackgroundColor="Transparent"
+                                                    Style="{StaticResource IconLabelStyle}"
+                                                    Text="{StaticResource PhoneFill}"
+                                                    TextColor="{DynamicResource PrimaryColor}"
+                                                    VerticalTextAlignment="Center" />
+                                            </buttons:SfButton.Content>
+                                        </buttons:SfButton>
+
+                                        <!--  Video call button  -->
+                                        <buttons:SfButton
+                                            Grid.Column="1"
+                                            BackgroundColor="{DynamicResource Gray-Bg}"
+                                            Command="{Binding Path=BindingContext.MakeVideoCallCommand, Source={x:Reference ListView}}"
+                                            CornerRadius="16"
+                                            HeightRequest="32"
+                                            Style="{StaticResource IconButtonStyle}"
+                                            WidthRequest="32">
+                                            <Label
+                                                BackgroundColor="Transparent"
+                                                Style="{StaticResource IconLabelStyle}"
+                                                Text="{StaticResource Video}"
+                                                TextColor="{DynamicResource PrimaryColor}"
+                                                VerticalTextAlignment="Center" />
+                                        </buttons:SfButton>
+
+                                        <!--  Settings button  -->
+                                        <buttons:SfButton
+                                            Grid.Column="2"
+                                            BackgroundColor="{DynamicResource Gray-Bg}"
+                                            Command="{Binding Path=BindingContext.ShowSettingsCommand, Source={x:Reference ListView}}"
+                                            CornerRadius="16"
+                                            HeightRequest="32"
+                                            Style="{StaticResource IconButtonStyle}"
+                                            WidthRequest="32">
+                                            <Label
+                                                BackgroundColor="Transparent"
+                                                Style="{StaticResource IconLabelStyle}"
+                                                Text="{StaticResource Menu}"
+                                                TextColor="{DynamicResource PrimaryColor}"
+                                                VerticalTextAlignment="Center" />
+                                        </buttons:SfButton>
+
+                                    </Grid>
+                                </Grid>
+                            </border:SfBorder>
+                        </DataTemplate>
+                    </controls:SearchableReminderList.RightSwipeTemplate>
+                </controls:SearchableReminderList>
+            </StackLayout>
+        </RefreshView>
+    </ContentPage.Content>
+</ContentPage>

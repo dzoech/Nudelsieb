@@ -10,17 +10,19 @@ namespace Nudelsieb.Mobile.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
+        private bool isBusy = false;
+        private string title = string.Empty;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
         public IAlerter Alerter => DependencyService.Get<IAlerter>();
-
-        bool isBusy = false;
         public bool IsBusy
         {
             get { return isBusy; }
             set { SetProperty(ref isBusy, value); }
         }
 
-        string title = string.Empty;
         public string Title
         {
             get { return title; }
@@ -40,8 +42,6 @@ namespace Nudelsieb.Mobile.ViewModels
             return true;
         }
 
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             var changed = PropertyChanged;
@@ -50,6 +50,5 @@ namespace Nudelsieb.Mobile.ViewModels
 
             changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        #endregion
     }
 }

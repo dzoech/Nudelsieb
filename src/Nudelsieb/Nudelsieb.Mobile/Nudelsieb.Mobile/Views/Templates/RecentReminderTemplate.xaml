@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid
+    x:Class="Nudelsieb.Mobile.Views.Templates.RecentReminderTemplate"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:converter="clr-namespace:Nudelsieb.Mobile.Converters"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Nudelsieb.Mobile.RestClients.Models"
+    x:DataType="local:Reminder"
+    mc:Ignorable="d">
+
+    <Grid.Resources>
+        <ResourceDictionary>
+            <converter:DurationFromNowConverter x:Key="DurationFromNowConverter" />
+            <converter:StringToBadgeIconConverter x:Key="BadgeConverter" />
+            <converter:StringToGlyphConverter x:Key="GlyphConverter" />
+            <converter:StringToMessageTypeConverter x:Key="TextConverter" />
+            <converter:ReminderTimeToGlyphConverter x:Key="DueTimeToGlyphConverter" />
+            <converter:GroupArrayToStringConverter x:Key="GroupArrayToStringConverter" />
+        </ResourceDictionary>
+    </Grid.Resources>
+
+    <Grid
+        x:Name="Grid"
+        Padding="16,12"
+        ColumnDefinitions="*, Auto"
+        ColumnSpacing="16"
+        RowDefinitions="*, *"
+        RowSpacing="2">
+
+        <!--  Recent Sender Profile Name  -->
+        <Label
+            Grid.Column="0"
+            FontSize="16"
+            HorizontalOptions="Start"
+            LineBreakMode="NoWrap"
+            LineHeight="{OnPlatform Default=1.5,
+                                    iOS=-1}"
+            Text="{Binding NeuronInformation}"
+            TextColor="{DynamicResource Gray-900}" />
+
+        <StackLayout
+            Grid.Row="1"
+            Grid.Column="0"
+            Orientation="Horizontal">
+
+            <!--  Recent Message  -->
+            <Label
+                x:Name="MessageLabel"
+                LineBreakMode="TailTruncation"
+                Style="{StaticResource SimpleLabelStyle}"
+                Text="{Binding NeuronGroups, Converter={StaticResource GroupArrayToStringConverter}, ConverterParameter={x:Reference MessageLabel}}"
+                TextColor="{DynamicResource Gray-800}" />
+
+        </StackLayout>
+
+        <!--  Recent Message Time  -->
+        <Label
+            Grid.Column="1"
+            FontFamily="Montserrat-Regular"
+            HorizontalOptions="Center"
+            LineBreakMode="NoWrap"
+            Style="{StaticResource SimpleLabelStyle}"
+            Text="{Binding At, Converter={StaticResource DurationFromNowConverter}}"
+            VerticalOptions="Start"
+            VerticalTextAlignment="Start" />
+
+        <!--  Recent Message Notification  -->
+        <Label
+            x:Name="NotificationLabel"
+            Grid.Row="1"
+            Grid.Column="1"
+            HorizontalOptions="End"
+            HorizontalTextAlignment="End"
+            Style="{StaticResource IconLabelStyle}"
+            Text="{Binding At, Converter={StaticResource DueTimeToGlyphConverter}, ConverterParameter={x:Reference NotificationLabel}}"
+            VerticalOptions="Start">
+            <Label.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="../../Styles/FontIcons.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </Label.Resources>
+        </Label>
+
+    </Grid>
+</Grid>

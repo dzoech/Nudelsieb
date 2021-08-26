@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -10,9 +8,7 @@ using AndroidX.Core.App;
 using Firebase.Messaging;
 using Nudelsieb.Mobile.Services;
 using Nudelsieb.Mobile.Views;
-using Nudelsieb.Shared.Clients.Notifications;
 using Xamarin.Forms;
-using static Android.Provider.Settings;
 
 namespace Nudelsieb.Mobile.Droid
 {
@@ -31,6 +27,7 @@ namespace Nudelsieb.Mobile.Droid
         public override void OnMessageReceived(RemoteMessage message)
         {
             base.OnMessageReceived(message);
+
             // NOTE: test messages sent via the Azure portal will be received here
 
             var dataNotification = new FcmDataNotification(message.Data);
@@ -43,7 +40,6 @@ namespace Nudelsieb.Mobile.Droid
         /// <summary>
         /// Only called once per installation.
         /// </summary>
-        /// <param name="token"></param>
         public override void OnNewToken(string token)
         {
             // TODO: save token instance locally, or log if desired
@@ -51,7 +47,7 @@ namespace Nudelsieb.Mobile.Droid
             SendRegistrationToServer(token);
         }
 
-        void SendLocalNotification(FcmDataNotification dataNotification)
+        private void SendLocalNotification(FcmDataNotification dataNotification)
         {
             // TODO do this in a platform specific service implementation
 
@@ -84,22 +80,24 @@ namespace Nudelsieb.Mobile.Droid
             var notificationManager = NotificationManager.FromContext(this);
             notificationManager.Notify(random.Next(), notificationBuilder.Build());
         }
-        
-        void SendMessageToMainPage(string body)
+
+        private void SendMessageToMainPage(string body)
         {
             (App.Current.MainPage as MainPage)?.AddMessage(body);
         }
 
-        void SendRegistrationToServer(string token)
+        private void SendRegistrationToServer(string token)
         {
             try
             {
-                // just persist the token here for later use after the user has logged in
+                // Just persist the token here for later use after the user has logged in.
+                // Once the user has logged in, a device installation is created via nudelsieb's
+                // Notifications endpoint.
                 deviceService.SavePnsHandle(token);
             }
             catch (Exception ex)
             {
-                Log.Error(AppSettings.Settings.DebugTag, $"Error registering device: {ex.Message}");
+                Log.Error(AppSettings.Settings.DebugTag, $"Error registering device for notifications: {ex.Message}");
             }
         }
     }

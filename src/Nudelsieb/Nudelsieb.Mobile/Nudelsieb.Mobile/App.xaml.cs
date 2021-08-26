@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Identity.Client;
 using Nudelsieb.Mobile.Configuration;
 using Nudelsieb.Mobile.RestClients;
@@ -9,12 +9,21 @@ using Nudelsieb.Shared.Clients.Authentication;
 using Nudelsieb.Shared.Clients.Notifications;
 using Xamarin.Forms;
 
+[assembly: ExportFont("Montserrat-Bold.ttf", Alias = "Montserrat-Bold")]
+[assembly: ExportFont("Montserrat-Medium.ttf", Alias = "Montserrat-Medium")]
+[assembly: ExportFont("Montserrat-Regular.ttf", Alias = "Montserrat-Regular")]
+[assembly: ExportFont("Montserrat-SemiBold.ttf", Alias = "Montserrat-SemiBold")]
+[assembly: ExportFont("UIFontIcons.ttf", Alias = "FontIcons")]
+
 namespace Nudelsieb.Mobile
 {
     public partial class App : Application
     {
         public App()
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(
+                AppSettings.Settings.SyncfusionLicenseKey);
+
             InitializeComponent();
 
             var authenticationClient =
@@ -55,6 +64,7 @@ namespace Nudelsieb.Mobile
             MainPage = new AppShell();
         }
 
+        public static string ImageServerPath { get; } = "https://cdn.syncfusion.com/essential-ui-kit-for-xamarin.forms/common/uikitimages/";
         public static IAuthenticationService AuthenticationService { get; private set; }
         public static IBraindumpRestClient BraindumpRestClient { get; set; }
         public static INotificationsRestClient NotificationsRestClient { get; set; }

@@ -8,7 +8,7 @@ using Nudelsieb.Cli.Models;
 using Nudelsieb.Cli.Parsers;
 using Nudelsieb.Cli.Services;
 using Nudelsieb.Cli.Utils;
-using static Nudelsieb.Cli.Utils.IConsoleExtensions;
+using static Nudelsieb.Cli.Utils.CommandLineUtilsConsoleExtensions;
 
 namespace Nudelsieb.Cli.Commands.Reminder
 {

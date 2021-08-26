@@ -6,7 +6,7 @@ using McMaster.Extensions.CommandLineUtils;
 
 namespace Nudelsieb.Cli.Utils
 {
-    internal static class IConsoleExtensions
+    internal static class CommandLineUtilsConsoleExtensions
     {
         private const string ColumnDelimiter = "  ";
         private const int ColumnLengthLimit = 60;
@@ -139,6 +139,7 @@ namespace Nudelsieb.Cli.Utils
                         console.Write(ColumnDelimiter);
                     }
                 }
+
                 console.WriteLine();
             }
         }

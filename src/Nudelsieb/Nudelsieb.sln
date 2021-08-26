@@ -26,6 +26,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Application", "Nudelsieb.Application\Nudelsieb.Application.csproj", "{E2437574-5EF8-47A2-8021-711C398D3ED7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Notifications", "Nudelsieb.Notifications\Nudelsieb.Notifications.csproj", "{6A07D55F-D5C1-4BF9-B8DB-DF26B1BDFE34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +70,14 @@ Global
 		{B881EE0C-8BC8-4DA7-8510-14FB71E08065}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B881EE0C-8BC8-4DA7-8510-14FB71E08065}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B881EE0C-8BC8-4DA7-8510-14FB71E08065}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2437574-5EF8-47A2-8021-711C398D3ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2437574-5EF8-47A2-8021-711C398D3ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2437574-5EF8-47A2-8021-711C398D3ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2437574-5EF8-47A2-8021-711C398D3ED7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A07D55F-D5C1-4BF9-B8DB-DF26B1BDFE34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A07D55F-D5C1-4BF9-B8DB-DF26B1BDFE34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A07D55F-D5C1-4BF9-B8DB-DF26B1BDFE34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A07D55F-D5C1-4BF9-B8DB-DF26B1BDFE34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
