@@ -20,7 +20,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Notifications", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{AC50A7A9-21F5-47F0-B61F-1B86D19AE989}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nudelsieb.Application", "Nudelsieb.Application\Nudelsieb.Application.csproj", "{A8181DCA-D2E6-4EBC-AD6F-C5B0079FBA5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Application", "Nudelsieb.Application\Nudelsieb.Application.csproj", "{A8181DCA-D2E6-4EBC-AD6F-C5B0079FBA5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_misc", "_misc", "{1FE1660B-B16B-4E16-B54A-708A7B212EE5}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		CodeMaid.config = CodeMaid.config
+		stylecop.json = stylecop.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

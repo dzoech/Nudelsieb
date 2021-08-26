@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31613.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Cli", "Nudelsieb.Cli\Nudelsieb.Cli.csproj", "{C4440341-D10C-4219-9B8D-51D4ACFA6CBD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nudelsieb.Shared.Clients", "Nudelsieb.Shared.Clients\Nudelsieb.Shared.Clients.csproj", "{971755F7-0836-4A42-863D-D7497529CF60}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_misc", "_misc", "{4A707C5C-7ED8-45C8-9CCD-4A9DA899A9A8}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		CodeMaid.config = CodeMaid.config
+		stylecop.json = stylecop.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4440341-D10C-4219-9B8D-51D4ACFA6CBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4440341-D10C-4219-9B8D-51D4ACFA6CBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4440341-D10C-4219-9B8D-51D4ACFA6CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4440341-D10C-4219-9B8D-51D4ACFA6CBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{971755F7-0836-4A42-863D-D7497529CF60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{971755F7-0836-4A42-863D-D7497529CF60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{971755F7-0836-4A42-863D-D7497529CF60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{971755F7-0836-4A42-863D-D7497529CF60}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF418EF1-8E7B-4833-ADBB-153B3B1CDC67}
+	EndGlobalSection
+EndGlobal
