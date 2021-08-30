@@ -1,4 +1,5 @@
 ﻿using System;
+using Nudelsieb.Domain.Aggregates;
 
 namespace Nudelsieb.Domain
 {

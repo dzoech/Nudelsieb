@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Nudelsieb.Domain;
+using Nudelsieb.Domain.Aggregates;
 
 namespace Nudelsieb.Application.Persistence
 {

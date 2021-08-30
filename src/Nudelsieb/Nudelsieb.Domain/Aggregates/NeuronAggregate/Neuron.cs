@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Nudelsieb.Domain
+namespace Nudelsieb.Domain.Aggregates
 {
     public class Neuron
     {
@@ -15,9 +15,7 @@ namespace Nudelsieb.Domain
         public Neuron(string information, DateTimeOffset createdAt)
         {
             if (createdAt > DateTimeOffset.UtcNow)
-            {
                 throw new ArgumentException("Creation date must not be in the future.", nameof(createdAt));
-            }
 
             Information = information;
             Groups = new List<string>();
@@ -38,9 +36,7 @@ namespace Nudelsieb.Domain
                 foreach (var r in value)
                 {
                     if (r.Subject != this)
-                    {
                         throw new InvalidOperationException($"{nameof(Reminder)} is already assinged to another {nameof(Neuron)}");
-                    }
                 }
 
                 reminders = value;
@@ -56,7 +52,7 @@ namespace Nudelsieb.Domain
             faultyReminders = new List<DateTimeOffset>();
             successfulReminders = new List<Reminder>();
 
-            foreach (DateTimeOffset time in reminderTimes)
+            foreach (var time in reminderTimes)
             {
                 if (time < DateTimeOffset.Now)
                 {
@@ -71,7 +67,7 @@ namespace Nudelsieb.Domain
                 };
 
                 successfulReminders.Add(reminder);
-                this.Reminders.Add(reminder);
+                Reminders.Add(reminder);
             }
 
             return faultyReminders.Count == 0;

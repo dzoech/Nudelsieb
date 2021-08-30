@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Nudelsieb.Application.Persistence;
 using Nudelsieb.Application.UseCases;
 using Nudelsieb.Domain;
+using Nudelsieb.Domain.Aggregates.NeuronAggregate;
 
 namespace Nudelsieb.WebApi.Braindump
 {
@@ -58,7 +59,7 @@ namespace Nudelsieb.WebApi.Braindump
 
             await this.neuronRepository.AddAsync(neuron);
 
-            var success = await setReminderUseCase.ExecuteAsync(neuron.Id, reminders);
+            //var success = await setReminderUseCase.ExecuteAsync(neuron.Id, reminders);
 
             if (success)
             {

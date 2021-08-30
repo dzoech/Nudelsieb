@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Nudelsieb.Application.Persistence;
+using Nudelsieb.Domain.Aggregates;
 
 namespace Nudelsieb.Persistence.Relational
 {
-    public class RelationalDbNeuronRepository : INeuronRepository
+    public class RelationalDbNeuronRepository : Application.Persistence.INeuronRepository
     {
         private readonly ILogger<RelationalDbNeuronRepository> logger;
         private readonly BraindumpDbContext context;
@@ -19,7 +20,7 @@ namespace Nudelsieb.Persistence.Relational
             this.context = context;
         }
 
-        public async Task AddAsync(Domain.Neuron neuron)
+        public async Task AddAsync(Neuron neuron)
         {
             var neuronEntity = new Entities.Neuron
             {
@@ -57,7 +58,7 @@ namespace Nudelsieb.Persistence.Relational
             await context.SaveChangesAsync();
         }
 
-        public async Task<Domain.Neuron> GetByIdAsync(Guid id)
+        public async Task<Neuron> GetByIdAsync(Guid id)
         {
             var dbNeuron = await context.Neurons
                 .AsNoTracking()
@@ -69,7 +70,7 @@ namespace Nudelsieb.Persistence.Relational
             return MapNeuron(dbNeuron);
         }
 
-        public async Task<List<Domain.Neuron>> GetAllAsync()
+        public async Task<List<Neuron>> GetAllAsync()
         {
             var neurons = await context.Neurons
                 .AsNoTracking()
@@ -82,7 +83,7 @@ namespace Nudelsieb.Persistence.Relational
             return neurons;
         }
 
-        public async Task<List<Domain.Neuron>> GetByGroupAsync(string groupName)
+        public async Task<List<Neuron>> GetByGroupAsync(string groupName)
         {
             var neurons = await context.Groups
                 .AsNoTracking()
@@ -127,7 +128,7 @@ namespace Nudelsieb.Persistence.Relational
                 .ToListAsync();
         }
 
-        private static List<Domain.Reminder> MapReminders(IEnumerable<Entities.Reminder> dbReminders, Domain.Neuron subject)
+        private static List<Domain.Reminder> MapReminders(IEnumerable<Entities.Reminder> dbReminders, Neuron subject)
         {
             var reminders = dbReminders
                 .Select(r => new Domain.Reminder(subject)
@@ -156,7 +157,7 @@ namespace Nudelsieb.Persistence.Relational
             return dbReminders;
         }
 
-        private static Entities.Neuron MapNeuronWithIdOnly(Domain.Neuron neuron)
+        private static Entities.Neuron MapNeuronWithIdOnly(Neuron neuron)
         {
             return new Entities.Neuron
             {
@@ -179,9 +180,9 @@ namespace Nudelsieb.Persistence.Relational
             return dbReminders;
         }
 
-        private static Domain.Neuron MapNeuron(Entities.Neuron dbNeuron)
+        private static Neuron MapNeuron(Entities.Neuron dbNeuron)
         {
-            var n = new Domain.Neuron(dbNeuron.Information)
+            var n = new Neuron(dbNeuron.Information)
             {
                 Id = dbNeuron.Id,
                 Groups = dbNeuron.Groups.Select(g => g.Name).ToList(),
@@ -193,7 +194,7 @@ namespace Nudelsieb.Persistence.Relational
             return n;
         }
 
-        private static Entities.Neuron MapNeuron(Domain.Neuron neuron)
+        private static Entities.Neuron MapNeuron(Neuron neuron)
         {
             var dbNeuron = new Entities.Neuron
             {

@@ -40,7 +40,6 @@
         <ProjectReference Include="..\Nudelsieb.Domain\Nudelsieb.Domain.csproj" />
         <ProjectReference Include="..\Nudelsieb.Notifications\Nudelsieb.Notifications.csproj" />
         <ProjectReference Include="..\Nudelsieb.Persistence.Relational\Nudelsieb.Persistence.Relational.csproj" />
-        <ProjectReference Include="..\Nudelsieb.Persistence\Nudelsieb.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

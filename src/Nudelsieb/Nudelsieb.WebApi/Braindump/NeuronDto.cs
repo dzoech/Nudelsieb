@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nudelsieb.Domain;
+using Nudelsieb.Domain.Aggregates.NeuronAggregate;
 
 namespace Nudelsieb.WebApi.Braindump
 {
