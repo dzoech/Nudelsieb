@@ -5,6 +5,6 @@ namespace Nudelsieb.Application.UseCases
 {
     public interface ISetReminderUseCase
     {
-        Task<bool> ExecuteAsync(Guid neuronId, DateTimeOffset remindAt);
+        Task<bool> ExecuteAsync(Guid neuronId, params DateTimeOffset[] remindAt);
     }
 }

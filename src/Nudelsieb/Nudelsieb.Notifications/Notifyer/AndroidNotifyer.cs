@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.Logging;
@@ -54,6 +55,19 @@ namespace Nudelsieb.Notifications.Notifyer
 
         public async Task<string> SendAsync(string message, string receiver)
         {
+            var deleteAllHandles = false;
+
+            var regs = await hub.GetAllRegistrationsAsync(40);
+            var regList = regs.ToList();
+
+            if (deleteAllHandles)
+            {
+                foreach (var r in regList)
+                {
+                    await hub.DeleteRegistrationsByChannelAsync(r.PnsHandle);
+                }
+            }
+
             var notification = new AndroidReminderBuilder()
                 .WithNeuron(Guid.NewGuid(), message)
                 .WithGroups("demo-group", "work", "project-nudelsieb")

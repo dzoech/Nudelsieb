@@ -58,6 +58,8 @@ namespace Nudelsieb.WebApi.Braindump
 
             await this.neuronRepository.AddAsync(neuron);
 
+            var success = await setReminderUseCase.ExecuteAsync(neuron.Id, reminders);
+
             if (success)
             {
                 return NoContent();
@@ -71,6 +73,7 @@ namespace Nudelsieb.WebApi.Braindump
         /// <summary>
         /// Not implemented as of yet.
         /// </summary>
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] NeuronDto neuronDto)
         {
@@ -80,6 +83,7 @@ namespace Nudelsieb.WebApi.Braindump
         /// <summary>
         /// Not implemented as of yet.
         /// </summary>
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
