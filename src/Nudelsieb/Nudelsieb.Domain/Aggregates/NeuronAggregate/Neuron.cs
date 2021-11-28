@@ -5,8 +5,6 @@ namespace Nudelsieb.Domain.Aggregates
 {
     public class Neuron
     {
-        private List<Reminder> reminders = new List<Reminder>();
-
         public Neuron(string information)
             : this(information, DateTimeOffset.UtcNow)
         {
@@ -28,49 +26,22 @@ namespace Nudelsieb.Domain.Aggregates
 
         public List<string> Groups { get; set; }
 
-        public List<Reminder> Reminders
-        {
-            get => reminders;
-            set
-            {
-                foreach (var r in value)
-                {
-                    if (r.Subject != this)
-                        throw new InvalidOperationException($"{nameof(Reminder)} is already assinged to another {nameof(Neuron)}");
-                }
+        // TODO #DDD move logic into service layer
+        //public List<Reminder> Reminders
+        //{
+        //    get => reminders;
+        //    set
+        //    {
+        //        foreach (var r in value)
+        //        {
+        //            if (r.Subject != this)
+        //                throw new InvalidOperationException($"{nameof(Reminder)} is already assinged to another {nameof(Neuron)}");
+        //        }
 
-                reminders = value;
-            }
-        }
+        //        reminders = value;
+        //    }
+        //}
 
         public DateTimeOffset CreatedAt { get; set; }
-        public bool SetReminders(
-            DateTimeOffset[] reminderTimes,
-            out List<Reminder> successfulReminders,
-            out List<DateTimeOffset> faultyReminders)
-        {
-            faultyReminders = new List<DateTimeOffset>();
-            successfulReminders = new List<Reminder>();
-
-            foreach (var time in reminderTimes)
-            {
-                if (time < DateTimeOffset.Now)
-                {
-                    faultyReminders.Add(time);
-                    continue;
-                }
-
-                var reminder = new Reminder(this)
-                {
-                    At = time,
-                    State = ReminderState.Waiting
-                };
-
-                successfulReminders.Add(reminder);
-                Reminders.Add(reminder);
-            }
-
-            return faultyReminders.Count == 0;
-        }
     }
 }

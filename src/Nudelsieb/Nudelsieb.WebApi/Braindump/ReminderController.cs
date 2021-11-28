@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Nudelsieb.Application.Persistence;
+using Nudelsieb.Domain.Aggregates;
 
 namespace Nudelsieb.WebApi.Braindump
 {
@@ -16,19 +16,24 @@ namespace Nudelsieb.WebApi.Braindump
     public class ReminderController : ControllerBase
     {
         private readonly ILogger<ReminderController> logger;
-        private readonly INeuronRepository neuronRepository;
+        private readonly IReminderRepository reminderRepository;
 
-        public ReminderController(ILogger<ReminderController> logger, INeuronRepository neuronRepository)
+        public ReminderController(ILogger<ReminderController> logger, IReminderRepository neuronRepository)
         {
             this.logger = logger;
-            this.neuronRepository = neuronRepository;
+            this.reminderRepository = neuronRepository;
         }
 
         [HttpGet]
         public async Task<IEnumerable<ReminderDto>> GetRemindersAsync([FromQuery] DateTimeOffset until)
         {
-            var reminders = await neuronRepository.GetRemindersAsync(until);
-            var dtos = reminders.Select(r => new ReminderDto(r));
+            // TODO #DDD move logic into Use Case
+            var reminders = await reminderRepository.GetRemindersAsync(until);
+            var dtos = reminders.Select(r => new ReminderDto(r)
+            {
+                //NeuronInformation = reminder.Subject.Information,
+                //NeuronGroups = reminder.Subject.Groups
+            });
             return dtos;
         }
     }

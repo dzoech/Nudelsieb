@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Nudelsieb.Domain.Abstractions;
-using Nudelsieb.Domain.Aggregates;
+using Nudelsieb.Persistence.Relational.Entities;
 
 namespace Nudelsieb.Persistence.Relational.Repositories
 {
-    public class NeuronRepository : INeuronRepository
+    public class NeuronRepository : Domain.Aggregates.INeuronRepository
     {
         private readonly BraindumpDbContext context;
         private readonly ILogger logger;
@@ -21,20 +21,98 @@ namespace Nudelsieb.Persistence.Relational.Repositories
         }
 
         public IUnitOfWork UnitOfWork => context;
-        public async Task<Neuron> GetByIdAsync(Guid id)
+        public async Task<Domain.Aggregates.Neuron> GetByIdAsync(Guid id)
         {
             var dbNeuron = await context.Neurons
                .AsNoTracking()
                .Include(n => n.Groups)
-               .Include(n => n.Reminders)
                .ToSql(logger)
                .FirstOrDefaultAsync(n => n.Id == id);
 
-            return new Neuron("TODO");
+            return MapNeuron(dbNeuron);
         }
-        public Task<List<Neuron>> GetAllAsync() => throw new NotImplementedException();
-        public Task<List<Neuron>> GetByGroupAsync(string group) => throw new NotImplementedException();
-        public Neuron Add(Neuron neuron) => context.Add(neuron).Entity;
-        public Neuron Update(Neuron neuron) => throw new NotImplementedException();
+
+        // TODO #DDD implement methods
+        public async Task<List<Domain.Aggregates.Neuron>> GetAllAsync()
+        {
+            var neurons = await context.Neurons
+                .AsNoTracking()
+                .Include(n => n.Groups)
+                .OrderByDescending(n => n.CreatedAt)
+                .Select(n => MapNeuron(n))
+                .ToListAsync();
+
+            return neurons;
+        }
+
+        public async Task<List<Domain.Aggregates.Neuron>> GetByGroupAsync(string groupName)
+        {
+            var neurons = await context.Groups
+                .AsNoTracking()
+                .Where(g => g.Name == groupName)
+                .OrderByDescending(g => g.Neuron.CreatedAt)
+                .Select(g => MapNeuron(g.Neuron))
+                .ToSql(logger)
+                .ToListAsync();
+
+            return neurons;
+        }
+
+        public async Task<Domain.Aggregates.Neuron> AddAsync(Domain.Aggregates.Neuron neuron)
+        {
+            var neuronEntity = new Neuron
+            {
+                Id = neuron.Id,
+                Information = neuron.Information,
+                Groups = neuron.Groups
+                    .Select(g => new Group { Name = g })
+                    .ToList(),
+                CreatedAt = neuron.CreatedAt
+            };
+
+            context.Neurons.Add(neuronEntity);
+
+            await context.SaveChangesAsync(); // TODO #DDD commit only via the UoW pattern
+
+            return MapNeuron(neuronEntity);
+        }
+
+        public async Task<Domain.Aggregates.Neuron> UpdateAsync(Domain.Aggregates.Neuron neuron)
+        {
+            var dbNeuron = MapNeuron(neuron);
+            context.Neurons.Update(dbNeuron);
+            await context.SaveChangesAsync(); // TODO #DDD commit only via the UoW pattern
+            return MapNeuron(dbNeuron);
+        }
+
+        private static Domain.Aggregates.Neuron MapNeuron(Neuron dbNeuron)
+        {
+            var n = new Domain.Aggregates.Neuron(dbNeuron.Information)
+            {
+                Id = dbNeuron.Id,
+                Groups = dbNeuron.Groups.Select(g => g.Name).ToList(),
+                CreatedAt = dbNeuron.CreatedAt
+            };
+
+            return n;
+        }
+
+        private static Neuron MapNeuron(Domain.Aggregates.Neuron neuron)
+        {
+            var dbNeuron = new Neuron
+            {
+                Id = neuron.Id,
+                Information = neuron.Information,
+                Groups = neuron.Groups
+                    .Select(g => new Group
+                    {
+                        Name = g,
+                        NeuronId = neuron.Id
+                    })
+                    .ToList()
+            };
+
+            return dbNeuron;
+        }
     }
 }

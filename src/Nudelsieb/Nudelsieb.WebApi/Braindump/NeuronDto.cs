@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nudelsieb.Domain.Aggregates.NeuronAggregate;
+using Nudelsieb.Domain.Aggregates;
 
 namespace Nudelsieb.WebApi.Braindump
 {
@@ -10,12 +10,12 @@ namespace Nudelsieb.WebApi.Braindump
         public NeuronDto()
         { }
 
+        [Obsolete("manually set property values", error: true)]
         public NeuronDto(Neuron neuron)
         {
             Information = neuron.Information;
             Id = neuron.Id;
             Groups = neuron.Groups;
-            Reminders = neuron.Reminders.Select(r => r.At).ToList();
         }
 
         public Guid Id { get; set; }
