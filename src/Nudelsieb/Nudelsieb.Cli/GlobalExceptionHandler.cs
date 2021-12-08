@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using McMaster.Extensions.CommandLineUtils;
 using McMaster.Extensions.Hosting.CommandLine;
 
@@ -27,7 +27,17 @@ namespace Nudelsieb.Cli
                 default:
                 {
                     console.Error.WriteLine($"Error ({ex.GetType()}): {ex.Message}");
-                    console.Error.WriteLine($"Stack trace: {ex.StackTrace}");
+
+                    foreach (PropertyDescriptor? d in TypeDescriptor.GetProperties(ex))
+                    {
+                        if (d is null)
+                            continue;
+
+                        string name = d.Name;
+                        object value = d.GetValue(ex);
+                        console.Error.WriteLine($"{name}={value}");
+                    }
+
                     break;
                 }
             }

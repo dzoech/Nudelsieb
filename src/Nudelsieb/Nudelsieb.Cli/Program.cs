@@ -142,22 +142,7 @@ namespace Nudelsieb.Cli
                         ;
                 });
 
-            try
-            {
-                return await hostBuilder.RunCommandLineApplicationAsync<Program>(args);
-            }
-            catch (UnrecognizedCommandParsingException ex)
-            {
-                await Console.Error.WriteLineAsync($"Error: {ex.Message}");
-                return 1;
-            }
-            catch (Exception ex)
-            {
-                await Console.Error.WriteLineAsync($"Error ({ex.GetType()}): {ex.Message}");
-                await Console.Error.WriteLineAsync(ex.StackTrace);
-
-                return 1; // exit with error
-            }
+            return await hostBuilder.RunCommandLineApplicationAsync<Program>(args);
         }
 
         /// <summary>
