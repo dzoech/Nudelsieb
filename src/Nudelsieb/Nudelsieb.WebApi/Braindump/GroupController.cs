@@ -31,8 +31,8 @@ namespace Nudelsieb.WebApi.Braindump
             {
                 Id = n.Id,
                 Information = n.Information,
-                Groups = n.Groups
-                // TODO set reminders
+                Groups = n.Groups.Select(g => g.Name).ToList()
+                // TODO get reminders
             });
             return dtos;
         }

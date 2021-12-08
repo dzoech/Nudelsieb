@@ -15,7 +15,7 @@ namespace Nudelsieb.WebApi.Braindump
         {
             Information = neuron.Information;
             Id = neuron.Id;
-            Groups = neuron.Groups;
+            Groups = neuron.Groups.Select(g => g.Name).ToList();
         }
 
         public Guid Id { get; set; }

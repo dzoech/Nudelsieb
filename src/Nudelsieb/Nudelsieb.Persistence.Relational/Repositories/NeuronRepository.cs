@@ -65,7 +65,7 @@ namespace Nudelsieb.Persistence.Relational.Repositories
                 Id = neuron.Id,
                 Information = neuron.Information,
                 Groups = neuron.Groups
-                    .Select(g => new Group { Name = g })
+                    .Select(g => new Group { Name = g.Name })
                     .ToList(),
                 CreatedAt = neuron.CreatedAt
             };
@@ -87,14 +87,11 @@ namespace Nudelsieb.Persistence.Relational.Repositories
 
         private static Domain.Aggregates.Neuron MapNeuron(Neuron dbNeuron)
         {
-            var n = new Domain.Aggregates.Neuron(dbNeuron.Information)
-            {
-                Id = dbNeuron.Id,
-                Groups = dbNeuron.Groups.Select(g => g.Name).ToList(),
-                CreatedAt = dbNeuron.CreatedAt
-            };
-
-            return n;
+            return Domain.Aggregates.Neuron.Reconstitute(
+                dbNeuron.Id,
+                dbNeuron.Information,
+                dbNeuron.Groups.Select(g => g.Name).ToList(),
+                dbNeuron.CreatedAt);
         }
 
         private static Neuron MapNeuron(Domain.Aggregates.Neuron neuron)
@@ -106,7 +103,7 @@ namespace Nudelsieb.Persistence.Relational.Repositories
                 Groups = neuron.Groups
                     .Select(g => new Group
                     {
-                        Name = g,
+                        Name = g.Name,
                         NeuronId = neuron.Id
                     })
                     .ToList()

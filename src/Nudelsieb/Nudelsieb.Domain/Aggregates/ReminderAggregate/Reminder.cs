@@ -34,7 +34,7 @@ namespace Nudelsieb.Domain.Aggregates
         /// persisted domain entity.
         /// </summary>
         /// <remarks>
-        /// Maybe this could be moved into the <see cref="IReminderRepository"/> so the setters
+        /// Maybe this could be moved into the <see cref="IReminderRepository"/> and the setters
         /// could be made internal.
         /// </remarks>
         public static Reminder Reconstitute(Guid id, Guid neuronReference, DateTimeOffset at, ReminderState state)

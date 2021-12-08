@@ -39,8 +39,8 @@ namespace Nudelsieb.WebApi.Braindump
             var dtos = neurons.Select(n => new NeuronDto
             {
                 Id = n.Id,
-                Groups = n.Groups,
-                Information = n.Information
+                Information = n.Information,
+                Groups = n.Groups.Select(g => g.Name).ToList()
                 // TODO set reminders
             });
             return dtos;
@@ -55,17 +55,17 @@ namespace Nudelsieb.WebApi.Braindump
 
             // TODO #DDD delegate this logic to a Use Case
 
-            var neuron = new Neuron(neuronDto.Information)
-            {
-                Id = neuronDto.Id,
-                Groups = neuronDto.Groups
-            };
+            //var neuron = new Neuron(neuronDto.Information)
+            //{
+            //    Id = neuronDto.Id,
+            //    Groups = neuronDto.Groups
+            //};
 
             var reminders = neuronDto.Reminders.ToArray();
             //var success = neuron.SetReminders(reminders, out _, out List<DateTimeOffset> errors);
             bool success = false;
 
-            await this.neuronRepository.AddAsync(neuron);
+            //await this.neuronRepository.AddAsync(neuron);
             // TODO #DDD
             //var success = await setReminderUseCase.ExecuteAsync(neuron.Id, reminders);
 
