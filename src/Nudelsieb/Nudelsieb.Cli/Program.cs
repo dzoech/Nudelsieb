@@ -1,4 +1,11 @@
-﻿using McMaster.Extensions.CommandLineUtils;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using McMaster.Extensions.CommandLineUtils;
+using McMaster.Extensions.Hosting.CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,20 +22,17 @@ using Nudelsieb.Cli.RestClients;
 using Nudelsieb.Cli.Services;
 using Nudelsieb.Cli.UserSettings;
 using Nudelsieb.Shared.Clients.Authentication;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Nudelsieb.Cli
 {
-    // See example: https://github.com/natemcmaster/CommandLineUtils/blob/master/docs/samples/subcommands/inheritance/Program.cs
+    // See example:
+    // https://github.com/natemcmaster/CommandLineUtils/blob/main/docs/samples/subcommands/inheritance/Program.cs
     [HelpOption("-?|-h|--help")]
-    abstract class CommandBase
+    public abstract class CommandBase
     {
+        [Option("-d|--debug", Description = "Outputs debug information.")]
+        public bool IsDebug { get; set; }
+
         protected virtual async Task<int> OnExecuteAsync(CommandLineApplication app)
         {
             //Console.WriteLine("Result = nudelsieb " + ArgumentEscaper.EscapeAndConcatenate(args));
@@ -44,7 +48,7 @@ namespace Nudelsieb.Cli
         typeof(LoginCommand),
         typeof(ConfigCommand),
         typeof(ReminderCommand))]
-    class Program : CommandBase
+    public class Program : CommandBase
     {
         private const Environment.SpecialFolder UserSettingsFolder = Environment.SpecialFolder.ApplicationData;
 
@@ -60,15 +64,15 @@ namespace Nudelsieb.Cli
                 })
                 .ConfigureAppConfiguration((context, configBuilder) =>
                 {
-                    // platform-independent way to get assembly path
-                    // see https://github.com/dotnet/runtime/issues/13051#issuecomment-535654457
+                    // platform-independent way to get assembly path see
+                    // https://github.com/dotnet/runtime/issues/13051#issuecomment-535654457
                     var executingAssembly = Process.GetCurrentProcess().MainModule.FileName;
 
                     configBuilder.SetBasePath(Path.GetDirectoryName(executingAssembly));
                     configBuilder.AddJsonFile("appsettings.json");
 
                     // TODO sub dir and file name are defined here and in LocalUserSettingsService
-                    // inject sub dir and file name settings into LocalUserSettingsService 
+                    // inject sub dir and file name settings into LocalUserSettingsService
                     var settingsFile = Path.Combine(UserSettingsLocation, "settings.json");
                     configBuilder.AddJsonFile(settingsFile, optional: true);
 
@@ -76,7 +80,6 @@ namespace Nudelsieb.Cli
                     {
                         configBuilder.AddUserSecrets<Program>();
                     }
-
                 })
                 .ConfigureLogging((context, loggingBuilder) =>
                 {
@@ -106,6 +109,7 @@ namespace Nudelsieb.Cli
 
                     // composition root
                     services
+                        .AddSingleton<IUnhandledExceptionHandler, GlobalExceptionHandler>()
                         .AddSingleton<IConsole>(PhysicalConsole.Singleton)
                         .AddSingleton<IPublicClientApplication>(_ =>
                         {
@@ -150,6 +154,8 @@ namespace Nudelsieb.Cli
             catch (Exception ex)
             {
                 await Console.Error.WriteLineAsync($"Error ({ex.GetType()}): {ex.Message}");
+                await Console.Error.WriteLineAsync(ex.StackTrace);
+
                 return 1; // exit with error
             }
         }
