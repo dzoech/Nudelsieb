@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Nudelsieb.Domain.Abstractions
 {
     /// <summary>
@@ -12,7 +8,7 @@ namespace Nudelsieb.Domain.Abstractions
     public interface IRepository<T>
     {
         /// <summary>
-        /// Gets he Unit of Work this repository belongs to.
+        /// Gets the Unit of Work this repository belongs to.
         /// </summary>
         IUnitOfWork UnitOfWork { get; }
     }

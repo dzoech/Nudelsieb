@@ -6,7 +6,9 @@ using Nudelsieb.Persistence.Relational.Entities;
 
 namespace Nudelsieb.Persistence.Relational
 {
-    // https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext#using-dbcontext-with-dependency-injection
+    /// <remarks>
+    /// https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext#using-dbcontext-with-dependency-injection
+    /// </remarks>
     public class BraindumpDbContext : DbContext, IUnitOfWork
     {
         public BraindumpDbContext(DbContextOptions<BraindumpDbContext> options)
