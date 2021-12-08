@@ -19,12 +19,13 @@ namespace Nudelsieb.WebApi.Braindump
     {
         private readonly ILogger<NeuronController> logger;
         private readonly INeuronRepository neuronRepository;
-        private readonly ISetRemindersUseCase setReminderUseCase;
+        private readonly NeurogenesisUseCase neurogenesisUseCase;
+        private readonly SetRemindersUseCase setReminderUseCase;
 
         public NeuronController(
             ILogger<NeuronController> logger,
             INeuronRepository neuronRepository,
-            ISetRemindersUseCase setReminderUseCase)
+            SetRemindersUseCase setReminderUseCase)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.neuronRepository = neuronRepository ?? throw new ArgumentNullException(nameof(neuronRepository));
@@ -49,9 +50,11 @@ namespace Nudelsieb.WebApi.Braindump
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<int>))]
-        public async Task<ActionResult<List<int>>> Add([FromBody] NeuronDto neuronDto)
+        public async Task<ActionResult<List<int>>> Create([FromBody] NeuronDto neuronDto)
         {
             this.logger.LogInformation($"POST {neuronDto.Information}");
+
+
 
             // TODO #DDD delegate this logic to a Use Case
 

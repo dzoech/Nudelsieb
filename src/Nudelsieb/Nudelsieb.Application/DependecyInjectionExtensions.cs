@@ -7,7 +7,8 @@ namespace Nudelsieb.Application
     {
         public static IServiceCollection AddApplicationLayer(this IServiceCollection services)
         {
-            services.AddScoped<ISetRemindersUseCase, SetRemindersUseCase>();
+            services.AddScoped<SetRemindersUseCase>();
+            services.AddScoped<NeurogenesisUseCase>();
 
             return services;
         }

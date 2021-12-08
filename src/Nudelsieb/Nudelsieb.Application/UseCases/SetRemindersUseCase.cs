@@ -8,7 +8,7 @@ using Nudelsieb.Domain.Aggregates;
 
 namespace Nudelsieb.Application.UseCases
 {
-    public class SetRemindersUseCase : ISetRemindersUseCase
+    public class SetRemindersUseCase
     {
         private readonly INeuronRepository neuronRepository;
         private readonly IReminderRepository reminderRepository;
