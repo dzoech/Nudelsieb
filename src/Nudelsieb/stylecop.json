@@ -12,7 +12,7 @@
         },
         "namingRules": {
             "includeInferredTupleElementNames": true,
-            "tupleElementNameCasing": "PascalCase"
+            "tupleElementNameCasing": "camelCase"
         },
         "layoutRules": {
             "newlineAtEndOfFile": "require"

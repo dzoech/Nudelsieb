@@ -27,7 +27,7 @@ namespace Nudelsieb.Application.UseCases
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<(bool Success, IEnumerable<DateTimeOffset> FaultyReminders)> ExecuteAsync(
+        public async Task<(bool success, IEnumerable<DateTimeOffset> faultyReminders)> ExecuteAsync(
             Guid neuronId, params DateTimeOffset[] remindAt)
         {
             var faultyReminders = new List<DateTimeOffset>();
