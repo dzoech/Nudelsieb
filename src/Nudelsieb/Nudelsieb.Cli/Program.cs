@@ -67,13 +67,18 @@ namespace Nudelsieb.Cli
                     // platform-independent way to get assembly path see
                     // https://github.com/dotnet/runtime/issues/13051#issuecomment-535654457
                     var executingAssembly = Process.GetCurrentProcess().MainModule.FileName;
+                    var assemblyPath = Path.GetDirectoryName(executingAssembly);
 
-                    configBuilder.SetBasePath(Path.GetDirectoryName(executingAssembly));
+                    Console.WriteLine($"Setting base path for configuration files to '{assemblyPath}'");
+
+                    configBuilder.SetBasePath(assemblyPath);
                     configBuilder.AddJsonFile("appsettings.json");
 
                     // TODO sub dir and file name are defined here and in LocalUserSettingsService
                     // inject sub dir and file name settings into LocalUserSettingsService
                     var settingsFile = Path.Combine(UserSettingsLocation, "settings.json");
+
+                    Console.WriteLine($"Loading optional configuration from '{settingsFile}'");
                     configBuilder.AddJsonFile(settingsFile, optional: true);
 
                     if (context.HostingEnvironment.IsDevelopment())
@@ -103,8 +108,8 @@ namespace Nudelsieb.Cli
                     // https://github.com/AzureAD/microsoft-authentication-extensions-for-dotnet/tree/master/src/Microsoft.Identity.Client.Extensions.Msal
                     var props = new StorageCreationPropertiesBuilder(
                             authOptions.Cache.FileName,
-                            Path.Combine(UserSettingsLocation, authOptions.Cache.Directory),
-                            authOptions.ClientId)
+                            Path.Combine(UserSettingsLocation, authOptions.Cache.Directory))
+                        .WithCacheChangedEvent(authOptions.ClientId)
                         .Build();
 
                     // composition root

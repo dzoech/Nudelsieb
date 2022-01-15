@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -17,13 +14,6 @@ namespace Nudelsieb.Cli.UserSettings
         private readonly ILogger _logger;
         private readonly IOptions<EndpointsOptions> endpointOptions;
 
-        private static string RelativeLocation => Path.Combine("nudelsieb", "settings.json");
-
-        /// <summary>
-        /// Returns the absolute path of the user settings file.
-        /// </summary>
-        public string Location { get; }
-
         public LocalUserSettingsService(
             ILogger<LocalUserSettingsService> logger,
             IOptions<EndpointsOptions> endpointOptions,
@@ -34,6 +24,13 @@ namespace Nudelsieb.Cli.UserSettings
             Location = Path.Combine(Environment.GetFolderPath(baseLocation), RelativeLocation);
             Directory.CreateDirectory(Path.GetDirectoryName(Location));
         }
+
+        /// <summary>
+        /// Returns the absolute path of the user settings file.
+        /// </summary>
+        public string Location { get; }
+
+        private static string RelativeLocation => Path.Combine("nudelsieb", "settings.json");
 
         /// <summary>
         /// Reads the local config file from disk into a <see cref="UserSettingsModel"/>.
@@ -48,6 +45,21 @@ namespace Nudelsieb.Cli.UserSettings
             using (var file = File.OpenRead(Location))
             {
                 return await JsonSerializer.DeserializeAsync<UserSettingsModel>(file);
+            }
+        }
+
+        public async Task Write(UserSettingsModel settings)
+        {
+            using (var file = File.OpenWrite(Location))
+            {
+                var pos = file.Position;
+
+                await JsonSerializer.SerializeAsync(file, settings, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                });
+
+                _logger.LogDebug($"Initializing file for {nameof(UserSettingsModel)} at {Location}");
             }
         }
 
@@ -78,21 +90,6 @@ namespace Nudelsieb.Cli.UserSettings
             }
 
             await Write(defaultUserSettings);
-        }
-
-        public async Task Write(UserSettingsModel settings)
-        {
-            using (var file = File.OpenWrite(Location))
-            {
-                var pos = file.Position;
-
-                await JsonSerializer.SerializeAsync(file, settings, new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                });
-
-                _logger.LogDebug($"Initializing file for {nameof(UserSettingsModel)} at {Location}");
-            }
         }
     }
 }
