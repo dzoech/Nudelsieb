@@ -13,7 +13,6 @@ variables:
   version: '0.3.$(Build.BuildId)'
   chocolateyArtifactName: 'choco-nupkg-drop'
   androidArtifactName: 'android-apk-drop'
-  braindumpEndpoint: 'https://nudelsieb.zoechbauer.dev/braindump'
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -54,6 +53,8 @@ stages:
   dependsOn: []
   pool:
     vmImage: $(windowsVmImageName)
+  variables:
+  - group: 'cli-variables'
   jobs:
   - job: CreatePackage
     steps: 
@@ -62,14 +63,13 @@ stages:
       inputs:
         packageType: 'sdk'
         version: '3.1.x'
-    - powershell: | # use dots for nested variables
-        Write-Host "##vso[task.setvariable variable=Endpoints.Braindump.Value]$(braindumpEndpoint)"
-      displayName: Create environment variables with identical names as in appsettings.json
     - task: FileTransform@2
+      displayName: 'Inject secrets from cli-variables group into appsettings.json'
       inputs:
         xmlTransformationRules: '' # disables xml transformation, fixes https://github.com/MicrosoftDocs/azure-devops-docs/issues/7413
         folderPath: '$(System.DefaultWorkingDirectory)/src/Nudelsieb/Nudelsieb.Cli'
         jsonTargetFiles: |
+          hostsettings.json
           appsettings.json
     - task: PowerShell@2
       name: BuildAndPackageBinaries
