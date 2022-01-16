@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Nudelsieb.Domain.Aggregates;
 
-namespace Nudelsieb.WebApi.Braindump
+namespace Nudelsieb.Application.UseCases
 {
     public class ReminderDto
     {

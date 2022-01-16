@@ -8,7 +8,8 @@ namespace Nudelsieb.WebApi.Braindump
     public class NeuronDto
     {
         public NeuronDto()
-        { }
+        {
+        }
 
         [Obsolete("manually set property values", error: true)]
         public NeuronDto(Neuron neuron)

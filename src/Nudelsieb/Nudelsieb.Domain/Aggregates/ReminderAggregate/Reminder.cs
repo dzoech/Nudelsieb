@@ -23,10 +23,8 @@ namespace Nudelsieb.Domain.Aggregates
 
         public Guid NeuronReference { get; private set; }
 
-        // TODO validate as in CLI
         public DateTimeOffset At { get; private set; }
 
-        // TODO business logic
         public ReminderState State { get; private set; }
 
         /// <summary>

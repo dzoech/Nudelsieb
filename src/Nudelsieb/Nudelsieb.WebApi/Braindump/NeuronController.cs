@@ -18,8 +18,6 @@ namespace Nudelsieb.WebApi.Braindump
     public class NeuronController : ControllerBase
     {
         private readonly ILogger<NeuronController> logger;
-        private readonly INeuronRepository neuronRepository;
-        private readonly IReminderRepository reminderRepository;
         private readonly SetRemindersUseCase setRemindersUseCase;
         private readonly NeurogenesisUseCase neurogenesisUseCase;
         private readonly GetEverythingUseCase getEverythingUseCase;
@@ -33,8 +31,6 @@ namespace Nudelsieb.WebApi.Braindump
             GetEverythingUseCase getEverythingUseCase)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.neuronRepository = neuronRepository ?? throw new ArgumentNullException(nameof(neuronRepository));
-            this.reminderRepository = reminderRepository ?? throw new ArgumentNullException(nameof(reminderRepository));
             this.setRemindersUseCase = setReminderUseCase ?? throw new ArgumentNullException(nameof(setReminderUseCase));
             this.neurogenesisUseCase = neurogenesisUseCase ?? throw new ArgumentNullException(nameof(neurogenesisUseCase));
             this.getEverythingUseCase = getEverythingUseCase ?? throw new ArgumentNullException(nameof(getEverythingUseCase));

@@ -12,7 +12,7 @@ namespace Nudelsieb.Application.UseCases
     {
         private readonly INeuronRepository neuronRepository;
         private readonly IReminderRepository reminderRepository;
-        private readonly INotificationScheduler scheduler;
+        private readonly INotificationScheduler notificationScheduler;
         private readonly ILogger logger;
 
         public SetRemindersUseCase(
@@ -22,7 +22,7 @@ namespace Nudelsieb.Application.UseCases
             ILogger<SetRemindersUseCase> logger)
         {
             this.neuronRepository = neuronRepository ?? throw new ArgumentNullException(nameof(neuronRepository));
-            this.scheduler = scheduler ?? throw new ArgumentNullException(nameof(scheduler));
+            this.notificationScheduler = scheduler ?? throw new ArgumentNullException(nameof(scheduler));
             this.reminderRepository = reminderRepository ?? throw new ArgumentNullException(nameof(reminderRepository));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -39,7 +39,7 @@ namespace Nudelsieb.Application.UseCases
                 {
                     var reminder = new Reminder(at, neuron.Id);
                     await reminderRepository.AddAsync(reminder);
-                    await scheduler.ScheduleAsync(neuron.Information, reminder.At);
+                    await notificationScheduler.ScheduleAsync(neuron.Information, reminder.At);
                 }
                 catch (DomainException ex)
                 {
