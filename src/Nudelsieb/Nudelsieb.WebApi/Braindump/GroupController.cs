@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Nudelsieb.Application.Persistence;
+using Nudelsieb.Domain.Aggregates;
 
 namespace Nudelsieb.WebApi.Braindump
 {
@@ -27,7 +27,14 @@ namespace Nudelsieb.WebApi.Braindump
         public async Task<IEnumerable<NeuronDto>> GetNeuronsForGroupAsync(string name)
         {
             var neurons = await neuronRepository.GetByGroupAsync(name);
-            var dtos = neurons.Select(n => new NeuronDto(n));
+            var dtos = neurons.Select(n => new NeuronDto
+            {
+                Id = n.Id,
+                Information = n.Information,
+                Groups = n.Groups.Select(g => g.Name).ToList()
+
+                // TODO get reminders
+            });
             return dtos;
         }
     }

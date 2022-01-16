@@ -1,10 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Nudelsieb.Domain.Abstractions;
 using Nudelsieb.Persistence.Relational.Entities;
 
 namespace Nudelsieb.Persistence.Relational
 {
-    // https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext#using-dbcontext-with-dependency-injection
-    public class BraindumpDbContext : DbContext
+    /// <remarks>
+    /// https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext#using-dbcontext-with-dependency-injection
+    /// </remarks>
+    public class BraindumpDbContext : DbContext, IUnitOfWork
     {
         public BraindumpDbContext(DbContextOptions<BraindumpDbContext> options)
             : base(options)
@@ -14,6 +19,13 @@ namespace Nudelsieb.Persistence.Relational
         public DbSet<Neuron> Neurons { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Reminder> Reminders { get; set; }
+
+        public async Task<bool> SaveAsync(CancellationToken cancellationToken = default)
+        {
+            await this.SaveChangesAsync(cancellationToken);
+
+            return true;
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

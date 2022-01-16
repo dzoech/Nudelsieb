@@ -42,6 +42,7 @@ namespace Nudelsieb.Notifications
                 var options = provider.GetRequiredService<IOptions<NotificationsOptions>>();
                 return new ServiceBusClient(options.Value.Scheduler.AzureServiceBus.ConnectionString);
             });
+
             services.AddScoped<INotificationScheduler, ServiceBusNotificationScheduler>();
             services.AddHostedService<NotificationDispatcher>();
 

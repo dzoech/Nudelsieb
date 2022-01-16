@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Nudelsieb.Mobile.Services;
 using Nudelsieb.Shared.Clients.Authentication;
@@ -11,9 +9,7 @@ namespace Nudelsieb.Mobile.ViewModels
 {
     public class LoginViewModel
     {
-        private IAuthenticationService _authenticationService;
-
-        public Command LoginCommand { get; set; }
+        private readonly IAuthenticationService _authenticationService;
 
         public LoginViewModel()
             : this(App.AuthenticationService)
@@ -26,6 +22,7 @@ namespace Nudelsieb.Mobile.ViewModels
             _authenticationService = authenticationService;
         }
 
+        public Command LoginCommand { get; set; }
         private async Task LoginAsync()
         {
             try

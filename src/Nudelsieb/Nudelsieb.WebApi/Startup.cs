@@ -13,9 +13,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using Nudelsieb.Application;
-using Nudelsieb.Application.Persistence;
+using Nudelsieb.Domain.Aggregates;
 using Nudelsieb.Notifications;
 using Nudelsieb.Persistence.Relational;
+using Nudelsieb.Persistence.Relational.Repositories;
 
 namespace Nudelsieb.WebApi
 {
@@ -35,7 +36,7 @@ namespace Nudelsieb.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddTransient<INeuronRepository, RelationalDbNeuronRepository>()
+                .AddRelationalPersistence()
                 .AddApplicationLayer()
                 .AddNotificationServices(options => Configuration.Bind(NotificationsOptions.SectionName, options))
                 .AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)

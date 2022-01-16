@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Nudelsieb.Domain;
+using Nudelsieb.Domain.Aggregates;
 
-namespace Nudelsieb.WebApi.Braindump
+namespace Nudelsieb.Application.UseCases
 {
     public class ReminderDto
     {
@@ -11,8 +11,6 @@ namespace Nudelsieb.WebApi.Braindump
             Id = reminder.Id;
             At = reminder.At;
             State = reminder.State;
-            NeuronInformation = reminder.Subject.Information;
-            NeuronGroups = reminder.Subject.Groups;
         }
 
         public Guid Id { get; set; }

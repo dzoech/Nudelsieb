@@ -14,7 +14,8 @@ namespace Nudelsieb.Persistence.Relational
         /// object.
         /// Source: https://stackoverflow.com/a/51583047/2549398
         /// </summary>
-        public static string ToSql<TEntity>(this IQueryable<TEntity> query) where TEntity : class
+        public static string ToSql<TEntity>(this IQueryable<TEntity> query)
+            where TEntity : class
         {
             var enumerator = query.Provider.Execute<IEnumerable<TEntity>>(query.Expression).GetEnumerator();
             var relationalCommandCache = enumerator.Private("_relationalCommandCache");
@@ -28,15 +29,15 @@ namespace Nudelsieb.Persistence.Relational
             return sql;
         }
 
-        public static IQueryable<TEntity> ToSql<TEntity>(
-            this IQueryable<TEntity> query, out string sql) where TEntity : class
+        public static IQueryable<TEntity> ToSql<TEntity>(this IQueryable<TEntity> query, out string sql)
+            where TEntity : class
         {
             sql = query.ToSql();
             return query;
         }
 
-        public static IQueryable<TEntity> ToSql<TEntity>(
-            this IQueryable<TEntity> query, ILogger logger) where TEntity : class
+        public static IQueryable<TEntity> ToSql<TEntity>(this IQueryable<TEntity> query, ILogger logger)
+            where TEntity : class
         {
             var sql = query.ToSql();
             logger.LogDebug(sql);

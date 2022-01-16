@@ -39,7 +39,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
         <PackageReference Include="Microsoft.Identity.Client" Version="4.35.1" />
-        <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.18.8" />
+        <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.18.9" />
         <PackageReference Include="Refit" Version="5.2.4" />
         <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="19.2.0.51" />
         <PackageReference Include="Syncfusion.Xamarin.Core" Version="19.2.0.51" />
@@ -47,7 +47,7 @@
         <PackageReference Include="Syncfusion.Xamarin.SfComboBox" Version="19.2.0.51" />
         <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="19.2.0.51" />
         <PackageReference Include="Syncfusion.Xamarin.SfRating" Version="19.2.0.51" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.12.2" />
         <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />
         <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
     </ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.Logging;
@@ -54,13 +55,34 @@ namespace Nudelsieb.Notifications.Notifyer
 
         public async Task<string> SendAsync(string message, string receiver)
         {
+            var deleteAllHandles = false;
+
+            var regs = await hub.GetAllRegistrationsAsync(40);
+            var regList = regs.ToList();
+
+            if (deleteAllHandles)
+            {
+                foreach (var r in regList)
+                {
+                    logger.LogWarning("Deleting registration for handle '{pnsHandle}'", r.PnsHandle);
+                    await hub.DeleteRegistrationsByChannelAsync(r.PnsHandle);
+                }
+            }
+
             var notification = new AndroidReminderBuilder()
                 .WithNeuron(Guid.NewGuid(), message)
                 .WithGroups("demo-group", "work", "project-nudelsieb")
                 .Build();
 
-            var outcome = await hub.SendFcmNativeNotificationAsync(notification, tagExpression: $"user:{receiver}");
-            logger.LogInformation($"Notified clients, tracking ID: {outcome.TrackingId}");
+            logger.LogInformation("Notification to be sent: '{notification}'", notification);
+
+            var tagExpression = $"user:{receiver}";
+            var outcome = await hub.SendFcmNativeNotificationAsync(notification, tagExpression);
+
+            logger.LogInformation(
+                "Notified clients by tag expression '{tagExpression}', tracking id: '{trackingId}'",
+                tagExpression,
+                outcome.TrackingId);
 
             return outcome.TrackingId;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Nudelsieb.Shared.Clients.Authentication
@@ -6,7 +7,7 @@ namespace Nudelsieb.Shared.Clients.Authentication
     public class AuthOptions
     {
         public const string SectionName = "Auth";
-        private List<string> requiredScopes = new List<string>();
+        private string[] requiredScopes = Array.Empty<string>();
         public List<string> TestProp { get; set; } = new List<string>();
         public string? ClientId { get; set; }
 
@@ -20,10 +21,10 @@ namespace Nudelsieb.Shared.Clients.Authentication
 
         public string? RedirectUri { get; set; }
 
-        public List<string> RequiredScopes
+        public string[] RequiredScopes
         {
-            get => requiredScopes.Select(s => ReplacePlaceholder(s)).ToList();
-            set => requiredScopes = value;
+            get => this.requiredScopes.Select(s => ReplacePlaceholder(s)).ToArray();
+            set => this.requiredScopes = value;
         }
 
         public string? ClientSecret { get; set; }

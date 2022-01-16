@@ -1,4 +1,4 @@
-﻿namespace Nudelsieb.Domain
+﻿namespace Nudelsieb.Domain.Aggregates
 {
     public enum ReminderState
     {

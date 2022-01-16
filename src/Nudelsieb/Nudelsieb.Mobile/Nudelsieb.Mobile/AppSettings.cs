@@ -3,7 +3,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Text.Json;
+using Newtonsoft.Json;
 using Nudelsieb.Mobile.Configuration;
 using Nudelsieb.Shared.Clients.Authentication;
 
@@ -36,19 +36,14 @@ namespace Nudelsieb.Mobile
 
         public static AppSettings Initialize()
         {
-            var options = new JsonSerializerOptions
-            {
-                ReadCommentHandling = JsonCommentHandling.Skip,
-                AllowTrailingCommas = true
-            };
 
             string appSettingsContent = ReadSettingsFile(AppSettingsFileName);
-            var appSettings = JsonSerializer.Deserialize<AppSettings>(appSettingsContent, options);
+            var appSettings = JsonConvert.DeserializeObject<AppSettings>(appSettingsContent);
 
             try
             {
                 string secretContent = ReadSettingsFile(SecretFileName);
-                var secretSettings = JsonSerializer.Deserialize<AppSettings>(secretContent, options);
+                var secretSettings = JsonConvert.DeserializeObject<AppSettings>(secretContent);
                 OverrideSettings(source: secretSettings, target: appSettings);
             }
             catch (IOException ex)
