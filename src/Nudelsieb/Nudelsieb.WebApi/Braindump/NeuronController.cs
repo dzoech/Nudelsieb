@@ -19,30 +19,41 @@ namespace Nudelsieb.WebApi.Braindump
     {
         private readonly ILogger<NeuronController> logger;
         private readonly INeuronRepository neuronRepository;
-        private readonly NeurogenesisUseCase neurogenesisUseCase;
+        private readonly IReminderRepository reminderRepository;
         private readonly SetRemindersUseCase setRemindersUseCase;
+        private readonly NeurogenesisUseCase neurogenesisUseCase;
+        private readonly GetEverythingUseCase getEverythingUseCase;
 
         public NeuronController(
             ILogger<NeuronController> logger,
             INeuronRepository neuronRepository,
-            SetRemindersUseCase setReminderUseCase)
+            IReminderRepository reminderRepository,
+            SetRemindersUseCase setReminderUseCase,
+            NeurogenesisUseCase neurogenesisUseCase,
+            GetEverythingUseCase getEverythingUseCase)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.neuronRepository = neuronRepository ?? throw new ArgumentNullException(nameof(neuronRepository));
+            this.reminderRepository = reminderRepository ?? throw new ArgumentNullException(nameof(reminderRepository));
             this.setRemindersUseCase = setReminderUseCase ?? throw new ArgumentNullException(nameof(setReminderUseCase));
+            this.neurogenesisUseCase = neurogenesisUseCase ?? throw new ArgumentNullException(nameof(neurogenesisUseCase));
+            this.getEverythingUseCase = getEverythingUseCase ?? throw new ArgumentNullException(nameof(getEverythingUseCase));
         }
 
         [HttpGet]
         public async Task<IEnumerable<NeuronDto>> GetAsync()
         {
-            // TODO #DDD utilize Use Case
-            var neurons = await this.neuronRepository.GetAllAsync();
-            var dtos = neurons.Select(n => new NeuronDto
+            var everything = await getEverythingUseCase.ExecuteAsync();
+
+            var dtos = everything.Neurons.Select(n => new NeuronDto
             {
                 Id = n.Id,
                 Information = n.Information,
-                Groups = n.Groups.Select(g => g.Name).ToList()
-                // TODO set reminders
+                Groups = n.Groups.Select(g => g.Name).ToList(),
+                Reminders = everything.Reminders
+                    .Where(r => r.NeuronReference == n.Id)
+                    .Select(r => r.At)
+                    .ToList()
             });
             return dtos;
         }

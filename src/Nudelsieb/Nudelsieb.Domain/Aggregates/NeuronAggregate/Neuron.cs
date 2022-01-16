@@ -17,6 +17,7 @@ namespace Nudelsieb.Domain.Aggregates
             if (createdAt > DateTimeOffset.UtcNow)
                 throw new ArgumentException("Creation date must not be in the future.", nameof(createdAt));
 
+            Id = Guid.NewGuid();
             Information = information;
             Groups = new List<Group>();
             CreatedAt = createdAt;

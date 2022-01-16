@@ -14,13 +14,13 @@ namespace Nudelsieb.Persistence.Relational.Repositories
         private readonly BraindumpDbContext context;
         private readonly ILogger<ReminderRepository> logger;
 
-        public IUnitOfWork UnitOfWork => context;
-
         public ReminderRepository(BraindumpDbContext context, ILogger<ReminderRepository> logger)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
+
+        public IUnitOfWork UnitOfWork => context;
 
         public async Task<List<Domain.Aggregates.Reminder>> GetRemindersAsync(DateTimeOffset until)
         {

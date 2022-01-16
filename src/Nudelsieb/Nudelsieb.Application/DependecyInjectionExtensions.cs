@@ -9,6 +9,7 @@ namespace Nudelsieb.Application
         {
             services.AddScoped<SetRemindersUseCase>();
             services.AddScoped<NeurogenesisUseCase>();
+            services.AddScoped<GetEverythingUseCase>();
 
             return services;
         }

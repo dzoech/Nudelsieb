@@ -32,7 +32,6 @@ namespace Nudelsieb.Persistence.Relational.Repositories
             return MapNeuron(dbNeuron);
         }
 
-        // TODO #DDD implement methods
         public async Task<List<Domain.Aggregates.Neuron>> GetAllAsync()
         {
             var neurons = await context.Neurons
@@ -40,6 +39,7 @@ namespace Nudelsieb.Persistence.Relational.Repositories
                 .Include(n => n.Groups)
                 .OrderByDescending(n => n.CreatedAt)
                 .Select(n => MapNeuron(n))
+                .ToSql(logger)
                 .ToListAsync();
 
             return neurons;
