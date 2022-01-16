@@ -35,6 +35,11 @@ namespace Nudelsieb.Notifications.Scheduler
             if (string.IsNullOrWhiteSpace(queueName))
                 throw new ArgumentException($"Queue name '{queueName}' is not allowed");
 
+            logger.LogInformation(
+                "Creating Service Bus processor for queue '{queueName}' in '{namespace}'.",
+                queueName,
+                serviceBusClient.FullyQualifiedNamespace);
+
             serviceBusProcessor = serviceBusClient.CreateProcessor(queueName);
             serviceBusProcessor.ProcessMessageAsync += ProcessMessageAsync;
             serviceBusProcessor.ProcessErrorAsync += ProcessErrorAsync;
@@ -42,22 +47,25 @@ namespace Nudelsieb.Notifications.Scheduler
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            logger.LogInformation("Start processing...");
             await serviceBusProcessor.StartProcessingAsync(cancellationToken);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
+            logger.LogInformation("Stop processing...");
             await serviceBusProcessor.StopProcessingAsync(cancellationToken);
         }
 
         private async Task ProcessMessageAsync(ProcessMessageEventArgs args)
         {
-            logger.LogDebug("Processing message received by Service Bus");
+            logger.LogInformation("Processing message received by Service Bus");
 
             // Services with scoped lifetime cannot be injected directly into a HostedService
             using var scope = serviceScopeFactory.CreateScope();
             var pushNotifyer = scope.ServiceProvider.GetRequiredService<IPushNotifyer>();
-            await pushNotifyer.SendAsync(args.Message.Body.ToString(), "ANY");
+            var message = args.Message.Body.ToString();
+            await pushNotifyer.SendAsync(message, "ANY");
         }
 
         private Task ProcessErrorAsync(ProcessErrorEventArgs args)

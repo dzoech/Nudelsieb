@@ -64,6 +64,7 @@ namespace Nudelsieb.Notifications.Notifyer
             {
                 foreach (var r in regList)
                 {
+                    logger.LogWarning("Deleting registration for handle '{pnsHandle}'", r.PnsHandle);
                     await hub.DeleteRegistrationsByChannelAsync(r.PnsHandle);
                 }
             }
@@ -73,8 +74,15 @@ namespace Nudelsieb.Notifications.Notifyer
                 .WithGroups("demo-group", "work", "project-nudelsieb")
                 .Build();
 
-            var outcome = await hub.SendFcmNativeNotificationAsync(notification, tagExpression: $"user:{receiver}");
-            logger.LogInformation($"Notified clients, tracking ID: {outcome.TrackingId}");
+            logger.LogInformation("Notification to be sent: '{notification}'", notification);
+
+            var tagExpression = $"user:{receiver}";
+            var outcome = await hub.SendFcmNativeNotificationAsync(notification, tagExpression);
+
+            logger.LogInformation(
+                "Notified clients by tag expression '{tagExpression}', tracking id: '{trackingId}'",
+                tagExpression,
+                outcome.TrackingId);
 
             return outcome.TrackingId;
         }
