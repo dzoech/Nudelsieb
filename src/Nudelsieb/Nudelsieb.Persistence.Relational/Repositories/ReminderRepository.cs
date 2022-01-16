@@ -59,17 +59,6 @@ namespace Nudelsieb.Persistence.Relational.Repositories
             await context.SaveChangesAsync();
         }
 
-        [Obsolete("Remove after DDD refactoring")]
-        private static Domain.Aggregates.Reminder MapReminder(Reminder reminder, Domain.Aggregates.Neuron subject)
-        {
-            return Domain.Aggregates.Reminder.Reconstitute(
-                reminder.Id,
-                reminder.SubjectId,
-                reminder.At,
-                MapReminderState(reminder.State));
-        }
-
-        [Obsolete("Remove after DDD refactoring")]
         private static Reminder MapReminder(Domain.Aggregates.Reminder reminder)
         {
             return new Reminder
