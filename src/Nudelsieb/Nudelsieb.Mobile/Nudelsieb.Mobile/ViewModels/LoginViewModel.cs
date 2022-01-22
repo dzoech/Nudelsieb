@@ -31,7 +31,7 @@ namespace Nudelsieb.Mobile.ViewModels
 
                 var deviceService = DependencyService.Resolve<IDeviceService>();
                 var deviceId = deviceService.GetDeviceId();
-                var handle = await deviceService.GetHandleAsync();
+                var handle = await deviceService.GetPnsHandleAsync();
 
                 var thisDevice = new DeviceInstallation
                 {

@@ -21,12 +21,12 @@ namespace Nudelsieb.Mobile.Droid.Services
     {
         public const string PnsHandleKey = "nds.device.pnshandle";
 
-        public async Task<string> GetHandleAsync()
+        public async Task<string> GetPnsHandleAsync()
         {
             return await SecureStorage.GetAsync(PnsHandleKey);
         }
 
-        public async Task SavePnsHandle(string handle)
+        public async Task SavePnsHandleAsync(string handle)
         {
             await SecureStorage.SetAsync(PnsHandleKey, handle);
         }

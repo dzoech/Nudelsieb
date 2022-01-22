@@ -7,8 +7,8 @@ namespace Nudelsieb.Mobile.Services
 {
     public interface IDeviceService
     {
-        Task<string> GetHandleAsync();
-        Task SavePnsHandle(string handle);
+        Task<string> GetPnsHandleAsync();
+        Task SavePnsHandleAsync(string handle);
         void ClearPnsHandle();
         string GetDeviceId();
     }
