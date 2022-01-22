@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,6 @@ namespace Nudelsieb.WebApi.Notifications
     [Area("notifications")]
     [Route("[area]/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class RegistrationController : ControllerBase
     {
         private readonly ILogger<RegistrationController> logger;
@@ -32,15 +32,31 @@ namespace Nudelsieb.WebApi.Notifications
         /// for storing the installation id.
         /// </summary>
         [HttpPut]
+        [AllowAnonymous]
         public async Task UpdateInstallationAsync(DeviceInstallationDto installationRequest)
         {
-            await pushNotifyer.SubscribeAsync(installationRequest, "dominik");
+            var userId = HttpContext.User.FindFirstValue("sub"); // is always null -> #todo fix auth pipeline
+            if (userId is null)
+            {
+                logger.LogWarning("No user id (sub claim) has been provided with the installation request");
+                userId = "not-set";
+            }
+
+            await pushNotifyer.SubscribeAsync(installationRequest, userId);
         }
 
         [HttpDelete("{id}")]
+        [AllowAnonymous]
         public async Task DeleteInstallationAsync(string id)
         {
-            await pushNotifyer.UnsubscribeAsync(id, "dominik");
+            var userId = HttpContext.User.FindFirstValue("sub");
+            if (userId is null)
+            {
+                logger.LogWarning("No user id (sub claim) has been provided with the installation request");
+                userId = "not-set"; // this will break the unsubscribing
+            }
+
+            await pushNotifyer.UnsubscribeAsync(id, userId);
         }
 
         /// <summary>
@@ -56,7 +72,7 @@ namespace Nudelsieb.WebApi.Notifications
         /// Specifies additional minutes to wait before pushing the notification to the receiving
         /// devices.
         /// </param>
-        [HttpPost("~/[area]")]
+        [HttpPost("~/debug/[area]")]
         [AllowAnonymous]
         public async Task Notify([FromQuery] string receiver, [FromQuery] string message, [FromQuery] int delayInSeconds, [FromQuery] int delayInMinutes)
         {
@@ -70,6 +86,16 @@ namespace Nudelsieb.WebApi.Notifications
                 .AddMinutes(delayInMinutes);
 
             await notificationScheduler.ScheduleAsync(message, scheduleAt);
+        }
+
+        [HttpGet("~/debug/registrations")]
+        //#if !DEBUG
+        [Authorize]
+        //#endif
+        public async Task<ActionResult> GetDebugInfo()
+        {
+            var res = await ((Nudelsieb.Notifications.Notifyer.AndroidNotifyer)pushNotifyer).GetDebugInfo();
+            return Ok(res);
         }
     }
 }
