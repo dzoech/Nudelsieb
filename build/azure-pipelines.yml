@@ -15,17 +15,18 @@ variables:
   androidArtifactName: 'android-apk-drop'
   
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  linuxVmImageName: 'ubuntu-latest'
   windowsVmImageName: 'windows-latest'
+
+pool: # used for all jobs, can be overridden
+  vmImage: $(linuxVmImageName)
 
 stages:
 - stage: BuildAndPushWebApiContainer
   displayName: 'Web API: Build and push Docker image'
-  jobs:  
+  jobs:
   - job: Build
     displayName: Build and push Docker image
-    pool:
-      vmImage: $(vmImageName)
     steps:
     - task: Docker@2
       displayName: Build and push an image to the container registry
