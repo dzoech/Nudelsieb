@@ -9,5 +9,8 @@ namespace Nudelsieb.Persistence.Relational.Entities
         public Guid NeuronId { get; set; }
 
         public Neuron Neuron { get; set; }
+
+        public Guid UserId { get; set; }
+
     }
 }

@@ -20,5 +20,7 @@ namespace Nudelsieb.Persistence.Relational.Entities
         public DateTimeOffset At { get; set; }
 
         public ReminderState State { get; set; }
+
+        public Guid UserId { get; set; }
     }
 }
