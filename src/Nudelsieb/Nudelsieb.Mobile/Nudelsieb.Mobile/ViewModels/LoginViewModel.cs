@@ -30,15 +30,8 @@ namespace Nudelsieb.Mobile.ViewModels
                 await _authenticationService.LoginAsync();
 
                 var deviceService = DependencyService.Resolve<IDeviceService>();
-                var deviceId = deviceService.GetDeviceId();
-                var handle = await deviceService.GetHandleAsync();
-
-                var thisDevice = new DeviceInstallation
-                {
-                    Id = deviceId,
-                    Platfrom = "fcm",
-                    PnsHandle = handle,
-                };
+                await deviceService.RefreshPnsHandleAsync();
+                var thisDevice = await deviceService.GetDeviceInstallation();
 
                 await App.NotificationsRestClient.RegisterDeviceAsync(thisDevice);
 

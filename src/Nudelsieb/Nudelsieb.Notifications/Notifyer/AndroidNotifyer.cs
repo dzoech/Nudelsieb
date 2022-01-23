@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.NotificationHubs;
@@ -21,6 +22,24 @@ namespace Nudelsieb.Notifications.Notifyer
             this.hub = hub;
         }
 
+        public async Task<List<RegistrationDescription>> GetDebugInfo(bool deleteAllHandles = false)
+        {
+            var result = await hub.GetAllRegistrationsAsync(100);
+            var registrations = result.ToList();
+            logger.LogInformation($"Number of registered devices: {registrations.Count}");
+
+            if (deleteAllHandles)
+            {
+                foreach (var r in registrations)
+                {
+                    logger.LogWarning("Deleting registration for handle '{pnsHandle}'", r.PnsHandle);
+                    await hub.DeleteRegistrationsByChannelAsync(r.PnsHandle);
+                }
+            }
+
+            return registrations;
+        }
+
         public async Task SubscribeAsync(DeviceInstallationDto installationRequest, string user)
         {
             var userId = "ANY";
@@ -39,36 +58,23 @@ namespace Nudelsieb.Notifications.Notifyer
             await hub.CreateOrUpdateInstallationAsync(installation);
         }
 
-        public async Task UnsubscribeAsync(string id, string user)
+        public async Task UnsubscribeAsync(string installationId, string user)
         {
-            var installation = await hub.GetInstallationAsync(id);
+            var installation = await hub.GetInstallationAsync(installationId);
 
             if (installation.UserId == user)
             {
-                await hub.DeleteInstallationAsync(id);
+                await hub.DeleteInstallationAsync(installationId);
+                logger.LogInformation("Deleted installation {installationId} for user {user}", installationId, user);
             }
             else
             {
-                throw new NotifyerException($"Installation id '{id}' does not belong user '{user}'");
+                throw new NotifyerException($"Installation id '{installationId}' does not belong user '{user}'");
             }
         }
 
         public async Task<string> SendAsync(string message, string receiver)
         {
-            var deleteAllHandles = false;
-
-            var regs = await hub.GetAllRegistrationsAsync(40);
-            var regList = regs.ToList();
-
-            if (deleteAllHandles)
-            {
-                foreach (var r in regList)
-                {
-                    logger.LogWarning("Deleting registration for handle '{pnsHandle}'", r.PnsHandle);
-                    await hub.DeleteRegistrationsByChannelAsync(r.PnsHandle);
-                }
-            }
-
             var notification = new AndroidReminderBuilder()
                 .WithNeuron(Guid.NewGuid(), message)
                 .WithGroups("demo-group", "work", "project-nudelsieb")

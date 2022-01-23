@@ -12,6 +12,10 @@ using Xamarin.Forms;
 
 namespace Nudelsieb.Mobile.Droid
 {
+    /// <summary>
+    /// Documentation:
+    /// https://firebase.google.com/docs/cloud-messaging/android/first-message?authuser=0#access_the_registration_token
+    /// </summary>
     [Service]
     [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
     public class FirebaseService : FirebaseMessagingService
@@ -38,7 +42,13 @@ namespace Nudelsieb.Mobile.Droid
         }
 
         /// <summary>
-        /// Only called once per installation.
+        /// There are two scenarios when onNewToken is called:
+        /// 1) When a new token is generated on initial app startup
+        /// 2) Whenever an existing token is changed
+        /// Under #2, there are three scenarios when the existing token is changed:
+        /// A) App is restored to a new device
+        /// B) User uninstalls/reinstalls the app
+        /// C) User clears app data
         /// </summary>
         public override void OnNewToken(string token)
         {
@@ -93,7 +103,7 @@ namespace Nudelsieb.Mobile.Droid
                 // Just persist the token here for later use after the user has logged in.
                 // Once the user has logged in, a device installation is created via nudelsieb's
                 // Notifications endpoint.
-                deviceService.SavePnsHandle(token);
+                deviceService.SavePnsHandleAsync(token);
             }
             catch (Exception ex)
             {

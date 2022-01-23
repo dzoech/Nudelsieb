@@ -13,7 +13,21 @@
                 <Label Text="{Binding Name}" />
                 <Label Text="{Binding Email}" />
             </StackLayout>
-            
+            <TableView Intent="Data">
+                <TableRoot>
+                    <TableSection>
+                        <TextCell Detail="IsLoggedIn" Text="{Binding IsLoggedIn}" DetailColor="White" />
+                        <TextCell Detail="Name" Text="{Binding Name}" DetailColor="White" />
+                        <TextCell Detail="Email" Text="{Binding Email}" DetailColor="White" />
+                        <TextCell Detail="SubClaim" Text="{Binding SubClaim}" DetailColor="White" />
+                        <TextCell Detail="DeviceId" Text="{Binding DeviceId}" DetailColor="White" />
+                        <TextCell Detail="PnsHandle" Text="{Binding PnsHandle}" DetailColor="White" />
+                        <TextCell Detail="RegistrationId" Text="{Binding RegistrationId}" DetailColor="White" />
+                        <TextCell Detail="InstallationId" Text="{Binding InstallationId}" DetailColor="White" />
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+
             <Button VerticalOptions="Center" 
                     IsVisible="{Binding IsLoggedIn, Converter={StaticResource BoolInverter}}" 
                     Text="Sign in" 
