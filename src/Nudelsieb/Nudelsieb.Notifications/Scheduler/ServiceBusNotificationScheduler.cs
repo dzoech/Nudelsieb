@@ -28,13 +28,8 @@ namespace Nudelsieb.Notifications.Scheduler
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task ScheduleAsync(string notification, DateTimeOffset schedulingTime)
+        public async Task ScheduleAsync(string notification, Guid receiverUserId, DateTimeOffset schedulingTime)
         {
-            logger.LogInformation(
-                "Scheduling notification '{notification}' at {schedulingTime}",
-                notification,
-                schedulingTime);
-
             logger.LogInformation("Creating sender for queue '{queueName}'...", queueName);
 
             // TODO: use sender as singleton
@@ -44,10 +39,16 @@ namespace Nudelsieb.Notifications.Scheduler
 
             var message = new ServiceBusMessage(notification)
             {
-                MessageId = Guid.NewGuid().ToString()
+                MessageId = Guid.NewGuid().ToString(),
+                To = receiverUserId.ToString()
             };
 
-            logger.LogInformation("Assigned id '{guid}' to Service Bus message.", message.MessageId);
+            logger.LogInformation(
+                "{messageId}: Scheduling notification '{notification}' at {schedulingTime} for receiver {receiverUserId}",
+                message.MessageId,
+                notification,
+                schedulingTime,
+                receiverUserId);
 
             await sender.ScheduleMessageAsync(message, schedulingTime);
         }

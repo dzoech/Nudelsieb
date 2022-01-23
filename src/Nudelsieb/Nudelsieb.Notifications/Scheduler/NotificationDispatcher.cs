@@ -64,8 +64,9 @@ namespace Nudelsieb.Notifications.Scheduler
             // Services with scoped lifetime cannot be injected directly into a HostedService
             using var scope = serviceScopeFactory.CreateScope();
             var pushNotifyer = scope.ServiceProvider.GetRequiredService<IPushNotifyer>();
-            var message = args.Message.Body.ToString();
-            await pushNotifyer.SendAsync(message, "ANY");
+            var content = args.Message.Body.ToString();
+            var receiverUserId = Guid.Parse(args.Message.To);
+            await pushNotifyer.SendAsync(content, receiverUserId);
         }
 
         private Task ProcessErrorAsync(ProcessErrorEventArgs args)

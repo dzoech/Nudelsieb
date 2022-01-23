@@ -8,21 +8,25 @@ using Nudelsieb.Application.Notifications;
 
 namespace Nudelsieb.WebApi.Notifications
 {
+    [Authorize]
     [Area("notifications")]
     [Route("[area]/[controller]")]
     [ApiController]
     public class RegistrationController : ControllerBase
     {
         private readonly ILogger<RegistrationController> logger;
+        private readonly UserService userService;
         private readonly IPushNotifyer pushNotifyer;
         private readonly INotificationScheduler notificationScheduler;
 
         public RegistrationController(
             ILogger<RegistrationController> logger,
+            UserService userService,
             IPushNotifyer notificationSender,
             INotificationScheduler notificationScheduler)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.pushNotifyer = notificationSender ?? throw new ArgumentNullException(nameof(notificationSender));
             this.notificationScheduler = notificationScheduler ?? throw new ArgumentNullException(nameof(notificationScheduler));
         }
@@ -32,37 +36,23 @@ namespace Nudelsieb.WebApi.Notifications
         /// for storing the installation id.
         /// </summary>
         [HttpPut]
-        [AllowAnonymous]
         public async Task UpdateInstallationAsync(DeviceInstallationDto installationRequest)
         {
-            var userId = HttpContext.User.FindFirstValue("sub"); // is always null -> #todo fix auth pipeline
-            if (userId is null)
-            {
-                logger.LogWarning("No user id (sub claim) has been provided with the installation request");
-                userId = "not-set";
-            }
-
+            var userId = userService.GetActiveUserId();
             await pushNotifyer.SubscribeAsync(installationRequest, userId);
         }
 
         [HttpDelete("{id}")]
-        [AllowAnonymous]
         public async Task DeleteInstallationAsync(string id)
         {
-            var userId = HttpContext.User.FindFirstValue("sub");
-            if (userId is null)
-            {
-                logger.LogWarning("No user id (sub claim) has been provided with the installation request");
-                userId = "not-set"; // this will break the unsubscribing
-            }
-
+            var userId = userService.GetActiveUserId();
             await pushNotifyer.UnsubscribeAsync(id, userId);
         }
 
         /// <summary>
         /// Sends test notifications to registered receivers. This is used for developing.
         /// </summary>
-        /// <param name="receiver" example="ANY"></param>
+        /// <param name="receiver" example="ANY">The id of the receiving user.</param>
         /// <param name="message" example="This is an example notification sent via the REST API"></param>
         /// <param name="delayInSeconds">
         /// Specifies how many seconds to wait before pushing the notification to the receiving
@@ -73,25 +63,26 @@ namespace Nudelsieb.WebApi.Notifications
         /// devices.
         /// </param>
         [HttpPost("~/debug/[area]")]
+#if DEBUG
         [AllowAnonymous]
-        public async Task Notify([FromQuery] string receiver, [FromQuery] string message, [FromQuery] int delayInSeconds, [FromQuery] int delayInMinutes)
+#else
+        [Authorize]
+#endif
+        public async Task Notify([FromQuery] Guid receiver, [FromQuery] string message, [FromQuery] int delayInSeconds, [FromQuery] int delayInMinutes)
         {
-            if (string.IsNullOrWhiteSpace(receiver))
-            {
-                receiver = "ANY";
-            }
-
             var scheduleAt = DateTimeOffset.Now
                 .AddSeconds(delayInSeconds)
                 .AddMinutes(delayInMinutes);
 
-            await notificationScheduler.ScheduleAsync(message, scheduleAt);
+            await notificationScheduler.ScheduleAsync(message, receiver, scheduleAt);
         }
 
         [HttpGet("~/debug/registrations")]
-        //#if !DEBUG
+#if DEBUG
+        [AllowAnonymous]
+#else
         [Authorize]
-        //#endif
+#endif
         public async Task<ActionResult> GetDebugInfo()
         {
             var res = await ((Nudelsieb.Notifications.Notifyer.AndroidNotifyer)pushNotifyer).GetDebugInfo();

@@ -5,6 +5,6 @@ namespace Nudelsieb.Application.Notifications
 {
     public interface INotificationScheduler
     {
-        Task ScheduleAsync(string notification, DateTimeOffset at);
+        Task ScheduleAsync(string notification, Guid receiverUserId, DateTimeOffset at);
     }
 }

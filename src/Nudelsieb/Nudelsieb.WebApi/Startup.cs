@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication;
@@ -35,10 +36,14 @@ namespace Nudelsieb.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // disable mapping of OIDC claims to Microsoft claims
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             services
                 .AddRelationalPersistence()
                 .AddApplicationLayer()
                 .AddNotificationServices(options => Configuration.Bind(NotificationsOptions.SectionName, options))
+                .AddWebApiServices()
                 .AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
                 .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
 
