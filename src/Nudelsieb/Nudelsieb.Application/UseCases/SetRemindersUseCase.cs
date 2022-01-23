@@ -28,7 +28,7 @@ namespace Nudelsieb.Application.UseCases
         }
 
         public async Task<(bool success, IEnumerable<DateTimeOffset> faultyReminders)> ExecuteAsync(
-            Guid neuronId, params DateTimeOffset[] remindAt)
+            Guid neuronId, Guid receiverUserId, params DateTimeOffset[] remindAt)
         {
             var faultyReminders = new List<DateTimeOffset>();
             var neuron = await neuronRepository.GetByIdAsync(neuronId);
@@ -39,7 +39,7 @@ namespace Nudelsieb.Application.UseCases
                 {
                     var reminder = new Reminder(at, neuron.Id);
                     await reminderRepository.AddAsync(reminder);
-                    await notificationScheduler.ScheduleAsync(neuron.Information, reminder.At);
+                    await notificationScheduler.ScheduleAsync(neuron.Information, receiverUserId, reminder.At);
                 }
                 catch (DomainException ex)
                 {

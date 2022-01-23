@@ -1,13 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Nudelsieb.Application.Notifications
 {
     public interface IPushNotifyer
     {
-        Task SubscribeAsync(DeviceInstallationDto installationRequest, string user);
+        Task SubscribeAsync(DeviceInstallationDto installationRequest, Guid userId);
 
-        Task UnsubscribeAsync(string id, string user);
+        Task UnsubscribeAsync(string id, Guid userId);
 
-        Task<string> SendAsync(string message, string receiver);
+        Task<string> SendAsync(string message, Guid receiverId);
     }
 }

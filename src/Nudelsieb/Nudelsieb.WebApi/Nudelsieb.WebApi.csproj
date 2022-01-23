@@ -16,7 +16,7 @@
         <AdditionalFiles Include="../stylecop.json" Link="stylecop.json" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.3">
+        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -24,16 +24,16 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureADB2C.UI" Version="3.1.6" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6">
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureADB2C.UI" Version="3.1.22" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.22">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.4.1" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.4.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.22" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.6.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.6.3" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Nudelsieb.Application\Nudelsieb.Application.csproj" />

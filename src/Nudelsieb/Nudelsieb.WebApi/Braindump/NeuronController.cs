@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Nudelsieb.Application.UseCases;
-using Nudelsieb.Domain.Aggregates;
 
 namespace Nudelsieb.WebApi.Braindump
 {
@@ -21,19 +20,20 @@ namespace Nudelsieb.WebApi.Braindump
         private readonly SetRemindersUseCase setRemindersUseCase;
         private readonly NeurogenesisUseCase neurogenesisUseCase;
         private readonly GetEverythingUseCase getEverythingUseCase;
+        private readonly UserService userService;
 
         public NeuronController(
             ILogger<NeuronController> logger,
-            INeuronRepository neuronRepository,
-            IReminderRepository reminderRepository,
             SetRemindersUseCase setReminderUseCase,
             NeurogenesisUseCase neurogenesisUseCase,
-            GetEverythingUseCase getEverythingUseCase)
+            GetEverythingUseCase getEverythingUseCase,
+            UserService userService)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.setRemindersUseCase = setReminderUseCase ?? throw new ArgumentNullException(nameof(setReminderUseCase));
             this.neurogenesisUseCase = neurogenesisUseCase ?? throw new ArgumentNullException(nameof(neurogenesisUseCase));
             this.getEverythingUseCase = getEverythingUseCase ?? throw new ArgumentNullException(nameof(getEverythingUseCase));
+            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         [HttpGet]
@@ -60,8 +60,11 @@ namespace Nudelsieb.WebApi.Braindump
         public async Task<ActionResult<List<int>>> Create([FromBody] NeuronDto neuronDto)
         {
             this.logger.LogInformation($"POST {neuronDto.Information}");
+            var activeUserId = userService.GetActiveUserId();
             var neuron = await neurogenesisUseCase.ExecuteAsync(neuronDto.Information, neuronDto.Groups);
-            (bool success, var faultyReminders) = await setRemindersUseCase.ExecuteAsync(neuron.Id, neuronDto.Reminders.ToArray());
+
+            (bool success, var faultyReminders) = await setRemindersUseCase.ExecuteAsync(
+                neuron.Id, activeUserId, neuronDto.Reminders.ToArray());
 
             if (success)
             {
@@ -96,7 +99,8 @@ namespace Nudelsieb.WebApi.Braindump
         [HttpPost("{id}/reminder")]
         public async Task<ActionResult> AddReminderAsync(Guid id, [FromBody] DateTimeOffset remindAt)
         {
-            (bool success, var faultyReminders) = await setRemindersUseCase.ExecuteAsync(id, remindAt);
+            var activeUserId = userService.GetActiveUserId();
+            (bool success, var faultyReminders) = await setRemindersUseCase.ExecuteAsync(id, activeUserId, remindAt);
 
             if (success)
             {

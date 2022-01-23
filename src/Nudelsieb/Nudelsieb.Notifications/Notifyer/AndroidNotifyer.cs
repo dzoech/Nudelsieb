@@ -40,16 +40,13 @@ namespace Nudelsieb.Notifications.Notifyer
             return registrations;
         }
 
-        public async Task SubscribeAsync(DeviceInstallationDto installationRequest, string user)
+        public async Task SubscribeAsync(DeviceInstallationDto installationRequest, Guid userId)
         {
-            var userId = "ANY";
-
             var installation = new Installation
             {
                 InstallationId = installationRequest.Id,
-                UserId = user,
+                UserId = userId.ToString(),
                 PushChannel = installationRequest.PnsHandle,
-                Tags = new[] { $"user:{userId}" },
                 Platform = NotificationPlatform.Fcm,
             };
 
@@ -58,22 +55,22 @@ namespace Nudelsieb.Notifications.Notifyer
             await hub.CreateOrUpdateInstallationAsync(installation);
         }
 
-        public async Task UnsubscribeAsync(string installationId, string user)
+        public async Task UnsubscribeAsync(string installationId, Guid userId)
         {
             var installation = await hub.GetInstallationAsync(installationId);
 
-            if (installation.UserId == user)
+            if (installation.UserId == userId.ToString())
             {
                 await hub.DeleteInstallationAsync(installationId);
-                logger.LogInformation("Deleted installation {installationId} for user {user}", installationId, user);
+                logger.LogInformation("Deleted installation {installationId} for user {user}", installationId, userId);
             }
             else
             {
-                throw new NotifyerException($"Installation id '{installationId}' does not belong user '{user}'");
+                throw new NotifyerException($"Installation id '{installationId}' does not belong user '{userId}'");
             }
         }
 
-        public async Task<string> SendAsync(string message, string receiver)
+        public async Task<string> SendAsync(string message, Guid receiverId)
         {
             var notification = new AndroidReminderBuilder()
                 .WithNeuron(Guid.NewGuid(), message)
@@ -82,15 +79,21 @@ namespace Nudelsieb.Notifications.Notifyer
 
             logger.LogInformation("Notification to be sent: '{notification}'", notification);
 
-            var tagExpression = $"user:{receiver}";
-            var outcome = await hub.SendFcmNativeNotificationAsync(notification, tagExpression);
+            string receiverTag = GetTagForUserId(receiverId);
+            var outcome = await hub.SendFcmNativeNotificationAsync(notification, receiverTag);
 
             logger.LogInformation(
                 "Notified clients by tag expression '{tagExpression}', tracking id: '{trackingId}'",
-                tagExpression,
+                receiverTag,
                 outcome.TrackingId);
 
             return outcome.TrackingId;
         }
+
+        /// <summary>
+        /// An installation for the Notifications Hub automatically creates a tag for the defined user id.
+        /// Example tag: $UserId:{93fab134-e9ed-4a73-a106-ba6fa15f7f20}
+        /// </summary>
+        private string GetTagForUserId(Guid userId) => $"$UserId:{userId}";
     }
 }
