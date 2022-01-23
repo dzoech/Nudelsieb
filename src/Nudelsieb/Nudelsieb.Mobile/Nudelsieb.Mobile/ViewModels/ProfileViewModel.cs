@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Nudelsieb.Mobile.Services;
 using Xamarin.Forms;
@@ -66,23 +67,41 @@ namespace Nudelsieb.Mobile.ViewModels
 
         public async Task<bool> Refresh()
         {
-            (var success, var token) = await App.AuthenticationService.GetCachedAccessTokenAsync();
-
-            if (success)
+            try
             {
-                IsLoggedIn = true;
-                Name = token.Claims.SingleOrDefault(c => c.Type == "given_name")?.Value;
-                Email = token.Claims.SingleOrDefault(c => c.Type == "email")?.Value;
-                SubClaim = token.Claims.SingleOrDefault(c => c.Type == "sub")?.Value;
-            }
-            else
-            {
-                await Shell.Current.GoToAsync(@"//login");
-            }
+                (var success, var token) = await App.AuthenticationService.GetCachedAccessTokenAsync();
 
-            var deviceService = DependencyService.Resolve<IDeviceService>();
-            PnsHandle = await deviceService.GetPnsHandleAsync();
-            DeviceId = deviceService.GetDeviceId();
+                if (success)
+                {
+                    IsLoggedIn = true;
+                    Name = token.Claims.SingleOrDefault(c => c.Type == "given_name")?.Value;
+                    Email = token.Claims.SingleOrDefault(c => c.Type == "email")?.Value;
+                    SubClaim = token.Claims.SingleOrDefault(c => c.Type == "sub")?.Value;
+
+                    var deviceService = DependencyService.Resolve<IDeviceService>();
+                    var hasPnsHandleChanged = await deviceService.RefreshPnsHandleAsync();
+
+                    if (hasPnsHandleChanged)
+                    {
+                        Alerter.Alert("Updated locally stored PNS handle.");
+                    }
+
+                    var deviceInstallation = await deviceService.GetDeviceInstallation();
+
+                    await App.NotificationsRestClient.RegisterDeviceAsync(deviceInstallation);
+
+                    DeviceId = deviceInstallation.Id;
+                    PnsHandle = deviceInstallation.PnsHandle;
+                }
+                else
+                {
+                    await Shell.Current.GoToAsync(@"//login");
+                }
+            }
+            catch (Exception ex)
+            {
+                Alerter.Alert(ex.GetType().Name + ": " + ex.Message);
+            }
 
             return IsLoggedIn;
         }

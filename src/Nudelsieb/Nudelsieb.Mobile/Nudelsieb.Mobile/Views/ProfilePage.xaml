@@ -16,14 +16,14 @@
             <TableView Intent="Data">
                 <TableRoot>
                     <TableSection>
-                        <TextCell Detail="IsLoggedIn" Text="{Binding IsLoggedIn}" />
-                        <TextCell Detail="Name" Text="{Binding Name}" />
-                        <TextCell Detail="Email" Text="{Binding Email}" />
-                        <TextCell Detail="SubClaim" Text="{Binding SubClaim}" />
-                        <TextCell Detail="DeviceId" Text="{Binding DeviceId}" />
-                        <TextCell Detail="PnsHandle" Text="{Binding PnsHandle}" />
-                        <TextCell Detail="RegistrationId" Text="{Binding RegistrationId}" />
-                        <TextCell Detail="InstallationId" Text="{Binding InstallationId}" />
+                        <TextCell Detail="IsLoggedIn" Text="{Binding IsLoggedIn}" DetailColor="White" />
+                        <TextCell Detail="Name" Text="{Binding Name}" DetailColor="White" />
+                        <TextCell Detail="Email" Text="{Binding Email}" DetailColor="White" />
+                        <TextCell Detail="SubClaim" Text="{Binding SubClaim}" DetailColor="White" />
+                        <TextCell Detail="DeviceId" Text="{Binding DeviceId}" DetailColor="White" />
+                        <TextCell Detail="PnsHandle" Text="{Binding PnsHandle}" DetailColor="White" />
+                        <TextCell Detail="RegistrationId" Text="{Binding RegistrationId}" DetailColor="White" />
+                        <TextCell Detail="InstallationId" Text="{Binding InstallationId}" DetailColor="White" />
                     </TableSection>
                 </TableRoot>
             </TableView>
