@@ -94,6 +94,6 @@ namespace Nudelsieb.Notifications.Notifyer
         /// An installation for the Notifications Hub automatically creates a tag for the defined user id.
         /// Example tag: $UserId:{93fab134-e9ed-4a73-a106-ba6fa15f7f20}
         /// </summary>
-        private string GetTagForUserId(Guid userId) => $"$UserId:{userId}";
+        private string GetTagForUserId(Guid userId) => "$UserId:{" + userId + "}";
     }
 }
