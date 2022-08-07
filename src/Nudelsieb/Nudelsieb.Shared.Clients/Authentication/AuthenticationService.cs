@@ -125,6 +125,7 @@ namespace Nudelsieb.Shared.Clients.Authentication
                     return account;
                 }
             }
+
             return null!; // todo non null
         }
     }

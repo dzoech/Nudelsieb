@@ -52,8 +52,6 @@ namespace Nudelsieb.Mobile.Droid
         /// </summary>
         public override void OnNewToken(string token)
         {
-            // TODO: save token instance locally, or log if desired
-
             SendRegistrationToServer(token);
         }
 
