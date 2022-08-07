@@ -50,7 +50,7 @@ namespace Nudelsieb.Mobile
             {
                 Console.WriteLine(
                     $"Error, could not apply {nameof(AppSettings)} from {SecretFileName} " +
-                    $"({ex.Message})");
+                    $"({ex.GetType()}: {ex.Message})");
             }
 
             return appSettings;

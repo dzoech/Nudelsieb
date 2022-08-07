@@ -25,6 +25,10 @@
     <AndroidSupportedAbis />
     <AppPackageNamePostFix>.debug</AppPackageNamePostFix>
     <AppDisplayName>1 Nudelsieb Debug</AppDisplayName>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -38,8 +42,17 @@
     <AndroidLinkTool>r8</AndroidLinkTool>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidKeyStore>false</AndroidKeyStore>
-    <AppPackageNamePostFix></AppPackageNamePostFix>
+    <AppPackageNamePostFix>
+    </AppPackageNamePostFix>
     <AppDisplayName>Nudelsieb</AppDisplayName>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <BundleAssemblies>false</BundleAssemblies>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <MandroidI18n />
+    <AndroidLinkSkip>
+    </AndroidLinkSkip>
   </PropertyGroup>
   <PropertyGroup>
     <AndroidApplication>True</AndroidApplication>
@@ -105,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <GoogleServicesJson Include="$(GoogleServicesJsonFilePath)" />
+    <ProguardConfiguration Include="proguard.cfg" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />

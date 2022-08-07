@@ -2,7 +2,8 @@
 <Project>
     <Target Name="AddUserSecrets"
             BeforeTargets="PrepareForBuild"
-            Condition=" '$(Configuration)' == 'Debug' And '$(UserSecretsId)' != '' ">
+            Condition=" '$(UserSecretsId)' != '' ">
+        <!-- also do this for Release configuration, to verify correct linking of ProGuard/r8 -->
         <PropertyGroup>
             <UserSecretsFilePath Condition=" '$(OS)' == 'Windows_NT' ">
                 $([System.Environment]::GetFolderPath(SpecialFolder.UserProfile))\AppData\Roaming\Microsoft\UserSecrets\$(UserSecretsId)\secrets.json
